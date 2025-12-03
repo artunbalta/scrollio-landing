@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: "Scrollio – Turn Scrolling Into Learning",
   description: "Scrollio is an AI-powered learning platform that transforms everyday scrolling into meaningful education. From TikTok-style knowledge feeds to magical experiences where your child's drawings become living mentors.",
   keywords: ["education", "kids learning", "AI education", "edtech", "family learning", "school technology", "interactive learning"],
+  icons: {
+    icon: "/scrollio-logo.PNG",
+    apple: "/scrollio-logo.PNG",
+  },
   openGraph: {
     title: "Scrollio – Turn Scrolling Into Learning",
     description: "An AI-powered playground that creates living stories from children's drawings.",
