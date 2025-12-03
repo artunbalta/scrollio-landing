@@ -37,6 +37,11 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
   } | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  
+  // Email capture
+  const [email, setEmail] = useState("");
+  const [childName, setChildName] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     if (isOpen && canvasRef.current) {
@@ -53,6 +58,9 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
       setVideoUrl(null);
       setError(null);
       setLearningPrompt("");
+      setEmail("");
+      setChildName("");
+      setEmailSent(false);
     }
   }, [isOpen]);
 
@@ -116,7 +124,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
   // Generate Mentor (Step 1)
   const handleGenerateMentor = async () => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || !email.trim()) return;
 
     setStep("generating-mentor");
     setError(null);
@@ -135,6 +143,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         body: JSON.stringify({
           imageBase64,
           generateVideo: false,
+          email: email.trim(),
+          childName: childName.trim(),
         }),
       });
 
@@ -148,6 +158,30 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         drawingDescription: data.drawingDescription,
         characterImageUrl: data.characterImageUrl,
       });
+      
+      // Send email with the mentor image
+      if (data.characterImageUrl) {
+        setGenerationStatus("Mentorunuz email'inize gönderiliyor...");
+        try {
+          await fetch("/api/send-email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              toEmail: email.trim(),
+              childName: childName.trim(),
+              originalDrawing: imageBase64,
+              mentorImageUrl: data.characterImageUrl,
+            }),
+          });
+          setEmailSent(true);
+        } catch (emailErr) {
+          console.error("Email sending failed:", emailErr);
+          // Don't fail the whole process if email fails
+        }
+      }
+      
       setStep("mentor-ready");
 
     } catch (err) {
@@ -204,6 +238,9 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
     setVideoUrl(null);
     setError(null);
     setLearningPrompt("");
+    setEmail("");
+    setChildName("");
+    setEmailSent(false);
     clearCanvas();
   };
 
@@ -316,9 +353,37 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               </p>
             </div>
 
+            {/* Email Capture */}
+            <div className="space-y-3 mt-4 p-4 rounded-xl bg-white/5 border border-white/10">
+              <p className="text-sm text-white font-medium">
+                📧 Mentorunuzu email olarak göndereceğiz!
+              </p>
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  value={childName}
+                  onChange={(e) => setChildName(e.target.value)}
+                  placeholder="Çocuğunuzun adı (opsiyonel)"
+                  className="input-field"
+                />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="E-posta adresiniz *"
+                  className="input-field"
+                  required
+                />
+              </div>
+              <p className="text-xs text-[#9090a0]">
+                * Oluşturulan mentoru email adresinize göndereceğiz
+              </p>
+            </div>
+
             <button
               onClick={handleGenerateMentor}
-              className="w-full mt-6 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity"
+              disabled={!email.trim()}
+              className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Mentoru Oluştur ✨
             </button>
@@ -340,6 +405,13 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         {/* Step: Mentor Ready - Ask for learning topic */}
         {step === "mentor-ready" && mentorData && (
           <div className="space-y-6">
+            {/* Email Sent Success */}
+            {emailSent && (
+              <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm text-center">
+                ✅ Mentorunuz <strong>{email}</strong> adresine gönderildi!
+              </div>
+            )}
+            
             {/* Mentor Image */}
             {mentorData.characterImageUrl && (
               <div className="space-y-2">

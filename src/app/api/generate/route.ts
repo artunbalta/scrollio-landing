@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       credentials: FAL_KEY,
     });
 
-    const { imageBase64, characterImageUrl, learningPrompt, generateVideo } = await request.json();
+    const { imageBase64, characterImageUrl, learningPrompt, generateVideo, email, childName } = await request.json();
 
     // If characterImageUrl is provided, skip to video generation
     if (characterImageUrl && generateVideo) {
@@ -134,7 +134,9 @@ Render in ultra-high resolution, full-body, centered, clean white background.`;
             original_drawing: imageBase64,
             mentor_image_url: generatedImageUrl,
             drawing_description: drawingDescription,
-            user_session: new Date().toISOString(),
+            user_email: email || null,
+            child_name: childName || null,
+            created_at: new Date().toISOString(),
           });
 
         if (dbError) {
