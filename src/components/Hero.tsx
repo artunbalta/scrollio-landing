@@ -98,8 +98,8 @@ export default function Hero() {
               <p className="text-sm text-[#9090a0] mb-3">
                 Draw a character → watch it come alive → explore stories together. A living mentor born from your child&apos;s imagination.
               </p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 text-xs text-[#9090a0]">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-3 sm:gap-4 text-xs text-[#9090a0]">
                   <span className="flex items-center gap-1">
                     <span className="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">1</span>
                     Draw
@@ -117,7 +117,7 @@ export default function Hero() {
                 </div>
                 <button 
                   onClick={() => setIsTryMeOpen(true)}
-                  className="px-4 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity"
+                  className="w-full sm:w-auto px-6 py-3 text-sm font-medium rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity"
                 >
                   Try Me ✨
                 </button>
