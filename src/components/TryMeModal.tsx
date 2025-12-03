@@ -8,7 +8,7 @@ interface TryMeModalProps {
 }
 
 const COLORS = [
-  { name: "Beyaz", value: "#ffffff" },
+  { name: "Siyah", value: "#000000" },
   { name: "Kırmızı", value: "#ef4444" },
   { name: "Turuncu", value: "#f97316" },
   { name: "Sarı", value: "#eab308" },
@@ -24,7 +24,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-  const [currentColor, setCurrentColor] = useState("#ffffff");
+  const [currentColor, setCurrentColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(4);
   
   // Generation states
@@ -43,7 +43,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
       if (context) {
-        context.fillStyle = "#1a1a24";
+        context.fillStyle = "#ffffff";
         context.fillRect(0, 0, canvas.width, canvas.height);
         setCtx(context);
       }
@@ -110,7 +110,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
   const clearCanvas = () => {
     if (!ctx || !canvasRef.current) return;
-    ctx.fillStyle = "#1a1a24";
+    ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
   };
 
@@ -273,8 +273,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                     onClick={() => setCurrentColor(color.value)}
                     className={`w-6 h-6 rounded-full border-2 transition-all ${
                       currentColor === color.value 
-                        ? "border-white scale-110" 
-                        : "border-transparent hover:border-white/50"
+                        ? "border-white scale-110 ring-2 ring-purple-500" 
+                        : "border-white/30 hover:border-white/70"
                     }`}
                     style={{ backgroundColor: color.value }}
                     title={color.name}
@@ -300,7 +300,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                 ref={canvasRef}
                 width={400}
                 height={300}
-                className="w-full rounded-xl border border-white/10 cursor-crosshair touch-none bg-[#1a1a24]"
+                className="w-full rounded-xl border border-white/10 cursor-crosshair touch-none bg-white"
                 style={{ aspectRatio: "4/3" }}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
