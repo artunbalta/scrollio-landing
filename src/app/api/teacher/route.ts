@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
 
     // Step 1: Generate detailed lesson script with Claude
     console.log("Step 1: Generating lesson script with Claude...");
+    console.log("Topic:", topicPrompt);
     
     const llmResult = await fal.subscribe("fal-ai/any-llm", {
       input: {
@@ -56,14 +57,13 @@ SADECE SCRIPTİ YAZ:`,
       throw new Error("Failed to generate lesson script");
     }
 
-    // Step 2: Generate audio from the script using ElevenLabs
-    console.log("Step 2: Generating audio with ElevenLabs...");
+    // Step 2: Generate audio from the script using Kokoro TTS (multilingual)
+    console.log("Step 2: Generating audio with Kokoro TTS...");
     
-    const audioResult = await fal.subscribe("fal-ai/elevenlabs/text-to-speech/eleven-v3", {
+    const audioResult = await fal.subscribe("fal-ai/kokoro", {
       input: {
         text: generatedScript,
-        voice: "JBFqnCBsd6RMkjVDRZzb", // George - clear male voice good for teaching
-        model_id: "eleven_multilingual_v2",
+        voice: "af_heart", // Clear voice
       },
     });
 
@@ -71,11 +71,14 @@ SADECE SCRIPTİ YAZ:`,
     console.log("Generated audio URL:", audioUrl);
 
     if (!audioUrl) {
+      console.error("Audio result:", JSON.stringify(audioResult.data));
       throw new Error("Failed to generate audio");
     }
 
     // Step 3: Lipsync the teacher video with the generated audio
     console.log("Step 3: Creating lipsync video...");
+    console.log("Video URL:", videoUrl);
+    console.log("Audio URL:", audioUrl);
     
     const lipsyncResult = await fal.subscribe("creatify/lipsync", {
       input: {
@@ -86,6 +89,11 @@ SADECE SCRIPTİ YAZ:`,
 
     const finalVideoUrl = (lipsyncResult.data as { video?: { url: string } })?.video?.url;
     console.log("Generated lipsync video URL:", finalVideoUrl);
+
+    if (!finalVideoUrl) {
+      console.error("Lipsync result:", JSON.stringify(lipsyncResult.data));
+      throw new Error("Failed to create lipsync video");
+    }
 
     return NextResponse.json({
       success: true,
