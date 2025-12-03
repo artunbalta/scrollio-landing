@@ -1,6 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import TryMeModal from "./TryMeModal";
+
 export default function Hero() {
+  const [isTryMeOpen, setIsTryMeOpen] = useState(false);
+
   const scrollToWaitlist = () => {
     const element = document.getElementById("waitlist");
     if (element) {
@@ -93,21 +98,29 @@ export default function Hero() {
               <p className="text-sm text-[#9090a0] mb-3">
                 Draw a character → watch it come alive → explore stories together. A living mentor born from your child&apos;s imagination.
               </p>
-              <div className="flex items-center gap-4 text-xs text-[#9090a0]">
-                <span className="flex items-center gap-1">
-                  <span className="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">1</span>
-                  Draw
-                </span>
-                <span className="text-white/20">→</span>
-                <span className="flex items-center gap-1">
-                  <span className="w-4 h-4 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400">2</span>
-                  Animate
-                </span>
-                <span className="text-white/20">→</span>
-                <span className="flex items-center gap-1">
-                  <span className="w-4 h-4 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400">3</span>
-                  Learn
-                </span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4 text-xs text-[#9090a0]">
+                  <span className="flex items-center gap-1">
+                    <span className="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">1</span>
+                    Draw
+                  </span>
+                  <span className="text-white/20">→</span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-4 h-4 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400">2</span>
+                    Animate
+                  </span>
+                  <span className="text-white/20">→</span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-4 h-4 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400">3</span>
+                    Learn
+                  </span>
+                </div>
+                <button 
+                  onClick={() => setIsTryMeOpen(true)}
+                  className="px-4 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity"
+                >
+                  Try Me ✨
+                </button>
               </div>
             </div>
 
@@ -121,6 +134,9 @@ export default function Hero() {
       {/* Background decorative elements */}
       <div className="absolute top-1/4 left-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+
+      {/* Try Me Modal */}
+      <TryMeModal isOpen={isTryMeOpen} onClose={() => setIsTryMeOpen(false)} />
     </section>
   );
 }
