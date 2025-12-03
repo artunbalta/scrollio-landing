@@ -26,27 +26,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 1: Generate detailed lesson script with Claude
+    // Step 1: Generate detailed lesson script with Claude (in English for TTS compatibility)
     console.log("Step 1: Generating lesson script with Claude...");
     console.log("Topic:", topicPrompt);
     
     const llmResult = await fal.subscribe("fal-ai/any-llm", {
       input: {
         model: "anthropic/claude-3.5-sonnet",
-        prompt: `Sen deneyimli bir öğretmensin. Aşağıdaki konu hakkında TAM 20 SANİYELİK bir ders scripti yaz.
+        prompt: `You are an experienced teacher. Write a 20-SECOND lesson script about the following topic.
 
-KONU: ${topicPrompt}
+TOPIC: ${topicPrompt}
 
-KURALLAR:
-- Script tam olarak 20 saniyede okunabilecek uzunlukta olmalı (yaklaşık 50-60 kelime)
-- Konuşma dili kullan, doğal ve akıcı olsun
-- Öğrencilere hitap et (Merhaba çocuklar, sevgili öğrenciler gibi)
-- Konuyu basit ve anlaşılır anlat
-- Eğlenceli ve ilgi çekici ol
-- Sadece scripti yaz, başka açıklama ekleme
-- Türkçe yaz
+RULES:
+- Script must be exactly 20 seconds when read aloud (approximately 50-60 words)
+- Use conversational, natural language
+- Address students warmly (Hello children, dear students, etc.)
+- Explain the topic simply and clearly
+- Be fun and engaging
+- Write ONLY the script, no other explanations
+- Write in ENGLISH only
 
-SADECE SCRIPTİ YAZ:`,
+WRITE ONLY THE SCRIPT:`,
       },
     });
 
@@ -57,17 +57,18 @@ SADECE SCRIPTİ YAZ:`,
       throw new Error("Failed to generate lesson script");
     }
 
-    // Step 2: Generate audio from the script using Kokoro TTS (multilingual)
+    // Step 2: Generate audio from the script using Kokoro TTS (English)
     console.log("Step 2: Generating audio with Kokoro TTS...");
     
     const audioResult = await fal.subscribe("fal-ai/kokoro", {
       input: {
         text: generatedScript,
-        voice: "af_heart", // Clear voice
+        voice: "af_heart", // Clear female voice
       },
     });
 
-    const audioUrl = (audioResult.data as { audio?: { url: string } })?.audio?.url;
+    const audioData = audioResult.data as { audio_url?: string; audio?: { url: string } };
+    const audioUrl = audioData.audio_url || audioData.audio?.url;
     console.log("Generated audio URL:", audioUrl);
 
     if (!audioUrl) {
