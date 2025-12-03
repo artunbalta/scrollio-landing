@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fal } from "@fal-ai/client";
+import { supabase } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
@@ -123,6 +124,29 @@ Render in ultra-high resolution, full-body, centered, clean white background.`;
 
     const generatedImageUrl = (imageResult.data as { images?: Array<{ url: string }> })?.images?.[0]?.url;
     console.log("Generated mentor image URL:", generatedImageUrl);
+
+    // Save to Supabase - original drawing and mentor image side by side
+    if (generatedImageUrl) {
+      try {
+        const { error: dbError } = await supabase
+          .from('drawings')
+          .insert({
+            original_drawing: imageBase64,
+            mentor_image_url: generatedImageUrl,
+            drawing_description: drawingDescription,
+            user_session: new Date().toISOString(),
+          });
+
+        if (dbError) {
+          console.error("Supabase save error:", dbError);
+        } else {
+          console.log("Saved drawing pair to Supabase");
+        }
+      } catch (saveError) {
+        console.error("Error saving to Supabase:", saveError);
+        // Continue even if save fails
+      }
+    }
 
     // Step 3: Generate educational video (only if requested) using Sora 2
     let videoUrl = null;
