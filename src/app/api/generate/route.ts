@@ -63,11 +63,20 @@ export async function POST(request: NextRequest) {
     const visionResult = await fal.subscribe("fal-ai/llava-next", {
       input: {
         image_url: imageBase64,
-        prompt: `Describe this child's drawing for an artist to recreate as a Pixar 3D character.
+        prompt: `You are an expert at analyzing children's drawings. Describe this drawing in EXTREME detail for a 3D artist to recreate it EXACTLY.
 
-List: 1) What creature/character is it 2) ALL colors and where they appear 3) Body shape and parts 4) Face features 5) Any special details like hats, wings, patterns.
+DESCRIBE PRECISELY:
+1. CHARACTER TYPE: What is it? (animal, person, creature, robot, etc.)
+2. EXACT COLORS: List EVERY color and EXACTLY where it appears (e.g., "blue body, red hat, yellow eyes")
+3. BODY STRUCTURE: Shape, proportions, number of limbs, tail, wings, etc.
+4. FACE: Eye shape/color/size, mouth style, nose, expression, any unique features
+5. CLOTHING/ACCESSORIES: Hats, glasses, bows, jewelry, patterns on body
+6. SPECIAL FEATURES: Spots, stripes, stars, hearts, or any decorations the child added
+7. POSE: How is the character standing/sitting/positioned?
 
-Be very specific and faithful to the drawing. Don't add features not present. English only, max 150 words.`,
+BE EXTREMELY FAITHFUL to the original drawing. Include imperfections and childlike qualities.
+Do NOT add features that are not in the drawing.
+English only, max 200 words.`,
       },
     });
 
@@ -77,11 +86,32 @@ Be very specific and faithful to the drawing. Don't add features not present. En
     // Step 2: Generate Pixar-style character image using Nano Banana Pro
     console.log("Step 2: Generating mentor character with Nano Banana Pro...");
     
-    const imagePrompt = `EXACTLY recreate this character: ${drawingDescription}
+    const imagePrompt = `Turn this child's drawing into a fully detailed 3D Pixar-style character.
 
-IMPORTANT: Keep the EXACT same colors, shapes, and features from the description above.
-Render it in cute 3D animated style with soft lighting and white background. 
-Do NOT change the character's design, colors, or features.`;
+ORIGINAL DRAWING DESCRIPTION: ${drawingDescription}
+
+CRITICAL REQUIREMENTS:
+• Preserve ALL visual elements from the original drawing EXACTLY as they are
+• Keep the EXACT colors, proportions, shapes, character features
+• Maintain clothing, accessories, symbols, emotions from the drawing
+• Keep any imperfections children naturally draw - these add charm
+• The final character MUST clearly look like the same character created by the child
+• Do NOT redesign or beautify the original intent
+
+PIXAR/DISNEY 3D STYLE:
+• Soft global illumination
+• Subsurface scattering skin
+• Glossy detailed eyes
+• Expressive facial features
+• Stylized proportions matching the child's drawing
+• Smooth, high-poly sculpted body
+• Detailed textures and materials
+• Cinematic lighting (3-point light setup)
+• Warm color palette
+• Soft shadows
+
+Pose the character in a friendly, welcoming stance.
+Render in ultra-high resolution, full-body, centered, clean white background.`;
 
     const imageResult = await fal.subscribe("fal-ai/nano-banana-pro", {
       input: {
