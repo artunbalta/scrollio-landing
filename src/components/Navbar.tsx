@@ -33,19 +33,19 @@ export default function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               <button
-                onClick={() => scrollToSection("features")}
+                onClick={() => scrollToSection("for-learners")}
                 className="text-sm text-[#9090a0] hover:text-white transition-colors"
               >
                 For Learners
               </button>
               <button
-                onClick={() => scrollToSection("features")}
+                onClick={() => scrollToSection("for-kids")}
                 className="text-sm text-[#9090a0] hover:text-white transition-colors"
               >
                 For Kids & Families
               </button>
               <button
-                onClick={() => scrollToSection("features")}
+                onClick={() => scrollToSection("for-schools")}
                 className="text-sm text-[#9090a0] hover:text-white transition-colors"
               >
                 For Schools
@@ -103,19 +103,19 @@ export default function Navbar() {
           <div className="absolute top-16 left-0 right-0 bg-[#0a0a0f] border-b border-white/10 p-6 shadow-2xl">
             <div className="flex flex-col gap-4">
               <button
-                onClick={() => scrollToSection("features")}
+                onClick={() => scrollToSection("for-learners")}
                 className="text-left text-lg text-white hover:text-indigo-400 transition-colors py-2"
               >
                 For Learners
               </button>
               <button
-                onClick={() => scrollToSection("features")}
+                onClick={() => scrollToSection("for-kids")}
                 className="text-left text-lg text-white hover:text-indigo-400 transition-colors py-2"
               >
                 For Kids & Families
               </button>
               <button
-                onClick={() => scrollToSection("features")}
+                onClick={() => scrollToSection("for-schools")}
                 className="text-left text-lg text-white hover:text-indigo-400 transition-colors py-2"
               >
                 For Schools
