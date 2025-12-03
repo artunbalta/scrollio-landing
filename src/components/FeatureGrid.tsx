@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import TeacherModal from "./TeacherModal";
+
 interface FeatureCardProps {
   id?: string;
   icon: React.ReactNode;
@@ -6,11 +11,12 @@ interface FeatureCardProps {
   description: string;
   highlights: string[];
   gradient: string;
+  action?: React.ReactNode;
 }
 
-function FeatureCard({ id, icon, title, audience, description, highlights, gradient }: FeatureCardProps) {
+function FeatureCard({ id, icon, title, audience, description, highlights, gradient, action }: FeatureCardProps) {
   return (
-    <div id={id} className="card-glass p-8 space-y-6 group h-full scroll-mt-24">
+    <div id={id} className="card-glass p-8 space-y-6 group h-full scroll-mt-24 flex flex-col">
       <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center group-hover:scale-110 transition-transform`}>
         {icon}
       </div>
@@ -22,7 +28,7 @@ function FeatureCard({ id, icon, title, audience, description, highlights, gradi
       
       <p className="text-[#9090a0] leading-relaxed">{description}</p>
       
-      <ul className="space-y-3">
+      <ul className="space-y-3 flex-1">
         {highlights.map((highlight, index) => (
           <li key={index} className="flex items-start gap-3">
             <svg className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,11 +38,19 @@ function FeatureCard({ id, icon, title, audience, description, highlights, gradi
           </li>
         ))}
       </ul>
+
+      {action && (
+        <div className="pt-2">
+          {action}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function FeatureGrid() {
+  const [isTeacherModalOpen, setIsTeacherModalOpen] = useState(false);
+
   const features: FeatureCardProps[] = [
     {
       id: "for-learners",
@@ -99,14 +113,14 @@ export default function FeatureGrid() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
       ),
-      title: "Learning in Short Bursts",
+      title: "AI Teacher Assistant",
       audience: "For Schools",
-      description: "A playful companion tool that supports early literacy, numeracy, logic, and socio-emotional learning. Perfect for station-based activities and classroom warm-ups.",
+      description: "Teachers can create unlimited video lessons using their own face. Just provide a script — AI handles the rest. Perfect for personalized, scalable education.",
       highlights: [
-        "Curriculum-aligned content packs",
-        "Perfect for 5-10 minute learning bursts",
-        "Supports diverse learning styles",
-        "Easy integration into classroom routines"
+        "Record once, teach infinite topics",
+        "AI lip-syncs your video to any script",
+        "Create lessons in any language",
+        "Perfect for flipped classroom & remote learning"
       ],
       gradient: "bg-gradient-to-br from-emerald-500 to-teal-500"
     }
@@ -128,10 +142,27 @@ export default function FeatureGrid() {
 
         <div className="grid md:grid-cols-2 gap-8">
           {features.map((feature, index) => (
-            <FeatureCard key={index} {...feature} />
+            <FeatureCard 
+              key={index} 
+              {...feature}
+              action={feature.id === "for-schools" ? (
+                <button
+                  onClick={() => setIsTeacherModalOpen(true)}
+                  className="w-full py-3 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity"
+                >
+                  Try Teacher Mode 🎓
+                </button>
+              ) : undefined}
+            />
           ))}
         </div>
       </div>
+
+      {/* Teacher Modal */}
+      <TeacherModal 
+        isOpen={isTeacherModalOpen} 
+        onClose={() => setIsTeacherModalOpen(false)} 
+      />
     </section>
   );
 }
