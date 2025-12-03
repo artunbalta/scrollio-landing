@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface FormData {
   name: string;
@@ -17,19 +18,38 @@ export default function WaitlistSection() {
     message: ""
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    console.log({
-      name: formData.name,
-      email: formData.email,
-      role: formData.role,
-      message: formData.message
-    });
+    setLoading(true);
+    setError(null);
 
-    setSubmitted(true);
-    setFormData({ name: "", email: "", role: "", message: "" });
+    try {
+      const { error: supabaseError } = await supabase
+        .from('waitlist')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            role: formData.role,
+            message: formData.message
+          }
+        ]);
+
+      if (supabaseError) {
+        throw supabaseError;
+      }
+
+      setSubmitted(true);
+      setFormData({ name: "", email: "", role: "", message: "" });
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,7 +127,7 @@ export default function WaitlistSection() {
                 </div>
                 <h3 className="text-2xl font-semibold">Thank you!</h3>
                 <p className="text-[#9090a0]">
-                  We&apos;ve logged your interest. We&apos;ll be in touch soon with updates on Scrollio.
+                  We&apos;ve added you to the waitlist. We&apos;ll be in touch soon with updates on Scrollio.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -118,6 +138,12 @@ export default function WaitlistSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
+
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-medium">
                     Name <span className="text-pink-400">*</span>
@@ -182,8 +208,12 @@ export default function WaitlistSection() {
                   />
                 </div>
 
-                <button type="submit" className="btn-primary w-full">
-                  Join the waitlist
+                <button 
+                  type="submit" 
+                  className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Join the waitlist"}
                 </button>
 
                 <p className="text-xs text-center text-[#9090a0]">
@@ -198,4 +228,3 @@ export default function WaitlistSection() {
     </section>
   );
 }
-
