@@ -160,10 +160,11 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
       });
       
       // Send email with the mentor image
-      if (data.characterImageUrl) {
+      if (data.characterImageUrl && email.trim()) {
         setGenerationStatus("Mentorunuz email'inize gönderiliyor...");
         try {
-          await fetch("/api/send-email", {
+          console.log("Sending email to:", email.trim());
+          const emailResponse = await fetch("/api/send-email", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -175,7 +176,16 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               mentorImageUrl: data.characterImageUrl,
             }),
           });
-          setEmailSent(true);
+          
+          const emailResult = await emailResponse.json();
+          console.log("Email API response:", emailResult);
+          
+          if (emailResponse.ok && emailResult.success) {
+            setEmailSent(true);
+            console.log("Email sent successfully!");
+          } else {
+            console.error("Email failed:", emailResult.error);
+          }
         } catch (emailErr) {
           console.error("Email sending failed:", emailErr);
           // Don't fail the whole process if email fails
