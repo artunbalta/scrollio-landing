@@ -12,20 +12,21 @@ type Step = "upload" | "generating" | "result";
 export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
   const [step, setStep] = useState<Step>("upload");
   const [videoUrl, setVideoUrl] = useState("");
-  const [lessonScript, setLessonScript] = useState("");
+  const [topicPrompt, setTopicPrompt] = useState("");
   const [generationStatus, setGenerationStatus] = useState("");
+  const [generatedScript, setGeneratedScript] = useState<string | null>(null);
   const [resultVideoUrl, setResultVideoUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerate = async () => {
-    if (!videoUrl.trim() || !lessonScript.trim()) {
-      setError("Video URL ve ders scripti gerekli");
+    if (!videoUrl.trim() || !topicPrompt.trim()) {
+      setError("Video URL ve konu gerekli");
       return;
     }
 
     setStep("generating");
     setError(null);
-    setGenerationStatus("Ses üretiliyor...");
+    setGenerationStatus("Ders scripti oluşturuluyor...");
 
     try {
       const response = await fetch("/api/teacher", {
@@ -35,10 +36,12 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
         },
         body: JSON.stringify({
           videoUrl,
-          lessonScript,
+          topicPrompt,
         }),
       });
 
+      setGenerationStatus("Ses üretiliyor...");
+      
       const data = await response.json();
 
       if (!response.ok) {
@@ -46,6 +49,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
       }
 
       setGenerationStatus("Tamamlandı!");
+      setGeneratedScript(data.generatedScript);
       setResultVideoUrl(data.videoUrl);
       setStep("result");
 
@@ -59,8 +63,9 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
   const handleReset = () => {
     setStep("upload");
     setResultVideoUrl(null);
+    setGeneratedScript(null);
     setError(null);
-    setLessonScript("");
+    setTopicPrompt("");
   };
 
   if (!isOpen) return null;
@@ -94,7 +99,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
           </div>
           <h2 className="text-2xl font-bold gradient-text mb-2">Öğretmen Modu</h2>
           <p className="text-sm text-[#9090a0]">
-            {step === "upload" && "Videonuzu kullanarak AI ile sonsuz ders anlatın"}
+            {step === "upload" && "Bir konu söyleyin, AI sizin yerinize ders anlatsın"}
             {step === "generating" && "Video oluşturuluyor..."}
             {step === "result" && "Dersiniz hazır! 🎉"}
           </p>
@@ -124,43 +129,67 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
                 className="input-field"
               />
               <p className="text-xs text-[#9090a0]">
-                Kendinizi konuşurken çektiğiniz kısa bir video URL&apos;i yapıştırın. 
+                Kendinizi konuşurken çektiğiniz kısa bir video URL&apos;i. 
                 Bu video tüm dersleriniz için kullanılacak.
               </p>
             </div>
 
-            {/* Lesson Script Input */}
+            {/* Topic Prompt Input */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-white flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 text-xs">2</span>
-                Ders Scripti
+                Ders Konusu
               </label>
               <textarea
-                value={lessonScript}
-                onChange={(e) => setLessonScript(e.target.value)}
-                placeholder="Merhaba çocuklar! Bugün güneş sistemini öğreneceğiz. Güneş sistemimizde 8 gezegen var..."
-                rows={6}
+                value={topicPrompt}
+                onChange={(e) => setTopicPrompt(e.target.value)}
+                placeholder="Örn: İlkokul 3. sınıf için toplama işlemi, eğlenceli ve basit anlatım"
+                rows={3}
                 className="input-field resize-none"
               />
               <p className="text-xs text-[#9090a0]">
-                AI&apos;ın okumasını istediğiniz ders içeriğini yazın. 
-                Ne kadar detaylı yazarsanız o kadar iyi!
+                Kısa bir açıklama yazın, AI detaylı ders scriptini oluşturacak.
               </p>
             </div>
 
-            {/* Example Section */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <p className="text-xs text-[#9090a0] mb-2">💡 Örnek kullanım:</p>
-              <ul className="text-xs text-[#9090a0] space-y-1">
-                <li>• Matematik: &quot;Toplama işlemini öğrenelim...&quot;</li>
-                <li>• Fen: &quot;Suyun halleri nelerdir?...&quot;</li>
-                <li>• Türkçe: &quot;Bugün hikaye yazacağız...&quot;</li>
-              </ul>
+            {/* Info Box */}
+            <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🪄</span>
+                <div>
+                  <p className="text-sm font-medium text-white mb-1">AI Sihiri</p>
+                  <p className="text-xs text-[#9090a0]">
+                    Claude AI konunuzu alıp 20 saniyelik profesyonel bir ders scriptine dönüştürür. 
+                    ElevenLabs ile doğal ses üretilir, Creatify ile videonuz senkronize edilir.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Example Topics */}
+            <div className="space-y-2">
+              <p className="text-xs text-[#9090a0]">💡 Örnek konular:</p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Güneş sistemi hakkında",
+                  "Toplama işlemi nasıl yapılır",
+                  "Suyun üç hali",
+                  "Dişlerimizi neden fırçalarız"
+                ].map((topic) => (
+                  <button
+                    key={topic}
+                    onClick={() => setTopicPrompt(topic)}
+                    className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#9090a0] hover:text-white hover:border-white/20 transition-colors"
+                  >
+                    {topic}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <button
               onClick={handleGenerate}
-              disabled={!videoUrl.trim() || !lessonScript.trim()}
+              disabled={!videoUrl.trim() || !topicPrompt.trim()}
               className="w-full py-4 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Ders Videosunu Oluştur 🎬
@@ -176,7 +205,24 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
               <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin"></div>
             </div>
             <p className="text-lg font-medium text-white mb-2">{generationStatus}</p>
-            <p className="text-sm text-[#9090a0]">Bu işlem 1-3 dakika sürebilir...</p>
+            <p className="text-sm text-[#9090a0]">Bu işlem 1-2 dakika sürebilir...</p>
+            
+            <div className="mt-6 text-left max-w-sm mx-auto">
+              <div className="space-y-2 text-xs text-[#9090a0]">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  Claude ile script oluşturuluyor
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500/50" />
+                  ElevenLabs ile ses üretiliyor
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500/30" />
+                  Creatify ile video senkronize ediliyor
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -193,6 +239,14 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
               />
             </div>
 
+            {/* Generated Script */}
+            {generatedScript && (
+              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                <p className="text-xs text-[#9090a0] mb-2">📝 Üretilen Script:</p>
+                <p className="text-sm text-white leading-relaxed">{generatedScript}</p>
+              </div>
+            )}
+
             {/* Actions */}
             <div className="flex gap-3">
               <button
@@ -204,6 +258,8 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
               <a
                 href={resultVideoUrl}
                 download
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity text-center"
               >
                 İndir 📥
@@ -213,10 +269,9 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
         )}
 
         <p className="text-xs text-center text-[#9090a0] mt-6">
-          Demo amaçlıdır • ElevenLabs + Creatify Lipsync ile desteklenmektedir
+          Demo amaçlıdır • Claude + ElevenLabs + Creatify ile desteklenmektedir
         </p>
       </div>
     </div>
   );
 }
-

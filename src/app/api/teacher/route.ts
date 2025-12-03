@@ -17,21 +17,51 @@ export async function POST(request: NextRequest) {
       credentials: FAL_KEY,
     });
 
-    const { videoUrl, lessonScript } = await request.json();
+    const { videoUrl, topicPrompt } = await request.json();
 
-    if (!videoUrl || !lessonScript) {
+    if (!videoUrl || !topicPrompt) {
       return NextResponse.json(
-        { error: "Video URL and lesson script are required" },
+        { error: "Video URL and topic prompt are required" },
         { status: 400 }
       );
     }
 
-    // Step 1: Generate audio from the lesson script using ElevenLabs
-    console.log("Step 1: Generating audio with ElevenLabs...");
+    // Step 1: Generate detailed lesson script with Claude
+    console.log("Step 1: Generating lesson script with Claude...");
+    
+    const llmResult = await fal.subscribe("fal-ai/any-llm", {
+      input: {
+        model: "anthropic/claude-3.5-sonnet",
+        prompt: `Sen deneyimli bir öğretmensin. Aşağıdaki konu hakkında TAM 20 SANİYELİK bir ders scripti yaz.
+
+KONU: ${topicPrompt}
+
+KURALLAR:
+- Script tam olarak 20 saniyede okunabilecek uzunlukta olmalı (yaklaşık 50-60 kelime)
+- Konuşma dili kullan, doğal ve akıcı olsun
+- Öğrencilere hitap et (Merhaba çocuklar, sevgili öğrenciler gibi)
+- Konuyu basit ve anlaşılır anlat
+- Eğlenceli ve ilgi çekici ol
+- Sadece scripti yaz, başka açıklama ekleme
+- Türkçe yaz
+
+SADECE SCRIPTİ YAZ:`,
+      },
+    });
+
+    const generatedScript = (llmResult.data as { output?: string })?.output || "";
+    console.log("Generated script:", generatedScript);
+
+    if (!generatedScript) {
+      throw new Error("Failed to generate lesson script");
+    }
+
+    // Step 2: Generate audio from the script using ElevenLabs
+    console.log("Step 2: Generating audio with ElevenLabs...");
     
     const audioResult = await fal.subscribe("fal-ai/elevenlabs/text-to-speech/eleven-v3", {
       input: {
-        text: lessonScript,
+        text: generatedScript,
         voice: "JBFqnCBsd6RMkjVDRZzb", // George - clear male voice good for teaching
         model_id: "eleven_multilingual_v2",
       },
@@ -44,8 +74,8 @@ export async function POST(request: NextRequest) {
       throw new Error("Failed to generate audio");
     }
 
-    // Step 2: Lipsync the teacher video with the generated audio
-    console.log("Step 2: Creating lipsync video...");
+    // Step 3: Lipsync the teacher video with the generated audio
+    console.log("Step 3: Creating lipsync video...");
     
     const lipsyncResult = await fal.subscribe("creatify/lipsync", {
       input: {
@@ -59,6 +89,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      generatedScript,
       audioUrl,
       videoUrl: finalVideoUrl,
     });
@@ -71,4 +102,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
