@@ -53,9 +53,14 @@ export default function WaitlistSection() {
   };
 
   return (
-    <section id="waitlist" className="py-24 px-6 relative">
+    <section id="waitlist" className="py-24 px-6 relative overflow-hidden">
       {/* Background accent */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/5 to-transparent" />
+      
+      {/* Background decorative bubbles - lighter */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl" />
       
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">

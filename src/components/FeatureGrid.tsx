@@ -127,8 +127,13 @@ export default function FeatureGrid() {
   ];
 
   return (
-    <section id="features" className="py-24 px-6 bg-grid">
-      <div className="max-w-7xl mx-auto">
+    <section id="features" className="py-24 px-6 bg-grid relative overflow-hidden">
+      {/* Background decorative bubbles - lighter */}
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl" />
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
             Designed for{" "}
