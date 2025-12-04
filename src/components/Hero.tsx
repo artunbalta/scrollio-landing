@@ -31,23 +31,23 @@ export default function Hero() {
               </h1>
               
               <p className="text-lg md:text-xl text-[#9090a0] leading-relaxed max-w-xl">
-                Scrollio is an AI-powered learning platform with two experiences: 
-                <span className="text-white"> TikTok-style micro-learning</span> for teens and adults, and a 
-                <span className="text-white"> magical playground</span> where kids&apos; drawings become living mentors.
+                Scrollio is an AI-powered <span className="gradient-text">learning</span> platform with two experiences: 
+                <span className="gradient-text"> TikTok-style micro-learning</span> for teens and adults, and a 
+                <span className="gradient-text"> magical playground</span> where kids&apos; drawings become living mentors.
               </p>
               
               <p className="text-[#9090a0] leading-relaxed">
-                Whether you&apos;re a curious learner looking to grow, a parent seeking meaningful screen time, 
-                or an educator wanting engaging tools — Scrollio adapts to create the perfect learning experience.
+                Whether you&apos;re a curious <span className="gradient-text">learner</span> looking to grow, a parent seeking meaningful screen time, 
+                or an educator wanting engaging tools — Scrollio adapts to create the perfect <span className="gradient-text">learning</span> experience.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button onClick={scrollToWaitlist} className="btn-primary">
-                Join the waitlist
+                <span className="gradient-text">Join</span> the waitlist
               </button>
               <button onClick={scrollToWaitlist} className="btn-secondary">
-                Learn more
+                <span className="gradient-text">Learn</span> more
               </button>
             </div>
 
@@ -76,7 +76,7 @@ export default function Hero() {
                 AI-curated vertical feed of short educational videos. Scroll through topics you love — science, tech, psychology, creativity, and more.
               </p>
               <div className="flex flex-wrap gap-2">
-                <span className="px-2 py-1 text-xs rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">Micro-learning</span>
+                <span className="px-2 py-1 text-xs rounded-full bg-gradient-to-r from-orange-600/20 to-orange-500/20 text-orange-300 border border-orange-500/30">Micro-<span className="gradient-text">learning</span></span>
                 <span className="px-2 py-1 text-xs rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">AI-curated</span>
                 <span className="px-2 py-1 text-xs rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">Personal growth</span>
               </div>
@@ -111,8 +111,8 @@ export default function Hero() {
                   </span>
                   <span className="text-white/20">→</span>
                   <span className="flex items-center gap-1">
-                    <span className="w-4 h-4 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400">3</span>
-                    Learn
+                    <span className="w-4 h-4 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400">3</span>
+                    <span className="gradient-text">Learn</span>
                   </span>
                 </div>
                 <button 

@@ -58,7 +58,7 @@ export default function Navbar() {
                 onClick={() => scrollToSection("waitlist")}
                 className="btn-primary text-sm py-3 px-6"
               >
-                Join Waitlist
+                <span className="gradient-text">Join</span> Waitlist
               </button>
             </div>
 
@@ -124,7 +124,7 @@ export default function Navbar() {
                 onClick={() => scrollToSection("waitlist")}
                 className="btn-primary text-base py-4 px-6 mt-4 text-center"
               >
-                Join Waitlist
+                <span className="gradient-text">Join</span> Waitlist
               </button>
             </div>
           </div>

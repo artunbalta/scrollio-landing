@@ -213,7 +213,7 @@ export default function WaitlistSection() {
                   className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={loading}
                 >
-                  {loading ? "Submitting..." : "Join the waitlist"}
+                  {loading ? "Submitting..." : <><span className="gradient-text">Join</span> the waitlist</>}
                 </button>
 
                 <p className="text-xs text-center text-[#9090a0]">

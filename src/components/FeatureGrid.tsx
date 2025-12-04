@@ -29,14 +29,25 @@ function FeatureCard({ id, icon, title, audience, description, highlights, gradi
       <p className="text-[#9090a0] leading-relaxed">{description}</p>
       
       <ul className="space-y-3 flex-1">
-        {highlights.map((highlight, index) => (
-          <li key={index} className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            <span className="text-sm text-[#9090a0]">{highlight}</span>
-          </li>
-        ))}
+        {highlights.map((highlight, index) => {
+          const gradientId = `gradient-check-${id || 'default'}-${index}`;
+          return (
+            <li key={index} className="flex items-start gap-3">
+              <div className="w-5 h-5 shrink-0 mt-0.5 flex items-center justify-center">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24">
+                  <defs>
+                    <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#ea580c" />
+                      <stop offset="100%" stopColor="#f97316" />
+                    </linearGradient>
+                  </defs>
+                  <path stroke={`url(#${gradientId})`} strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span className="text-sm text-[#9090a0]">{highlight}</span>
+            </li>
+          );
+        })}
       </ul>
 
       {action && (
