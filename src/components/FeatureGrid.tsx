@@ -86,7 +86,7 @@ export default function FeatureGrid() {
         "Early learning through imagination and play",
         "Safe, engaging, and endlessly creative"
       ],
-      gradient: "bg-gradient-to-br from-pink-500 to-rose-500"
+      gradient: "bg-gradient-to-br from-orange-600 to-orange-500"
     },
     {
       id: "for-families",
@@ -104,7 +104,7 @@ export default function FeatureGrid() {
         "Structured sessions, not endless scrolling",
         "Build learning habits together"
       ],
-      gradient: "bg-gradient-to-br from-purple-500 to-violet-500"
+      gradient: "bg-gradient-to-br from-orange-500 to-orange-400"
     },
     {
       id: "for-schools",

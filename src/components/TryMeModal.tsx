@@ -320,7 +320,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                     onClick={() => setCurrentColor(color.value)}
                     className={`w-6 h-6 rounded-full border-2 transition-all ${
                       currentColor === color.value 
-                        ? "border-white scale-110 ring-2 ring-purple-500" 
+                        ? "border-white scale-110 ring-2 ring-orange-500" 
                         : "border-white/30 hover:border-white/70"
                     }`}
                     style={{ backgroundColor: color.value }}
@@ -338,7 +338,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                   max="20"
                   value={brushSize}
                   onChange={(e) => setBrushSize(Number(e.target.value))}
-                  className="flex-1 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                  className="flex-1 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
                 <span className="text-xs text-white w-6">{brushSize}</span>
               </div>
@@ -393,7 +393,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             <button
               onClick={handleGenerateMentor}
               disabled={!email.trim()}
-              className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Mentoru Oluştur ✨
             </button>
@@ -404,8 +404,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         {step === "generating-mentor" && (
           <div className="py-12 text-center">
             <div className="w-16 h-16 mx-auto mb-6 relative">
-              <div className="absolute inset-0 rounded-full border-4 border-purple-500/20"></div>
-              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-purple-500 animate-spin"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-orange-500/20"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-orange-500 animate-spin"></div>
             </div>
             <p className="text-lg font-medium text-white mb-2">{generationStatus}</p>
             <p className="text-sm text-[#9090a0]">Bu işlem 20-40 saniye sürebilir...</p>
@@ -426,7 +426,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {mentorData.characterImageUrl && (
               <div className="space-y-2">
                 <label className="text-sm font-medium text-white">🎨 İşte Mentorun!</label>
-                <div className="rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-purple-500/10 to-pink-500/10">
+                <div className="rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-orange-600/10 to-orange-500/10">
                   <img 
                     src={mentorData.characterImageUrl} 
                     alt="Your mentor"
@@ -453,7 +453,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                 <button
                   onClick={handleGenerateVideo}
                   disabled={!learningPrompt.trim()}
-                  className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Video Oluştur 🎬
                 </button>
@@ -480,8 +480,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         {step === "generating-video" && (
           <div className="py-12 text-center">
             <div className="w-16 h-16 mx-auto mb-6 relative">
-              <div className="absolute inset-0 rounded-full border-4 border-pink-500/20"></div>
-              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-pink-500 animate-spin"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-orange-500/20"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-orange-500 animate-spin"></div>
             </div>
             <p className="text-lg font-medium text-white mb-2">{generationStatus}</p>
             <p className="text-sm text-[#9090a0]">Video oluşturma 2-5 dakika sürebilir...</p>
@@ -543,7 +543,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity"
+                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity"
               >
                 Kapat
               </button>

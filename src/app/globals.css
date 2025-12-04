@@ -5,15 +5,15 @@
   --background-secondary: #12121a;
   --foreground: #f0f0f5;
   --foreground-muted: #9090a0;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
-  --accent-glow: rgba(99, 102, 241, 0.3);
+  --accent: #ea580c;
+  --accent-hover: #f97316;
+  --accent-glow: rgba(234, 88, 12, 0.3);
   --card-bg: rgba(255, 255, 255, 0.03);
   --card-border: rgba(255, 255, 255, 0.08);
   --card-border-hover: rgba(255, 255, 255, 0.15);
-  --gradient-start: #6366f1;
-  --gradient-mid: #a855f7;
-  --gradient-end: #ec4899;
+  --gradient-start: #c2410c;
+  --gradient-mid: #ea580c;
+  --gradient-end: #f97316;
 }
 
 @theme inline {

@@ -40,14 +40,14 @@ export async function POST(request: NextRequest) {
             <!-- Header -->
             <div style="text-align: center; margin-bottom: 30px;">
               <h1 style="color: #ffffff; font-size: 28px; margin: 0;">
-                <span style="background: linear-gradient(135deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                <span style="background: linear-gradient(135deg, #c2410c, #ea580c); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                   Scrollio Kids
                 </span>
               </h1>
             </div>
             
             <!-- Main Content -->
-            <div style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1)); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px;">
+            <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(249, 115, 22, 0.1)); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px;">
               <h2 style="color: #ffffff; font-size: 24px; margin: 0 0 20px 0; text-align: center;">
                 🎉 ${childName ? childName + "'in" : "Çocuğunuzun"} Mentoru Hazır!
               </h2>
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
               <!-- Mentor Image -->
               <div style="text-align: center; margin-bottom: 25px;">
                 <p style="color: #ffffff; font-size: 14px; margin: 0 0 10px 0;">✨ AI Mentor Karakteri</p>
-                <img src="${mentorImageUrl}" alt="Mentor Character" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(168, 85, 247, 0.3);">
+                <img src="${mentorImageUrl}" alt="Mentor Character" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(234, 88, 12, 0.3);">
               </div>
               
               ${originalDrawing ? `
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
               <p style="color: #9090a0; font-size: 14px; margin: 0 0 15px 0;">
                 Scrollio ile çocuğunuzun öğrenme yolculuğunu keşfedin
               </p>
-              <a href="https://scrollio.co" style="display: inline-block; background: linear-gradient(135deg, #a855f7, #ec4899); color: white; text-decoration: none; padding: 15px 35px; border-radius: 30px; font-weight: 600; font-size: 16px;">
+              <a href="https://scrollio.co" style="display: inline-block; background: linear-gradient(135deg, #c2410c, #ea580c); color: white; text-decoration: none; padding: 15px 35px; border-radius: 30px; font-weight: 600; font-size: 16px;">
                 Scrollio'yu Keşfet
               </a>
             </div>
