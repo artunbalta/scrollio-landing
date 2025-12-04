@@ -23,7 +23,7 @@ export default function GradientBackground() {
         className="fixed inset-0 pointer-events-none z-0"
         style={{
           background: `radial-gradient(
-            circle 800px at ${mousePosition.x}% ${mousePosition.y}%,
+            circle 400px at ${mousePosition.x}% ${mousePosition.y}%,
             rgba(234, 88, 12, 0.25) 0%,
             rgba(249, 115, 22, 0.15) 40%,
             rgba(234, 88, 12, 0.08) 70%,
@@ -38,7 +38,7 @@ export default function GradientBackground() {
         className="fixed inset-0 pointer-events-none z-0"
         style={{
           background: `radial-gradient(
-            circle 600px at ${100 - mousePosition.x}% ${100 - mousePosition.y}%,
+            circle 300px at ${100 - mousePosition.x}% ${100 - mousePosition.y}%,
             rgba(249, 115, 22, 0.15) 0%,
             rgba(234, 88, 12, 0.08) 50%,
             transparent 100%
