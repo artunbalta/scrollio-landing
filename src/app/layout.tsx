@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
-import GradientBackground from "@/components/GradientBackground";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -28,10 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${sora.variable} font-sans antialiased bg-[#0a0a0f] text-[#f0f0f5]`}>
-        <GradientBackground />
-        <div className="relative z-10">
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   );

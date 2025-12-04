@@ -393,7 +393,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             <button
               onClick={handleGenerateMentor}
               disabled={!email.trim()}
-              className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-orange-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Mentoru Oluştur ✨
             </button>
@@ -426,7 +426,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {mentorData.characterImageUrl && (
               <div className="space-y-2">
                 <label className="text-sm font-medium text-white">🎨 İşte Mentorun!</label>
-                <div className="rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-orange-600/10 to-orange-500/10">
+                <div className="rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-orange-500/10 to-purple-500/10">
                   <img 
                     src={mentorData.characterImageUrl} 
                     alt="Your mentor"
@@ -453,7 +453,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                 <button
                   onClick={handleGenerateVideo}
                   disabled={!learningPrompt.trim()}
-                  className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Video Oluştur 🎬
                 </button>
@@ -543,7 +543,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-orange-600 to-orange-500 text-white font-semibold hover:opacity-90 transition-opacity"
+                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity"
               >
                 Kapat
               </button>
