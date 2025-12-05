@@ -24,9 +24,9 @@ export default function Navbar() {
               <Image
                 src="/icon.png"
                 alt="Scrollio Logo"
-                width={80}
-                height={80}
-                className="rounded-full -my-2"
+                width={50}
+                height={50}
+                className="rounded-full"
               />
             </div>
 

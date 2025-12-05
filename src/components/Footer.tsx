@@ -12,8 +12,8 @@ export default function Footer() {
             <Image
               src="/icon.png"
               alt="Scrollio Logo"
-              width={48}
-              height={48}
+              width={32}
+              height={32}
               className="rounded-full"
             />
             <span className="text-sm text-[#9090a0]">
