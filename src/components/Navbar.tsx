@@ -22,7 +22,7 @@ export default function Navbar() {
             {/* Logo */}
             <div className="flex items-center h-full">
               <Image
-                src="/scrollio-logo.PNG"
+                src="/icon.png"
                 alt="Scrollio Logo"
                 width={80}
                 height={80}

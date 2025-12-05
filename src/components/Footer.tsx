@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Left - Copyright */}
           <div className="flex items-center gap-3">
             <Image
-              src="/scrollio-logo.PNG"
+              src="/icon.png"
               alt="Scrollio Logo"
               width={48}
               height={48}
