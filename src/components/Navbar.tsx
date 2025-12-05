@@ -21,16 +21,13 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
             <div className="flex items-center h-full">
-              <div className="w-16 h-16 rounded-full overflow-hidden -my-2">
-                <Image
-                  src="/icon.png"
-                  alt="Scrollio Logo"
-                  width={80}
-                  height={80}
-                  className="rounded-full scale-[1.43] origin-center"
-                  style={{ transform: 'scale(1.43)' }}
-                />
-              </div>
+              <Image
+                src="/icon.png"
+                alt="Scrollio Logo"
+                width={80}
+                height={80}
+                className="rounded-full -my-2"
+              />
             </div>
 
             {/* Desktop Navigation */}

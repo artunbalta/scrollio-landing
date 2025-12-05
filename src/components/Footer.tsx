@@ -9,16 +9,13 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Left - Copyright */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden">
-              <Image
-                src="/icon.png"
-                alt="Scrollio Logo"
-                width={48}
-                height={48}
-                className="rounded-full scale-[1.43] origin-center"
-                style={{ transform: 'scale(1.43)' }}
-              />
-            </div>
+            <Image
+              src="/icon.png"
+              alt="Scrollio Logo"
+              width={48}
+              height={48}
+              className="rounded-full"
+            />
             <span className="text-sm text-[#9090a0]">
               © {currentYear} Scrollio. All rights reserved.
             </span>
