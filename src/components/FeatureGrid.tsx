@@ -16,25 +16,25 @@ interface FeatureCardProps {
 
 function FeatureCard({ id, icon, title, audience, description, highlights, gradient, action }: FeatureCardProps) {
   return (
-    <div id={id} className="card-glass p-8 space-y-6 group h-full scroll-mt-24 flex flex-col">
-      <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+    <div id={id} className="card-light p-8 space-y-6 group h-full scroll-mt-24 flex flex-col">
+      <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg`}>
         {icon}
       </div>
       
       <div>
-        <p className="text-sm text-[#9090a0] mb-1">{audience}</p>
-        <h3 className="text-xl font-semibold">{title}</h3>
+        <p className="text-sm font-medium mb-1" style={{ color: 'var(--accent)' }}>{audience}</p>
+        <h3 className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>{title}</h3>
       </div>
       
-      <p className="text-[#9090a0] leading-relaxed">{description}</p>
+      <p style={{ color: 'var(--foreground-muted)' }} className="leading-relaxed">{description}</p>
       
       <ul className="space-y-3 flex-1">
         {highlights.map((highlight, index) => (
           <li key={index} className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
-            <span className="text-sm text-[#9090a0]">{highlight}</span>
+            <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>{highlight}</span>
           </li>
         ))}
       </ul>
@@ -61,7 +61,7 @@ export default function FeatureGrid() {
       ),
       title: "Curiosity-Driven Discovery",
       audience: "For Teens & Adults",
-      description: "Scrollio Core transforms idle scrolling into meaningful micro-learning. AI curates your feed based on your interests, goals, and curiosity — from science to psychology, careers to creativity.",
+      description: "Scrollio Core transforms idle scrolling into meaningful micro-learning. AI curates your feed based on your interests, goals, and curiosity.",
       highlights: [
         "TikTok-style vertical feed of short lessons",
         "AI adapts to your interests and goals",
@@ -79,7 +79,7 @@ export default function FeatureGrid() {
       ),
       title: "Imagination Comes Alive",
       audience: "For Kids",
-      description: "Every child is an artist. Scrollio Kids turns their drawings into living mentors who guide them through magical stories and playful learning adventures.",
+      description: "Every child is an artist. Scrollio Kids turns their drawings into living mentors who guide them through magical stories and playful learning.",
       highlights: [
         "Draw any character and watch it come to life",
         "Interactive stories tailored to their interests",
@@ -97,7 +97,7 @@ export default function FeatureGrid() {
       ),
       title: "Screen Time That Matters",
       audience: "For Families",
-      description: "Finally, screen time that parents can feel good about. Structured learning moments, safe content, and simple insights into what your kids explore.",
+      description: "Finally, screen time that parents can feel good about. Structured learning, safe content, and insights into what your kids explore.",
       highlights: [
         "Parent dashboard with activity insights",
         "Age-appropriate, curated content",
@@ -115,7 +115,7 @@ export default function FeatureGrid() {
       ),
       title: "AI Teacher Assistant",
       audience: "For Schools",
-      description: "Teachers can create unlimited video lessons using their own face. Just provide a script — AI handles the rest. Perfect for personalized, scalable education.",
+      description: "Teachers can create unlimited video lessons using their own face. Just provide a topic — AI handles the script and delivery.",
       highlights: [
         "Record once, teach infinite topics",
         "AI lip-syncs your video to any script",
@@ -127,16 +127,17 @@ export default function FeatureGrid() {
   ];
 
   return (
-    <section id="features" className="py-24 px-6 bg-grid">
+    <section id="features" className="py-24 px-6 bg-dots">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+          <p className="font-script text-xl mb-4" style={{ color: 'var(--accent)' }}>Powerful Features</p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--foreground)', lineHeight: '1.3', overflow: 'visible' }}>
             Designed for{" "}
-            <span className="gradient-text">every kind of learner.</span>
+            <span className="script-gradient">Every Learner</span>
           </h2>
-          <p className="text-lg text-[#9090a0] leading-relaxed">
+          <p className="text-lg leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
             Whether you&apos;re a curious teen, a lifelong learner, a parent seeking meaningful screen time, 
-            or a teacher looking for engaging tools — Scrollio adapts to create the perfect learning experience.
+            or a teacher looking for engaging tools — Scrollio adapts to you.
           </p>
         </div>
 
@@ -148,9 +149,9 @@ export default function FeatureGrid() {
               action={feature.id === "for-schools" ? (
                 <button
                   onClick={() => setIsTeacherModalOpen(true)}
-                  className="w-full py-3 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity"
+                  className="w-full py-3 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg"
                 >
-                  Try Teacher Mode 🎓
+                  Try Teacher Mode
                 </button>
               ) : undefined}
             />

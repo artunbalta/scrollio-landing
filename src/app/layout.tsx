@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -33,9 +34,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${sora.variable} font-sans antialiased bg-[#0a0a0f] text-[#f0f0f5]`}>
-        {children}
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body className={`${sora.variable} font-sans antialiased`}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -74,16 +74,16 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
       
       {/* Modal */}
-      <div className="relative w-full max-w-2xl bg-[#0a0a0f] border border-white/10 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-white border border-gray-200 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#9090a0] hover:text-white transition-colors z-10"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -92,13 +92,13 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 mb-4">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 mb-4 shadow-lg">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
           </div>
           <h2 className="text-2xl font-bold gradient-text mb-2">Öğretmen Modu</h2>
-          <p className="text-sm text-[#9090a0]">
+          <p className="text-sm text-gray-500">
             {step === "upload" && "Bir konu söyleyin, AI sizin yerinize ders anlatsın"}
             {step === "generating" && "Video oluşturuluyor..."}
             {step === "result" && "Dersiniz hazır! 🎉"}
@@ -107,7 +107,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
             {error}
           </div>
         )}
@@ -117,8 +117,8 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
           <div className="space-y-6">
             {/* Video URL Input */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs">1</span>
+              <label className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-xs font-bold">1</span>
                 Video URL&apos;i
               </label>
               <input
@@ -128,7 +128,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
                 placeholder="https://example.com/teacher-video.mp4"
                 className="input-field"
               />
-              <p className="text-xs text-[#9090a0]">
+              <p className="text-xs text-gray-500">
                 Kendinizi konuşurken çektiğiniz kısa bir video URL&apos;i. 
                 Bu video tüm dersleriniz için kullanılacak.
               </p>
@@ -136,8 +136,8 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
 
             {/* Topic Prompt Input */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 text-xs">2</span>
+              <label className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 text-xs font-bold">2</span>
                 Ders Konusu
               </label>
               <textarea
@@ -147,20 +147,20 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
                 rows={3}
                 className="input-field resize-none"
               />
-              <p className="text-xs text-[#9090a0]">
+              <p className="text-xs text-gray-500">
                 Kısa bir açıklama yazın, AI detaylı ders scriptini oluşturacak.
               </p>
             </div>
 
             {/* Info Box */}
-            <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
+            <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100">
               <div className="flex items-start gap-3">
                 <span className="text-2xl">🪄</span>
                 <div>
-                  <p className="text-sm font-medium text-white mb-1">AI Sihiri</p>
-                  <p className="text-xs text-[#9090a0]">
+                  <p className="text-sm font-medium text-gray-900 mb-1">AI Sihiri</p>
+                  <p className="text-xs text-gray-600">
                     Claude AI konunuzu alıp 20 saniyelik profesyonel bir ders scriptine dönüştürür. 
-                    ElevenLabs ile doğal ses üretilir, Creatify ile videonuz senkronize edilir.
+                    TTS ile doğal ses üretilir, Creatify ile videonuz senkronize edilir.
                   </p>
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
 
             {/* Example Topics */}
             <div className="space-y-2">
-              <p className="text-xs text-[#9090a0]">💡 Örnek konular:</p>
+              <p className="text-xs text-gray-500">💡 Örnek konular:</p>
               <div className="flex flex-wrap gap-2">
                 {[
                   "Güneş sistemi hakkında",
@@ -179,7 +179,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
                   <button
                     key={topic}
                     onClick={() => setTopicPrompt(topic)}
-                    className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[#9090a0] hover:text-white hover:border-white/20 transition-colors"
+                    className="text-xs px-3 py-1.5 rounded-full bg-gray-100 border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors"
                   >
                     {topic}
                   </button>
@@ -190,7 +190,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
             <button
               onClick={handleGenerate}
               disabled={!videoUrl.trim() || !topicPrompt.trim()}
-              className="w-full py-4 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               Ders Videosunu Oluştur 🎬
             </button>
@@ -201,24 +201,24 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
         {step === "generating" && (
           <div className="py-12 text-center">
             <div className="w-16 h-16 mx-auto mb-6 relative">
-              <div className="absolute inset-0 rounded-full border-4 border-emerald-500/20"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-emerald-200"></div>
               <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin"></div>
             </div>
-            <p className="text-lg font-medium text-white mb-2">{generationStatus}</p>
-            <p className="text-sm text-[#9090a0]">Bu işlem 1-2 dakika sürebilir...</p>
+            <p className="text-lg font-medium text-gray-900 mb-2">{generationStatus}</p>
+            <p className="text-sm text-gray-500">Bu işlem 1-2 dakika sürebilir...</p>
             
             <div className="mt-6 text-left max-w-sm mx-auto">
-              <div className="space-y-2 text-xs text-[#9090a0]">
+              <div className="space-y-2 text-xs text-gray-500">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   Claude ile script oluşturuluyor
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500/50" />
-                  ElevenLabs ile ses üretiliyor
+                  <div className="w-2 h-2 rounded-full bg-emerald-300" />
+                  TTS ile ses üretiliyor
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500/30" />
+                  <div className="w-2 h-2 rounded-full bg-emerald-200" />
                   Creatify ile video senkronize ediliyor
                 </div>
               </div>
@@ -230,7 +230,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
         {step === "result" && resultVideoUrl && (
           <div className="space-y-6">
             {/* Video Player */}
-            <div className="rounded-xl overflow-hidden border border-white/10">
+            <div className="rounded-xl overflow-hidden border border-gray-200 shadow-lg">
               <video 
                 src={resultVideoUrl} 
                 controls
@@ -241,9 +241,9 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
 
             {/* Generated Script */}
             {generatedScript && (
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                <p className="text-xs text-[#9090a0] mb-2">📝 Üretilen Script:</p>
-                <p className="text-sm text-white leading-relaxed">{generatedScript}</p>
+              <div className="p-4 rounded-xl bg-gray-50 border border-gray-200">
+                <p className="text-xs text-gray-500 mb-2">📝 Üretilen Script:</p>
+                <p className="text-sm text-gray-700 leading-relaxed">{generatedScript}</p>
               </div>
             )}
 
@@ -251,7 +251,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
             <div className="flex gap-3">
               <button
                 onClick={handleReset}
-                className="flex-1 py-3 px-6 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
+                className="flex-1 py-3 px-6 rounded-full border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
               >
                 Yeni Ders Oluştur
               </button>
@@ -260,7 +260,7 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
                 download
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity text-center"
+                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity text-center shadow-lg"
               >
                 İndir 📥
               </a>
@@ -268,8 +268,8 @@ export default function TeacherModal({ isOpen, onClose }: TeacherModalProps) {
           </div>
         )}
 
-        <p className="text-xs text-center text-[#9090a0] mt-6">
-          Demo amaçlıdır • Claude + ElevenLabs + Creatify ile desteklenmektedir
+        <p className="text-xs text-center text-gray-400 mt-6">
+          Demo amaçlıdır • Claude + TTS + Creatify ile desteklenmektedir
         </p>
       </div>
     </div>

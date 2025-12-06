@@ -188,7 +188,6 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
           }
         } catch (emailErr) {
           console.error("Email sending failed:", emailErr);
-          // Don't fail the whole process if email fails
         }
       }
       
@@ -260,16 +259,16 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
       
       {/* Modal */}
-      <div className="relative w-full max-w-lg bg-[#0a0a0f] border border-white/10 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-lg bg-white border border-gray-200 rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#9090a0] hover:text-white transition-colors z-10"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -279,7 +278,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         {/* Header */}
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold gradient-text mb-2">Scrollio Kids Demo</h2>
-          <p className="text-sm text-[#9090a0]">
+          <p className="text-sm text-gray-500">
             {step === "draw" && "Mentorunu çiz!"}
             {step === "generating-mentor" && "AI sihirini yapıyor..."}
             {step === "mentor-ready" && "İşte mentorun! 🎉"}
@@ -290,7 +289,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
             {error}
           </div>
         )}
@@ -300,12 +299,12 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
           <>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-white">
+                <label className="text-sm font-medium text-gray-900">
                   ✏️ Mentorunu çiz
                 </label>
                 <button
                   onClick={clearCanvas}
-                  className="text-xs text-[#9090a0] hover:text-white transition-colors px-2 py-1 rounded border border-white/10 hover:border-white/20"
+                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors px-2 py-1 rounded border border-gray-200 hover:border-gray-300"
                 >
                   Temizle
                 </button>
@@ -313,15 +312,15 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               
               {/* Color Picker */}
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-[#9090a0]">Renk:</span>
+                <span className="text-xs text-gray-500">Renk:</span>
                 {COLORS.map((color) => (
                   <button
                     key={color.value}
                     onClick={() => setCurrentColor(color.value)}
                     className={`w-6 h-6 rounded-full border-2 transition-all ${
                       currentColor === color.value 
-                        ? "border-white scale-110 ring-2 ring-orange-500" 
-                        : "border-white/30 hover:border-white/70"
+                        ? "border-gray-800 scale-110 ring-2 ring-orange-500" 
+                        : "border-gray-300 hover:border-gray-500"
                     }`}
                     style={{ backgroundColor: color.value }}
                     title={color.name}
@@ -331,23 +330,23 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
               {/* Brush Size */}
               <div className="flex items-center gap-3">
-                <span className="text-xs text-[#9090a0]">Kalınlık:</span>
+                <span className="text-xs text-gray-500">Kalınlık:</span>
                 <input
                   type="range"
                   min="1"
                   max="20"
                   value={brushSize}
                   onChange={(e) => setBrushSize(Number(e.target.value))}
-                  className="flex-1 h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                  className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
-                <span className="text-xs text-white w-6">{brushSize}</span>
+                <span className="text-xs text-gray-700 w-6">{brushSize}</span>
               </div>
               
               <canvas
                 ref={canvasRef}
                 width={400}
                 height={300}
-                className="w-full rounded-xl border border-white/10 cursor-crosshair touch-none bg-white"
+                className="w-full rounded-xl border border-gray-200 cursor-crosshair touch-none bg-white shadow-inner"
                 style={{ aspectRatio: "4/3" }}
                 onMouseDown={startDrawing}
                 onMouseMove={draw}
@@ -358,14 +357,14 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                 onTouchEnd={stopDrawing}
               />
               
-              <p className="text-xs text-[#9090a0] text-center">
+              <p className="text-xs text-gray-500 text-center">
                 Parmağınız veya mouse ile hayalinizdeki mentoru çizin
               </p>
             </div>
 
             {/* Email Capture */}
-            <div className="space-y-3 mt-4 p-4 rounded-xl bg-white/5 border border-white/10">
-              <p className="text-sm text-white font-medium">
+            <div className="space-y-3 mt-4 p-4 rounded-xl bg-orange-50 border border-orange-100">
+              <p className="text-sm text-gray-900 font-medium">
                 📧 Mentorunuzu email olarak göndereceğiz!
               </p>
               <div className="space-y-2">
@@ -385,7 +384,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                   required
                 />
               </div>
-              <p className="text-xs text-[#9090a0]">
+              <p className="text-xs text-gray-500">
                 * Oluşturulan mentoru email adresinize göndereceğiz
               </p>
             </div>
@@ -393,7 +392,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             <button
               onClick={handleGenerateMentor}
               disabled={!email.trim()}
-              className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-orange-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-orange-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
               Mentoru Oluştur ✨
             </button>
@@ -404,11 +403,11 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         {step === "generating-mentor" && (
           <div className="py-12 text-center">
             <div className="w-16 h-16 mx-auto mb-6 relative">
-              <div className="absolute inset-0 rounded-full border-4 border-orange-500/20"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-orange-200"></div>
               <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-orange-500 animate-spin"></div>
             </div>
-            <p className="text-lg font-medium text-white mb-2">{generationStatus}</p>
-            <p className="text-sm text-[#9090a0]">Bu işlem 20-40 saniye sürebilir...</p>
+            <p className="text-lg font-medium text-gray-900 mb-2">{generationStatus}</p>
+            <p className="text-sm text-gray-500">Bu işlem 20-40 saniye sürebilir...</p>
           </div>
         )}
 
@@ -417,7 +416,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
           <div className="space-y-6">
             {/* Email Sent Success */}
             {emailSent && (
-              <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm text-center">
+              <div className="p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm text-center">
                 ✅ Mentorunuz <strong>{email}</strong> adresine gönderildi!
               </div>
             )}
@@ -425,8 +424,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {/* Mentor Image */}
             {mentorData.characterImageUrl && (
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white">🎨 İşte Mentorun!</label>
-                <div className="rounded-xl overflow-hidden border border-white/10 bg-gradient-to-br from-orange-500/10 to-purple-500/10">
+                <label className="text-sm font-medium text-gray-900">🎨 İşte Mentorun!</label>
+                <div className="rounded-xl overflow-hidden border border-gray-200 bg-gradient-to-br from-orange-50 to-purple-50">
                   <img 
                     src={mentorData.characterImageUrl} 
                     alt="Your mentor"
@@ -437,8 +436,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             )}
 
             {/* Learning Prompt Input */}
-            <div className="space-y-3 p-4 rounded-xl bg-white/5 border border-white/10">
-              <label className="text-sm font-medium text-white">
+            <div className="space-y-3 p-4 rounded-xl bg-gray-50 border border-gray-200">
+              <label className="text-sm font-medium text-gray-900">
                 💭 Mentorundan ne öğrenmek istersin?
               </label>
               <input
@@ -453,13 +452,13 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                 <button
                   onClick={handleGenerateVideo}
                   disabled={!learningPrompt.trim()}
-                  className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
                   Video Oluştur 🎬
                 </button>
                 <button
                   onClick={onClose}
-                  className="flex-1 py-3 px-4 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
+                  className="flex-1 py-3 px-4 rounded-full border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
                 >
                   Bu kadar yeterli ✓
                 </button>
@@ -469,7 +468,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {/* Try Again */}
             <button
               onClick={handleReset}
-              className="w-full py-2 text-sm text-[#9090a0] hover:text-white transition-colors"
+              className="w-full py-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
             >
               ← Yeniden çiz
             </button>
@@ -480,15 +479,15 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         {step === "generating-video" && (
           <div className="py-12 text-center">
             <div className="w-16 h-16 mx-auto mb-6 relative">
-              <div className="absolute inset-0 rounded-full border-4 border-orange-500/20"></div>
-              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-orange-500 animate-spin"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-purple-200"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-purple-500 animate-spin"></div>
             </div>
-            <p className="text-lg font-medium text-white mb-2">{generationStatus}</p>
-            <p className="text-sm text-[#9090a0]">Video oluşturma 2-5 dakika sürebilir...</p>
+            <p className="text-lg font-medium text-gray-900 mb-2">{generationStatus}</p>
+            <p className="text-sm text-gray-500">Video oluşturma 2-5 dakika sürebilir...</p>
             
             {/* Show mentor image while waiting */}
             {mentorData?.characterImageUrl && (
-              <div className="mt-6 rounded-xl overflow-hidden border border-white/10 max-w-[200px] mx-auto">
+              <div className="mt-6 rounded-xl overflow-hidden border border-gray-200 max-w-[200px] mx-auto">
                 <img 
                   src={mentorData.characterImageUrl} 
                   alt="Your mentor"
@@ -505,8 +504,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {/* Video Player */}
             {videoUrl && (
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white">🎬 Mentorunun Videosu</label>
-                <div className="rounded-xl overflow-hidden border border-white/10">
+                <label className="text-sm font-medium text-gray-900">🎬 Mentorunun Videosu</label>
+                <div className="rounded-xl overflow-hidden border border-gray-200">
                   <video 
                     src={videoUrl} 
                     controls
@@ -520,15 +519,15 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
             {/* Mentor Image (smaller) */}
             {mentorData?.characterImageUrl && (
-              <div className="flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/10">
+              <div className="flex items-center gap-4 p-3 rounded-xl bg-gray-50 border border-gray-200">
                 <img 
                   src={mentorData.characterImageUrl} 
                   alt="Your mentor"
                   className="w-16 h-16 rounded-lg object-cover"
                 />
                 <div>
-                  <p className="text-sm font-medium text-white">Mentorun</p>
-                  <p className="text-xs text-[#9090a0]">{learningPrompt} hakkında öğretiyor</p>
+                  <p className="text-sm font-medium text-gray-900">Mentorun</p>
+                  <p className="text-xs text-gray-500">{learningPrompt} hakkında öğretiyor</p>
                 </div>
               </div>
             )}
@@ -537,13 +536,13 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             <div className="flex gap-3">
               <button
                 onClick={handleReset}
-                className="flex-1 py-3 px-6 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 transition-colors"
+                className="flex-1 py-3 px-6 rounded-full border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
               >
                 Yeni Mentor Oluştur
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity"
+                className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg"
               >
                 Kapat
               </button>
@@ -551,7 +550,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
           </div>
         )}
 
-        <p className="text-xs text-center text-[#9090a0] mt-4">
+        <p className="text-xs text-center text-gray-400 mt-4">
           Demo amaçlıdır • fal.ai tarafından desteklenmektedir
         </p>
       </div>
