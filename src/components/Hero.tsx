@@ -68,21 +68,23 @@ export default function Hero() {
           <span style={{ color: 'var(--foreground)' }}>Turn Scrolling</span>
           <br />
           <span style={{ color: 'var(--foreground)' }}>Into </span>
-          <span className="relative inline-block overflow-hidden text-center" style={{ minHeight: '1.2em', paddingBottom: '0.1em', paddingTop: '0.1em', width: 'clamp(220px, 25vw, 320px)' }}>
+          <span className="relative inline-block overflow-hidden text-center" style={{ minHeight: '1.2em', height: '1.2em', width: 'clamp(280px, 35vw, 420px)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
             {animatedWords.map((word, index) => (
               <motion.span
                 key={index}
-                className="absolute left-1/2 transform -translate-x-1/2 gradient-text text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
-                initial={{ opacity: 0, y: "-100%" }}
+                className="absolute left-1/2 top-1/2 gradient-text text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
+                initial={{ opacity: 0, x: "-50%", y: "-50%" }}
                 transition={{ type: "spring", stiffness: 50, damping: 12 }}
                 animate={
                   wordIndex === index
                     ? {
-                        y: 0,
+                        x: "-50%",
+                        y: "-50%",
                         opacity: 1,
                       }
                     : {
-                        y: wordIndex > index ? "-150%" : "150%",
+                        x: "-50%",
+                        y: wordIndex > index ? "calc(-50% - 150%)" : "calc(-50% + 150%)",
                         opacity: 0,
                       }
                 }
