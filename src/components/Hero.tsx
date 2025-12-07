@@ -66,14 +66,14 @@ export default function Hero() {
         {/* Headline */}
         <div className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6" style={{ lineHeight: '1.3' }}>
           <div style={{ color: 'var(--foreground)' }}>Turn Scrolling</div>
-          <div className="flex items-baseline justify-center gap-4">
-            <span style={{ color: 'var(--foreground)' }}>Into</span>
-            <span className="relative inline-block overflow-hidden" style={{ height: '1.3em', minWidth: '280px' }}>
+          <div className="flex items-end justify-center">
+            <span style={{ color: 'var(--foreground)' }}>Into&nbsp;</span>
+            <span className="relative inline-block overflow-hidden" style={{ height: '1.1em', width: '450px' }}>
               {animatedWords.map((word, index) => (
                 <motion.span
                   key={index}
-                  className="absolute left-0 top-0 gradient-text text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
-                  initial={{ opacity: 0, y: "-100%" }}
+                  className="absolute left-0 bottom-0 gradient-text text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
+                  initial={{ opacity: 0, y: "100%" }}
                   transition={{ type: "spring", stiffness: 50, damping: 12 }}
                   animate={
                     wordIndex === index
