@@ -130,8 +130,8 @@ export default function FeatureGrid() {
     <section id="features" className="py-24 px-6 bg-dots">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="font-script text-xl mb-4" style={{ color: 'var(--accent)' }}>Powerful Features</p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--foreground)', lineHeight: '1.3', overflow: 'visible' }}>
+          <p className="text-lg font-medium mb-4" style={{ color: 'var(--accent)' }}>Powerful Features</p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--foreground)' }}>
             Designed for{" "}
             <span className="script-gradient">Every Learner</span>
           </h2>

@@ -80,8 +80,8 @@ export default function WaitlistSection() {
       
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-12">
-          <p className="font-script text-xl mb-4" style={{ color: 'var(--accent)' }}>Ready to Transform?</p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--foreground)', lineHeight: '1.3', overflow: 'visible' }}>
+          <p className="text-lg font-medium mb-4" style={{ color: 'var(--accent)' }}>Ready to Transform?</p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--foreground)' }}>
             Start Your{" "}
             <span className="script-gradient">Scrollio</span>
             {" "}Journey
@@ -222,7 +222,7 @@ export default function WaitlistSection() {
 
               <button 
                 type="submit" 
-                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed font-script text-lg"
+                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
               >
                 {loading ? "Submitting..." : "Get Started"}

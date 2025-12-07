@@ -1,28 +1,10 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
 import TryMeModal from "./TryMeModal";
 
 export default function Hero() {
   const [isTryMeOpen, setIsTryMeOpen] = useState(false);
-  const [wordIndex, setWordIndex] = useState(0);
-  
-  const animatedWords = useMemo(
-    () => ["Learning", "Discovery", "Growth", "Adventure", "Curiosity"],
-    []
-  );
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (wordIndex === animatedWords.length - 1) {
-        setWordIndex(0);
-      } else {
-        setWordIndex(wordIndex + 1);
-      }
-    }, 2500); // 2.5 saniyede bir değişiyor
-    return () => clearTimeout(timeoutId);
-  }, [wordIndex, animatedWords]);
 
   const scrollToWaitlist = () => {
     const element = document.getElementById("waitlist");
@@ -56,7 +38,7 @@ export default function Hero() {
       />
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto relative z-10 text-center pt-16" style={{ overflow: 'visible' }}>
+      <div className="max-w-4xl mx-auto relative z-10 text-center pt-16">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full shadow-sm mb-8" style={{ backgroundColor: 'var(--card-bg)', border: '1px solid var(--card-border)' }}>
           <span className="w-2 h-2 rounded-full bg-green-500" />
@@ -64,35 +46,12 @@ export default function Hero() {
         </div>
 
         {/* Headline */}
-        <div className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6" style={{ lineHeight: '1.3' }}>
-          <div style={{ color: 'var(--foreground)' }}>Turn Scrolling</div>
-          <div className="flex items-end justify-center">
-            <span style={{ color: 'var(--foreground)' }}>Into&nbsp;</span>
-            <span className="relative inline-block overflow-hidden" style={{ height: '1.1em', width: '450px' }}>
-              {animatedWords.map((word, index) => (
-                <motion.span
-                  key={index}
-                  className="absolute left-0 bottom-0 gradient-text text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
-                  initial={{ opacity: 0, y: "100%" }}
-                  transition={{ type: "spring", stiffness: 50, damping: 12 }}
-                  animate={
-                    wordIndex === index
-                      ? {
-                          y: 0,
-                          opacity: 1,
-                        }
-                      : {
-                          y: wordIndex > index ? "-150%" : "150%",
-                          opacity: 0,
-                        }
-                  }
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </span>
-          </div>
-        </div>
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-6">
+          <span style={{ color: 'var(--foreground)' }}>Turn Scrolling</span>
+          <br />
+          <span style={{ color: 'var(--foreground)' }}>Into </span>
+          <span className="script-gradient text-5xl md:text-6xl lg:text-7xl">Learning</span>
+        </h1>
 
         {/* Subheadline */}
         <p className="text-lg md:text-xl max-w-2xl mx-auto mb-10" style={{ color: 'var(--foreground-muted)' }}>
@@ -104,7 +63,7 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <button 
             onClick={scrollToWaitlist} 
-            className="btn-primary text-base py-4 px-8 font-script text-xl"
+            className="btn-primary text-base py-4 px-8"
           >
             Get Started
           </button>
