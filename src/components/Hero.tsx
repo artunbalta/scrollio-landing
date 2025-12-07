@@ -1,10 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import TryMeModal from "./TryMeModal";
 
 export default function Hero() {
   const [isTryMeOpen, setIsTryMeOpen] = useState(false);
+  const [wordIndex, setWordIndex] = useState(0);
+  
+  const animatedWords = useMemo(
+    () => ["Learning", "Discovery", "Growth", "Adventure", "Curiosity"],
+    []
+  );
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (wordIndex === animatedWords.length - 1) {
+        setWordIndex(0);
+      } else {
+        setWordIndex(wordIndex + 1);
+      }
+    }, 2500); // 2.5 saniyede bir değişiyor
+    return () => clearTimeout(timeoutId);
+  }, [wordIndex, animatedWords]);
 
   const scrollToWaitlist = () => {
     const element = document.getElementById("waitlist");
@@ -50,7 +68,29 @@ export default function Hero() {
           <span style={{ color: 'var(--foreground)' }}>Turn Scrolling</span>
           <br />
           <span style={{ color: 'var(--foreground)' }}>Into </span>
-          <span className="script-gradient text-5xl md:text-6xl lg:text-7xl" style={{ display: 'inline-block', verticalAlign: 'baseline' }}>Learning</span>
+          <span className="relative inline-flex justify-center overflow-hidden text-center" style={{ minHeight: '1.2em', paddingBottom: '0.1em', paddingTop: '0.1em', width: 'auto', minWidth: '200px' }}>
+            {animatedWords.map((word, index) => (
+              <motion.span
+                key={index}
+                className="absolute script-gradient text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
+                initial={{ opacity: 0, y: "-100%" }}
+                transition={{ type: "spring", stiffness: 50, damping: 12 }}
+                animate={
+                  wordIndex === index
+                    ? {
+                        y: 0,
+                        opacity: 1,
+                      }
+                    : {
+                        y: wordIndex > index ? "-150%" : "150%",
+                        opacity: 0,
+                      }
+                }
+              >
+                {word}
+              </motion.span>
+            ))}
+          </span>
         </h1>
 
         {/* Subheadline */}
