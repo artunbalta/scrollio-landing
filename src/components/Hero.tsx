@@ -64,34 +64,35 @@ export default function Hero() {
         </div>
 
         {/* Headline */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6" style={{ lineHeight: '1.2', overflow: 'visible' }}>
-          <span style={{ color: 'var(--foreground)' }}>Turn Scrolling</span>
-          <br />
-          <span style={{ color: 'var(--foreground)' }}>Into </span>
-          <span className="relative inline-block overflow-hidden" style={{ height: '1.2em', width: 'clamp(250px, 40vw, 500px)', verticalAlign: 'text-top', marginTop: '-0.05em' }}>
-            {animatedWords.map((word, index) => (
-              <motion.span
-                key={index}
-                className="absolute left-0 top-0 gradient-text text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
-                initial={{ opacity: 0, y: "-100%" }}
-                transition={{ type: "spring", stiffness: 50, damping: 12 }}
-                animate={
-                  wordIndex === index
-                    ? {
-                        y: 0,
-                        opacity: 1,
-                      }
-                    : {
-                        y: wordIndex > index ? "-150%" : "150%",
-                        opacity: 0,
-                      }
-                }
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-        </h1>
+        <div className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6" style={{ lineHeight: '1.3' }}>
+          <div style={{ color: 'var(--foreground)' }}>Turn Scrolling</div>
+          <div className="flex items-baseline justify-center gap-4">
+            <span style={{ color: 'var(--foreground)' }}>Into</span>
+            <span className="relative inline-block overflow-hidden" style={{ height: '1.3em', minWidth: '280px' }}>
+              {animatedWords.map((word, index) => (
+                <motion.span
+                  key={index}
+                  className="absolute left-0 top-0 gradient-text text-5xl md:text-6xl lg:text-7xl font-bold whitespace-nowrap"
+                  initial={{ opacity: 0, y: "-100%" }}
+                  transition={{ type: "spring", stiffness: 50, damping: 12 }}
+                  animate={
+                    wordIndex === index
+                      ? {
+                          y: 0,
+                          opacity: 1,
+                        }
+                      : {
+                          y: wordIndex > index ? "-150%" : "150%",
+                          opacity: 0,
+                        }
+                  }
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </span>
+          </div>
+        </div>
 
         {/* Subheadline */}
         <p className="text-lg md:text-xl max-w-2xl mx-auto mb-10" style={{ color: 'var(--foreground-muted)' }}>
