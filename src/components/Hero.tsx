@@ -68,7 +68,7 @@ export default function Hero() {
           <span style={{ color: 'var(--foreground)' }}>Turn Scrolling</span>
           <br />
           <span style={{ color: 'var(--foreground)' }}>Into </span>
-          <span className="relative inline-block overflow-hidden" style={{ height: '1.2em', width: 'clamp(250px, 40vw, 500px)', verticalAlign: 'top' }}>
+          <span className="relative inline-block overflow-hidden" style={{ height: '1.2em', width: 'clamp(250px, 40vw, 500px)', verticalAlign: 'text-top', marginTop: '-0.05em' }}>
             {animatedWords.map((word, index) => (
               <motion.span
                 key={index}
