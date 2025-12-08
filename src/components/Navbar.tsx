@@ -171,7 +171,7 @@ export default function Navbar() {
       {/* Compact Bubble Navbar - appears when scrolled */}
       {showCompactNav && (
         <nav 
-          className="fixed top-4 left-1/2 z-50 transition-all duration-300"
+          className="fixed top-4 left-1/2 z-40 transition-all duration-300"
           style={{
             opacity: Math.min(1, (scrollProgress - 0.3) * 2),
             transform: `translate(-50%, ${scrollProgress < 0.3 ? '-20px' : '0'})`
