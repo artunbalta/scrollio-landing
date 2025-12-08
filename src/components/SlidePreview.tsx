@@ -6,7 +6,6 @@ import TryMeModal from "./TryMeModal";
 import TeacherModal from "./TeacherModal";
 
 export default function SlidePreview() {
-  const [isLocalhost, setIsLocalhost] = useState(false);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isTryMeOpen, setIsTryMeOpen] = useState(false);
@@ -14,13 +13,6 @@ export default function SlidePreview() {
   const startXRef = useRef(0);
   const panelWidth = 320;
   const { theme } = useTheme();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-      setIsLocalhost(isLocal);
-    }
-  }, []);
 
   const handleDragStart = useCallback((clientX: number) => {
     setIsDragging(true);
@@ -47,7 +39,7 @@ export default function SlidePreview() {
   }, [isDragging, dragX, panelWidth]);
 
   useEffect(() => {
-    if (!isLocalhost || !isDragging) return;
+    if (!isDragging) return;
 
     const handleMouseMove = (e: MouseEvent) => handleDragMove(e.clientX);
     const handleMouseUp = () => handleDragEnd();
@@ -59,10 +51,10 @@ export default function SlidePreview() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, isLocalhost, handleDragMove, handleDragEnd]);
+  }, [isDragging, handleDragMove, handleDragEnd]);
 
   useEffect(() => {
-    if (!isLocalhost || !isDragging) return;
+    if (!isDragging) return;
 
     const handleTouchMove = (e: TouchEvent) => {
       if (e.touches.length === 1) handleDragMove(e.touches[0].clientX);
@@ -76,9 +68,7 @@ export default function SlidePreview() {
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isDragging, isLocalhost, handleDragMove, handleDragEnd]);
-
-  if (!isLocalhost) return null;
+  }, [isDragging, handleDragMove, handleDragEnd]);
 
   const isDark = theme === "dark";
   const progress = dragX / panelWidth;
