@@ -90,7 +90,7 @@ export default function SlidePreview() {
             }
           }}
           style={{ 
-            background: dragX === 0 ? 'linear-gradient(to right, rgba(249, 115, 22, 0.15), transparent)' : 'transparent',
+            background: 'transparent',
           }}
         />
       )}
