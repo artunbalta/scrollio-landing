@@ -1,11 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import TryMeModal from "./TryMeModal";
-
 export default function Hero() {
-  const [isTryMeOpen, setIsTryMeOpen] = useState(false);
-
   const scrollToWaitlist = () => {
     const element = document.getElementById("waitlist");
     if (element) {
@@ -15,28 +10,6 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen pt-24 pb-20 px-6 bg-dots overflow-hidden">
-      {/* Floating Decorative Shapes */}
-      <div 
-        className="absolute top-20 left-[5%] w-48 h-64 bg-gradient-to-br from-orange-200 to-orange-100 rounded-3xl animate-float-slow"
-        style={{ transform: 'rotate(-12deg)', opacity: 'var(--shape-opacity)' }}
-      />
-      <div 
-        className="absolute top-40 right-[8%] w-40 h-56 bg-gradient-to-br from-purple-200 to-purple-100 rounded-3xl animate-float"
-        style={{ transform: 'rotate(15deg)', opacity: 'var(--shape-opacity)' }}
-      />
-      <div 
-        className="absolute bottom-32 left-[15%] w-36 h-48 bg-gradient-to-br from-orange-100 to-amber-100 rounded-3xl animate-float-reverse"
-        style={{ transform: 'rotate(8deg)', opacity: 'calc(var(--shape-opacity) * 0.75)' }}
-      />
-      <div 
-        className="absolute bottom-20 right-[12%] w-44 h-60 bg-gradient-to-br from-purple-100 to-pink-100 rounded-3xl animate-float-slow"
-        style={{ transform: 'rotate(-8deg)', opacity: 'calc(var(--shape-opacity) * 0.85)' }}
-      />
-      <div 
-        className="absolute top-1/2 left-[2%] w-32 h-44 bg-gradient-to-br from-amber-100 to-orange-100 rounded-3xl animate-float"
-        style={{ transform: 'rotate(20deg)', opacity: 'calc(var(--shape-opacity) * 0.6)' }}
-      />
-
       {/* Main Content */}
       <div className="max-w-4xl mx-auto relative z-10 text-center pt-16">
         {/* Badge */}
@@ -59,19 +32,13 @@ export default function Hero() {
           to magical experiences where drawings become living mentors.
         </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        {/* CTA Button */}
+        <div className="flex justify-center mb-16">
           <button 
             onClick={scrollToWaitlist} 
             className="btn-primary text-base py-4 px-8"
           >
             Get Started
-          </button>
-          <button 
-            onClick={() => setIsTryMeOpen(true)}
-            className="btn-secondary text-base py-4 px-8 flex items-center justify-center gap-2"
-          >
-            Try Demo
           </button>
         </div>
 
@@ -135,9 +102,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      {/* Try Me Modal */}
-      <TryMeModal isOpen={isTryMeOpen} onClose={() => setIsTryMeOpen(false)} />
     </section>
   );
 }

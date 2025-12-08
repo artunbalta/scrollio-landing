@@ -1,12 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      // Header starts fading at 50px and fully gone by 200px
+      const progress = Math.min(1, Math.max(0, (currentScrollY - 50) / 150));
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -16,9 +29,22 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   };
 
+  // Calculate transform and opacity based on scroll
+  const translateY = -scrollProgress * 100; // Move up to -100%
+  const opacity = 1 - scrollProgress;
+
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b" style={{ backgroundColor: 'var(--nav-bg)', borderColor: 'var(--card-border)' }}>
+      <nav 
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b" 
+        style={{ 
+          backgroundColor: theme === 'dark' ? 'rgba(10, 10, 15, 0.4)' : 'rgba(250, 249, 246, 0.5)', 
+          borderColor: 'var(--card-border)',
+          transform: `translateY(${translateY}%)`,
+          opacity: opacity,
+          pointerEvents: scrollProgress > 0.9 ? 'none' : 'auto'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 h-16">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}

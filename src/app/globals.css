@@ -78,6 +78,7 @@ body {
 .bg-dots {
   background-image: radial-gradient(circle, var(--dots-color) 1px, transparent 1px);
   background-size: 24px 24px;
+  position: relative;
 }
 
 /* Floating decorative shapes */

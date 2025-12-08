@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import TeacherModal from "./TeacherModal";
-
 interface FeatureCardProps {
   id?: string;
   icon: React.ReactNode;
@@ -11,10 +8,9 @@ interface FeatureCardProps {
   description: string;
   highlights: string[];
   gradient: string;
-  action?: React.ReactNode;
 }
 
-function FeatureCard({ id, icon, title, audience, description, highlights, gradient, action }: FeatureCardProps) {
+function FeatureCard({ id, icon, title, audience, description, highlights, gradient }: FeatureCardProps) {
   return (
     <div id={id} className="card-light p-8 space-y-6 group h-full scroll-mt-24 flex flex-col">
       <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg`}>
@@ -38,19 +34,11 @@ function FeatureCard({ id, icon, title, audience, description, highlights, gradi
           </li>
         ))}
       </ul>
-
-      {action && (
-        <div className="pt-2">
-          {action}
-        </div>
-      )}
     </div>
   );
 }
 
 export default function FeatureGrid() {
-  const [isTeacherModalOpen, setIsTeacherModalOpen] = useState(false);
-
   const features: FeatureCardProps[] = [
     {
       id: "for-learners",
@@ -146,24 +134,10 @@ export default function FeatureGrid() {
             <FeatureCard 
               key={index} 
               {...feature}
-              action={feature.id === "for-schools" ? (
-                <button
-                  onClick={() => setIsTeacherModalOpen(true)}
-                  className="w-full py-3 px-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg"
-                >
-                  Try Teacher Mode
-                </button>
-              ) : undefined}
             />
           ))}
         </div>
       </div>
-
-      {/* Teacher Modal */}
-      <TeacherModal 
-        isOpen={isTeacherModalOpen} 
-        onClose={() => setIsTeacherModalOpen(false)} 
-      />
     </section>
   );
 }
