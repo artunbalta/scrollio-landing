@@ -1,6 +1,25 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
+const ROTATING_WORDS = ["Learning", "Growth", "Discovery", "Adventure"];
+
 export default function Hero() {
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentWordIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
+        setIsAnimating(false);
+      }, 300);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const scrollToWaitlist = () => {
     const element = document.getElementById("waitlist");
     if (element) {
@@ -23,7 +42,13 @@ export default function Hero() {
           <span style={{ color: 'var(--foreground)' }}>Turn Scrolling</span>
           <br />
           <span style={{ color: 'var(--foreground)' }}>Into </span>
-          <span className="script-gradient text-5xl md:text-6xl lg:text-7xl">Learning</span>
+          <span 
+            className={`script-gradient text-5xl md:text-6xl lg:text-7xl inline-block transition-all duration-300 ${
+              isAnimating ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+            }`}
+          >
+            {ROTATING_WORDS[currentWordIndex]}
+          </span>
         </h1>
 
         {/* Subheadline */}
