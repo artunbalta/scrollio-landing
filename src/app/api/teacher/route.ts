@@ -76,19 +76,20 @@ WRITE ONLY THE SCRIPT:`,
       throw new Error("Failed to generate audio");
     }
 
-    // Step 3: Lipsync the teacher video with the generated audio using Creatify
-    console.log("Step 3: Creating lipsync video with Creatify...");
+    // Step 3: Lipsync the teacher video with the generated audio using Sync Labs (faster)
+    console.log("Step 3: Creating lipsync video with Sync Labs...");
     console.log("Video URL:", videoUrl);
     console.log("Audio URL:", audioUrl);
     
-    const lipsyncResult = await fal.subscribe("creatify/lipsync", {
+    const lipsyncResult = await fal.subscribe("fal-ai/sync-lipsync", {
       input: {
         video_url: videoUrl,
         audio_url: audioUrl,
       },
     });
 
-    const finalVideoUrl = (lipsyncResult.data as { video?: { url: string } })?.video?.url;
+    const lipsyncData = lipsyncResult.data as { video?: { url: string }; video_url?: string };
+    const finalVideoUrl = lipsyncData.video?.url || lipsyncData.video_url;
     console.log("Generated lipsync video URL:", finalVideoUrl);
 
     if (!finalVideoUrl) {
