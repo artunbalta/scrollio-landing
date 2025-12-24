@@ -246,7 +246,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Video generation failed");
+        const errorMsg = data.details ? `${data.error}: ${data.details}` : data.error;
+        throw new Error(errorMsg || "Video generation failed");
       }
 
       if (data.videoUrl) {
@@ -258,7 +259,9 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
     } catch (err) {
       console.error("Video generation error:", err);
-      setError(err instanceof Error ? err.message : "Video could not be created");
+      const errorMessage = err instanceof Error ? err.message : "Video could not be created";
+      setError(errorMessage);
+      console.error("Full video error:", errorMessage);
       setStep("mentor-ready");
     }
   };

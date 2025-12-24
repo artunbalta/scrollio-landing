@@ -42,10 +42,23 @@ export async function POST(request: NextRequest) {
           success: true,
           videoUrl,
         });
-      } catch (videoError) {
+      } catch (videoError: unknown) {
         console.error("Video generation failed:", videoError);
+        // Log full error details
+        if (videoError && typeof videoError === 'object') {
+          if ('body' in videoError) {
+            console.error("Video error body:", JSON.stringify((videoError as { body: unknown }).body, null, 2));
+          }
+          if ('status' in videoError) {
+            console.error("Video error status:", (videoError as { status: number }).status);
+          }
+          if ('message' in videoError) {
+            console.error("Video error message:", (videoError as { message: string }).message);
+          }
+        }
+        const errorDetails = videoError instanceof Error ? videoError.message : String(videoError);
         return NextResponse.json(
-          { error: "Video generation failed" },
+          { error: "Video generation failed", details: errorDetails },
           { status: 500 }
         );
       }
@@ -129,8 +142,20 @@ Render the final output as a professional Pixar-quality 3D character reveal with
         
         videoUrl = (videoResult.data as { video?: { url: string } })?.video?.url;
         console.log("Generated video URL:", videoUrl);
-      } catch (videoError) {
+      } catch (videoError: unknown) {
         console.error("Video generation failed:", videoError);
+        // Log full error details
+        if (videoError && typeof videoError === 'object') {
+          if ('body' in videoError) {
+            console.error("Video error body:", JSON.stringify((videoError as { body: unknown }).body, null, 2));
+          }
+          if ('status' in videoError) {
+            console.error("Video error status:", (videoError as { status: number }).status);
+          }
+          if ('message' in videoError) {
+            console.error("Video error message:", (videoError as { message: string }).message);
+          }
+        }
         // Continue without video if it fails
       }
     }
