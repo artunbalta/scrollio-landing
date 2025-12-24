@@ -76,21 +76,21 @@ WRITE ONLY THE SCRIPT:`,
       throw new Error("Failed to generate audio");
     }
 
-    // Step 3: Lipsync the teacher video with the generated audio using Sync Labs (faster)
-    console.log("Step 3: Creating lipsync video with Sync Labs...");
+    // Step 3: Lipsync the teacher video with the generated audio using Creatify
+    console.log("Step 3: Creating lipsync video with Creatify...");
     console.log("Video URL:", videoUrl);
     console.log("Audio URL:", audioUrl);
     
-    const lipsyncResult = await fal.subscribe("fal-ai/sync-lipsync", {
+    const lipsyncResult = await fal.subscribe("creatify/lipsync", {
       input: {
         video_url: videoUrl,
         audio_url: audioUrl,
       },
     });
 
-    const lipsyncData = lipsyncResult.data as { video?: { url: string }; video_url?: string };
-    const finalVideoUrl = lipsyncData.video?.url || lipsyncData.video_url;
+    const finalVideoUrl = (lipsyncResult.data as { video?: { url: string } })?.video?.url;
     console.log("Generated lipsync video URL:", finalVideoUrl);
+    console.log("Full lipsync result:", JSON.stringify(lipsyncResult.data, null, 2));
 
     if (!finalVideoUrl) {
       console.error("Lipsync result:", JSON.stringify(lipsyncResult.data));
@@ -104,10 +104,20 @@ WRITE ONLY THE SCRIPT:`,
       videoUrl: finalVideoUrl,
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Teacher video generation error:", error);
+    // Log full error details
+    if (error && typeof error === 'object') {
+      if ('body' in error) {
+        console.error("Error body:", JSON.stringify((error as { body: unknown }).body, null, 2));
+      }
+      if ('status' in error) {
+        console.error("Error status:", (error as { status: number }).status);
+      }
+    }
+    const errorDetails = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Video generation failed", details: String(error) },
+      { error: "Video generation failed", details: errorDetails },
       { status: 500 }
     );
   }
