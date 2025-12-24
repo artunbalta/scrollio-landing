@@ -8,15 +8,17 @@ interface TryMeModalProps {
 }
 
 const COLORS = [
-  { name: "Siyah", value: "#000000" },
-  { name: "Kırmızı", value: "#ef4444" },
-  { name: "Turuncu", value: "#f97316" },
-  { name: "Sarı", value: "#eab308" },
-  { name: "Yeşil", value: "#22c55e" },
-  { name: "Mavi", value: "#3b82f6" },
-  { name: "Mor", value: "#a855f7" },
-  { name: "Pembe", value: "#ec4899" },
+  { name: "Black", value: "#000000" },
+  { name: "Red", value: "#ef4444" },
+  { name: "Orange", value: "#f97316" },
+  { name: "Yellow", value: "#eab308" },
+  { name: "Green", value: "#22c55e" },
+  { name: "Blue", value: "#3b82f6" },
+  { name: "Purple", value: "#a855f7" },
+  { name: "Pink", value: "#ec4899" },
 ];
+
+const ERASER_COLOR = "#ffffff";
 
 type Step = "draw" | "generating-mentor" | "mentor-ready" | "generating-video" | "video-ready";
 
@@ -26,6 +28,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const [currentColor, setCurrentColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(4);
+  const [isEraser, setIsEraser] = useState(false);
+  const [history, setHistory] = useState<ImageData[]>([]);
   
   // Generation states
   const [step, setStep] = useState<Step>("draw");
@@ -61,17 +65,18 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
       setEmail("");
       setChildName("");
       setEmailSent(false);
+      setHistory([]);
     }
   }, [isOpen]);
 
   useEffect(() => {
     if (ctx) {
-      ctx.strokeStyle = currentColor;
-      ctx.lineWidth = brushSize;
+      ctx.strokeStyle = isEraser ? ERASER_COLOR : currentColor;
+      ctx.lineWidth = isEraser ? brushSize * 3 : brushSize;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
     }
-  }, [ctx, currentColor, brushSize]);
+  }, [ctx, currentColor, brushSize, isEraser]);
 
   const getCoordinates = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -93,9 +98,27 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
     };
   };
 
+  const saveToHistory = () => {
+    if (!ctx || !canvasRef.current) return;
+    const imageData = ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height);
+    setHistory(prev => [...prev, imageData]);
+  };
+
+  const handleUndo = () => {
+    if (!ctx || !canvasRef.current || history.length === 0) return;
+    const newHistory = [...history];
+    const previousState = newHistory.pop();
+    if (previousState) {
+      ctx.putImageData(previousState, 0, 0);
+      setHistory(newHistory);
+    }
+  };
+
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!ctx) return;
     e.preventDefault();
+    // Save current state before drawing
+    saveToHistory();
     setIsDrawing(true);
     const { x, y } = getCoordinates(e);
     ctx.beginPath();
@@ -120,6 +143,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
     if (!ctx || !canvasRef.current) return;
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    setHistory([]);
   };
 
   // Generate Mentor (Step 1)
@@ -128,12 +152,10 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
     setStep("generating-mentor");
     setError(null);
-    setGenerationStatus("Çizim analiz ediliyor...");
+    setGenerationStatus("Creating your mentor in Pixar style...");
 
     try {
       const imageBase64 = canvasRef.current.toDataURL("image/png");
-
-      setGenerationStatus("Mentorunuz oluşturuluyor...");
       
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -161,7 +183,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
       
       // Send email with the mentor image
       if (data.characterImageUrl && email.trim()) {
-        setGenerationStatus("Mentorunuz email'inize gönderiliyor...");
+        setGenerationStatus("Sending your mentor to your email...");
         try {
           console.log("Sending email to:", email.trim());
           const emailResponse = await fetch("/api/send-email", {
@@ -195,7 +217,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
     } catch (err) {
       console.error("Generation error:", err);
-      setError(err instanceof Error ? err.message : "Bir hata oluştu");
+      setError(err instanceof Error ? err.message : "An error occurred");
       setStep("draw");
     }
   };
@@ -206,7 +228,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
     setStep("generating-video");
     setError(null);
-    setGenerationStatus("Eğitici video oluşturuluyor...");
+    setGenerationStatus("Creating educational video...");
 
     try {
       const response = await fetch("/api/generate", {
@@ -236,7 +258,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
 
     } catch (err) {
       console.error("Video generation error:", err);
-      setError(err instanceof Error ? err.message : "Video oluşturulamadı");
+      setError(err instanceof Error ? err.message : "Video could not be created");
       setStep("mentor-ready");
     }
   };
@@ -250,6 +272,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
     setEmail("");
     setChildName("");
     setEmailSent(false);
+    setIsEraser(false);
+    setHistory([]);
     clearCanvas();
   };
 
@@ -279,11 +303,11 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold gradient-text mb-2">Scrollio Kids Demo</h2>
           <p className="text-sm text-gray-500">
-            {step === "draw" && "Mentorunu çiz!"}
-            {step === "generating-mentor" && "AI sihirini yapıyor..."}
-            {step === "mentor-ready" && "İşte mentorun! 🎉"}
-            {step === "generating-video" && "Video oluşturuluyor..."}
-            {step === "video-ready" && "Videon hazır!"}
+            {step === "draw" && "Draw your mentor!"}
+            {step === "generating-mentor" && "AI is working its magic..."}
+            {step === "mentor-ready" && "Here's your mentor!"}
+            {step === "generating-video" && "Creating video..."}
+            {step === "video-ready" && "Your video is ready!"}
           </p>
         </div>
 
@@ -300,25 +324,40 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-gray-900">
-                  ✏️ Mentorunu çiz
+                  ✏️ Draw your mentor
                 </label>
-                <button
-                  onClick={clearCanvas}
-                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors px-2 py-1 rounded border border-gray-200 hover:border-gray-300"
-                >
-                  Temizle
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleUndo}
+                    disabled={history.length === 0}
+                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors px-2 py-1 rounded border border-gray-200 hover:border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                    </svg>
+                    Undo
+                  </button>
+                  <button
+                    onClick={clearCanvas}
+                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors px-2 py-1 rounded border border-gray-200 hover:border-gray-300"
+                  >
+                    Clear
+                  </button>
+                </div>
               </div>
               
-              {/* Color Picker */}
+              {/* Color Picker + Eraser */}
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-gray-500">Renk:</span>
+                <span className="text-xs text-gray-500">Color:</span>
                 {COLORS.map((color) => (
                   <button
                     key={color.value}
-                    onClick={() => setCurrentColor(color.value)}
+                    onClick={() => {
+                      setCurrentColor(color.value);
+                      setIsEraser(false);
+                    }}
                     className={`w-6 h-6 rounded-full border-2 transition-all ${
-                      currentColor === color.value 
+                      currentColor === color.value && !isEraser
                         ? "border-gray-800 scale-110 ring-2 ring-orange-500" 
                         : "border-gray-300 hover:border-gray-500"
                     }`}
@@ -326,11 +365,25 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                     title={color.name}
                   />
                 ))}
+                {/* Eraser Button */}
+                <button
+                  onClick={() => setIsEraser(!isEraser)}
+                  className={`w-6 h-6 rounded-full border-2 transition-all flex items-center justify-center ${
+                    isEraser
+                      ? "border-gray-800 scale-110 ring-2 ring-orange-500 bg-white" 
+                      : "border-gray-300 hover:border-gray-500 bg-white"
+                  }`}
+                  title="Eraser"
+                >
+                  <svg className="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16.24 3.56l4.95 4.94c.78.79.78 2.05 0 2.84L12 20.53a4.008 4.008 0 01-5.66 0L2.81 17c-.78-.79-.78-2.05 0-2.84l10.6-10.6c.79-.78 2.05-.78 2.83 0zm-1.41 1.42L6.93 12.88l4.24 4.24 7.9-7.9-4.24-4.24zM5.52 14.29l-.71.71 4.95 4.95.71-.71-4.95-4.95z"/>
+                  </svg>
+                </button>
               </div>
 
               {/* Brush Size */}
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500">Kalınlık:</span>
+                <span className="text-xs text-gray-500">{isEraser ? "Eraser size:" : "Brush size:"}</span>
                 <input
                   type="range"
                   min="1"
@@ -358,34 +411,34 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               />
               
               <p className="text-xs text-gray-500 text-center">
-                Parmağınız veya mouse ile hayalinizdeki mentoru çizin
+                Use your finger or mouse to draw your dream mentor
               </p>
             </div>
 
             {/* Email Capture */}
             <div className="space-y-3 mt-4 p-4 rounded-xl bg-orange-50 border border-orange-100">
               <p className="text-sm text-gray-900 font-medium">
-                📧 Mentorunuzu email olarak göndereceğiz!
+                📧 We&apos;ll send your mentor via email!
               </p>
               <div className="space-y-2">
                 <input
                   type="text"
                   value={childName}
                   onChange={(e) => setChildName(e.target.value)}
-                  placeholder="Çocuğunuzun adı (opsiyonel)"
+                  placeholder="Your child's name (optional)"
                   className="input-field"
                 />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="E-posta adresiniz *"
+                  placeholder="Your email address *"
                   className="input-field"
                   required
                 />
               </div>
               <p className="text-xs text-gray-500">
-                * Oluşturulan mentoru email adresinize göndereceğiz
+                * We&apos;ll send the generated mentor to your email
               </p>
             </div>
 
@@ -394,7 +447,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               disabled={!email.trim()}
               className="w-full mt-4 py-3 px-6 rounded-full bg-gradient-to-r from-orange-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
             >
-              Mentoru Oluştur ✨
+              Create Mentor ✨
             </button>
           </>
         )}
@@ -407,7 +460,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-orange-500 animate-spin"></div>
             </div>
             <p className="text-lg font-medium text-gray-900 mb-2">{generationStatus}</p>
-            <p className="text-sm text-gray-500">Bu işlem 20-40 saniye sürebilir...</p>
+            <p className="text-sm text-gray-500">This may take 20-40 seconds...</p>
           </div>
         )}
 
@@ -417,14 +470,14 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {/* Email Sent Success */}
             {emailSent && (
               <div className="p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm text-center">
-                ✅ Mentorunuz <strong>{email}</strong> adresine gönderildi!
+                ✅ Your mentor has been sent to <strong>{email}</strong>!
               </div>
             )}
             
             {/* Mentor Image */}
             {mentorData.characterImageUrl && (
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-900">🎨 İşte Mentorun!</label>
+                <label className="text-sm font-medium text-gray-900">🎨 Here&apos;s Your Mentor!</label>
                 <div className="rounded-xl overflow-hidden border border-gray-200 bg-gradient-to-br from-orange-50 to-purple-50">
                   <img 
                     src={mentorData.characterImageUrl} 
@@ -438,13 +491,13 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {/* Learning Prompt Input */}
             <div className="space-y-3 p-4 rounded-xl bg-gray-50 border border-gray-200">
               <label className="text-sm font-medium text-gray-900">
-                💭 Mentorundan ne öğrenmek istersin?
+                💭 What would you like to learn from your mentor?
               </label>
               <input
                 type="text"
                 value={learningPrompt}
                 onChange={(e) => setLearningPrompt(e.target.value)}
-                placeholder="Örn: Dinozorlar, uzay, hayvanlar..."
+                placeholder="E.g., Dinosaurs, space, animals..."
                 className="input-field"
               />
               
@@ -454,13 +507,13 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                   disabled={!learningPrompt.trim()}
                   className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                 >
-                  Video Oluştur 🎬
+                  Create Video 🎬
                 </button>
                 <button
                   onClick={onClose}
                   className="flex-1 py-3 px-4 rounded-full border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
                 >
-                  Bu kadar yeterli ✓
+                  That&apos;s enough ✓
                 </button>
               </div>
             </div>
@@ -470,7 +523,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               onClick={handleReset}
               className="w-full py-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
             >
-              ← Yeniden çiz
+              ← Draw again
             </button>
           </div>
         )}
@@ -483,7 +536,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
               <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-purple-500 animate-spin"></div>
             </div>
             <p className="text-lg font-medium text-gray-900 mb-2">{generationStatus}</p>
-            <p className="text-sm text-gray-500">Video oluşturma 2-5 dakika sürebilir...</p>
+            <p className="text-sm text-gray-500">Video creation may take 2-5 minutes...</p>
             
             {/* Show mentor image while waiting */}
             {mentorData?.characterImageUrl && (
@@ -504,7 +557,7 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
             {/* Video Player */}
             {videoUrl && (
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-900">🎬 Mentorunun Videosu</label>
+                <label className="text-sm font-medium text-gray-900">🎬 Your Mentor&apos;s Video</label>
                 <div className="rounded-xl overflow-hidden border border-gray-200">
                   <video 
                     src={videoUrl} 
@@ -526,8 +579,8 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                   className="w-16 h-16 rounded-lg object-cover"
                 />
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Mentorun</p>
-                  <p className="text-xs text-gray-500">{learningPrompt} hakkında öğretiyor</p>
+                  <p className="text-sm font-medium text-gray-900">Your Mentor</p>
+                  <p className="text-xs text-gray-500">Teaching about {learningPrompt}</p>
                 </div>
               </div>
             )}
@@ -538,20 +591,20 @@ export default function TryMeModal({ isOpen, onClose }: TryMeModalProps) {
                 onClick={handleReset}
                 className="flex-1 py-3 px-6 rounded-full border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
               >
-                Yeni Mentor Oluştur
+                Create New Mentor
               </button>
               <button
                 onClick={onClose}
                 className="flex-1 py-3 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity shadow-lg"
               >
-                Kapat
+                Close
               </button>
             </div>
           </div>
         )}
 
         <p className="text-xs text-center text-gray-400 mt-4">
-          Demo amaçlıdır • fal.ai tarafından desteklenmektedir
+          For demo purposes • Powered by fal.ai
         </p>
       </div>
     </div>

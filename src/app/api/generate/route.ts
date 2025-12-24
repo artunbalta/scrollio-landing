@@ -58,67 +58,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 1: Analyze the drawing with LLaVA vision model
-    console.log("Step 1: Analyzing drawing...");
+    // Generate Pixar-style character using Nano Banana Pro (image-to-image)
+    console.log("Generating mentor character with Nano Banana Pro image-to-image...");
     
-    const visionResult = await fal.subscribe("fal-ai/llava-next", {
+    const pixarPrompt = `Transform the attached hand-drawn character into a high-fidelity 3D mascot in authentic Pixar animation style. The final result should feel as if the character belongs inside a Pixar film universe, with warmth, charm, emotional clarity, and cinematic polish.
+
+Treat the drawing as a strict blueprint. Carefully analyze the drawing before generating the 3D version and preserve the exact silhouette, proportions, shape language, and overall structure. Maintain the original color palette exactly as it appears in the drawing, without reinterpretation or stylistic recoloring. All distinctive details, including facial features, accessories, asymmetries, and unique marks, must remain faithful to the original design.
+
+Identify whether the subject is an animal, human, object, or hybrid and recreate it using soft, rounded Pixar-style 3D geometry. The character should feature large, expressive Pixar-style eyes, subtle facial nuance, and a friendly, emotionally readable personality that matches the mood and intention of the original drawing.
+
+All materials and textures must follow Pixar's stylized realism approach. Fur should appear soft and touchable, petals should feel velvety and layered, and skin should be smooth and matte with a handcrafted feel. Surfaces should look warm and premium, avoiding photorealism or plastic-like finishes while remaining believable and rich in detail.
+
+Use Pixar-style cinematic studio lighting to bring the character to life. The lighting should be soft and flattering, similar to clamshell or butterfly lighting, with gentle global illumination and subtle rim light to separate the character from the background while maintaining a friendly, magical atmosphere.
+
+Enhance the drawing with true 3D depth, soft shadows, and natural dimensionality while staying completely faithful to the original design. Pose the character in a joyful, welcoming, high-energy Pixar-style stance that reinforces personality without altering proportions or structure.
+
+Render the final output as a professional Pixar-quality 3D character reveal with ultra-clean presentation and high detail. Use a simple, whimsical, softly blurred background so the mascot remains the clear focus. The final image should feel like a Pixar movie poster or character introduction, presented with cinematic polish and 8K-level clarity.`;
+
+    const imageResult = await fal.subscribe("fal-ai/nano-banana-pro/edit", {
       input: {
-        image_url: imageBase64,
-        prompt: `You are an expert at analyzing children's drawings. Describe this drawing in EXTREME detail for a 3D artist to recreate it EXACTLY.
-
-DESCRIBE PRECISELY:
-1. CHARACTER TYPE: What is it? (animal, person, creature, robot, etc.)
-2. EXACT COLORS: List EVERY color and EXACTLY where it appears (e.g., "blue body, red hat, yellow eyes")
-3. BODY STRUCTURE: Shape, proportions, number of limbs, tail, wings, etc.
-4. FACE: Eye shape/color/size, mouth style, nose, expression, any unique features
-5. CLOTHING/ACCESSORIES: Hats, glasses, bows, jewelry, patterns on body
-6. SPECIAL FEATURES: Spots, stripes, stars, hearts, or any decorations the child added
-7. POSE: How is the character standing/sitting/positioned?
-
-BE EXTREMELY FAITHFUL to the original drawing. Include imperfections and childlike qualities.
-Do NOT add features that are not in the drawing.
-English only, max 200 words.`,
-      },
-    });
-
-    const drawingDescription = (visionResult.data as { output?: string })?.output || "A cute cartoon character";
-    console.log("Drawing description:", drawingDescription);
-
-    // Step 2: Generate Pixar-style character image using Nano Banana Pro
-    console.log("Step 2: Generating mentor character with Nano Banana Pro...");
-    
-    const imagePrompt = `Turn this child's drawing into a fully detailed 3D Pixar-style character.
-
-ORIGINAL DRAWING DESCRIPTION: ${drawingDescription}
-
-CRITICAL REQUIREMENTS:
-• Preserve ALL visual elements from the original drawing EXACTLY as they are
-• Keep the EXACT colors, proportions, shapes, character features
-• Maintain clothing, accessories, symbols, emotions from the drawing
-• Keep any imperfections children naturally draw - these add charm
-• The final character MUST clearly look like the same character created by the child
-• Do NOT redesign or beautify the original intent
-
-PIXAR/DISNEY 3D STYLE:
-• Soft global illumination
-• Subsurface scattering skin
-• Glossy detailed eyes
-• Expressive facial features
-• Stylized proportions matching the child's drawing
-• Smooth, high-poly sculpted body
-• Detailed textures and materials
-• Cinematic lighting (3-point light setup)
-• Warm color palette
-• Soft shadows
-
-Pose the character in a friendly, welcoming stance.
-Render in ultra-high resolution, full-body, centered, clean white background.`;
-
-    const imageResult = await fal.subscribe("fal-ai/nano-banana-pro", {
-      input: {
-        prompt: imagePrompt,
-        aspect_ratio: "1:1",
-        resolution: "1K",
+        prompt: pixarPrompt,
+        image_urls: [imageBase64],
       },
     });
 
@@ -133,7 +93,7 @@ Render in ultra-high resolution, full-body, centered, clean white background.`;
           .insert({
             original_drawing: imageBase64,
             mentor_image_url: generatedImageUrl,
-            drawing_description: drawingDescription,
+            drawing_description: "Pixar-style 3D character transformation",
             user_email: email || null,
             child_name: childName || null,
             created_at: new Date().toISOString(),
@@ -177,13 +137,17 @@ Render in ultra-high resolution, full-body, centered, clean white background.`;
 
     return NextResponse.json({
       success: true,
-      drawingDescription,
+      drawingDescription: "Pixar-style 3D character transformation",
       characterImageUrl: generatedImageUrl,
       videoUrl,
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Generation error:", error);
+    // Log full error details for debugging
+    if (error && typeof error === 'object' && 'body' in error) {
+      console.error("Error body:", JSON.stringify((error as { body: unknown }).body, null, 2));
+    }
     return NextResponse.json(
       { error: "Generation failed", details: String(error) },
       { status: 500 }

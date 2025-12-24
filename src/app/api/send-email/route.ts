@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { fal } from "@fal-ai/client";
 
 export async function POST(request: NextRequest) {
   try {
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    const FAL_KEY = process.env.FAL_KEY;
     
     if (!RESEND_API_KEY) {
       console.error("RESEND_API_KEY not found in environment");
@@ -21,6 +23,23 @@ export async function POST(request: NextRequest) {
 
     if (!toEmail || !mentorImageUrl) {
       return NextResponse.json({ error: "Email and mentor image are required" }, { status: 400 });
+    }
+
+    // Upload original drawing to get a proper URL (base64 doesn't work in emails)
+    let originalDrawingUrl = null;
+    if (originalDrawing && FAL_KEY) {
+      try {
+        fal.config({ credentials: FAL_KEY });
+        // Convert base64 to blob and upload
+        const base64Data = originalDrawing.replace(/^data:image\/\w+;base64,/, '');
+        const buffer = Buffer.from(base64Data, 'base64');
+        const blob = new Blob([buffer], { type: 'image/png' });
+        const file = new File([blob], 'original-drawing.png', { type: 'image/png' });
+        originalDrawingUrl = await fal.storage.upload(file);
+        console.log("Uploaded original drawing:", originalDrawingUrl);
+      } catch (uploadErr) {
+        console.error("Failed to upload original drawing:", uploadErr);
+      }
     }
 
     // Send email with the mentor image
@@ -62,11 +81,11 @@ export async function POST(request: NextRequest) {
                 <img src="${mentorImageUrl}" alt="Mentor Character" style="max-width: 100%; border-radius: 15px; border: 2px solid rgba(249, 115, 22, 0.3);">
               </div>
               
-              ${originalDrawing ? `
+              ${originalDrawingUrl ? `
               <!-- Original Drawing -->
               <div style="text-align: center; margin-bottom: 25px;">
                 <p style="color: #ffffff; font-size: 14px; margin: 0 0 10px 0;">🎨 Orijinal Çizim</p>
-                <img src="${originalDrawing}" alt="Original Drawing" style="max-width: 200px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+                <img src="${originalDrawingUrl}" alt="Original Drawing" style="max-width: 200px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
               </div>
               ` : ""}
             </div>
