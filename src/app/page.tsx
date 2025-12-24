@@ -18,6 +18,6 @@ export default function Home() {
       <FAQ />
       <WaitlistSection />
       <Footer />
-    </main>
+      </main>
   );
 }
