@@ -63,7 +63,7 @@ WRITE ONLY THE SCRIPT:`,
     const audioResult = await fal.subscribe("fal-ai/kokoro", {
       input: {
         text: generatedScript,
-        voice: "af_heart", // Clear female voice
+        voice: "am_adam", // Clear male voice
       },
     });
 
