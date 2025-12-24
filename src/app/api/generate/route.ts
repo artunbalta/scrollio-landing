@@ -26,12 +26,14 @@ export async function POST(request: NextRequest) {
       console.log("Direct video generation with existing character...");
       
       try {
-        const videoResult = await fal.subscribe("fal-ai/sora-2/image-to-video", {
+        console.log("Using image URL for video:", characterImageUrl);
+        console.log("Video prompt topic:", learningPrompt);
+        
+        const videoResult = await fal.subscribe("fal-ai/kling-video/v1/standard/image-to-video", {
           input: {
-            prompt: `A cute animated mentor character teaching a child about ${learningPrompt}. 
-            The character is friendly, gently animated, making small movements, looking at the viewer warmly.
-            Educational children's video style, colorful background, engaging, fun learning moment.`,
+            prompt: `A cute animated character teaching about ${learningPrompt}. Friendly, gentle movements, warm expression, educational style, colorful, engaging.`,
             image_url: characterImageUrl,
+            duration: "5",
           },
         });
         
@@ -127,16 +129,16 @@ Render the final output as a professional Pixar-quality 3D character reveal with
     let videoUrl = null;
     
     if (generateVideo && learningPrompt && generatedImageUrl) {
-      console.log("Step 3: Generating educational video with Sora 2...");
+      console.log("Step 3: Generating educational video with Kling...");
+      console.log("Using image URL for video:", generatedImageUrl);
+      console.log("Video prompt topic:", learningPrompt);
       
       try {
-        const videoResult = await fal.subscribe("fal-ai/sora-2/image-to-video", {
+        const videoResult = await fal.subscribe("fal-ai/kling-video/v1/standard/image-to-video", {
           input: {
-            prompt: `A cute animated mentor character teaching a child about ${learningPrompt}. 
-            The character is friendly, gently animated, making small movements, looking at the viewer warmly.
-            Educational children's video style, colorful background, engaging, fun learning moment.
-            The character seems to be explaining something with enthusiasm.`,
+            prompt: `A cute animated character teaching about ${learningPrompt}. Friendly, gentle movements, warm expression, educational style, colorful, engaging.`,
             image_url: generatedImageUrl,
+            duration: "5",
           },
         });
         
