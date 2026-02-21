@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${sora.variable} font-sans antialiased`}>
+      <body className={`${sora.variable} font-sans antialiased`} suppressHydrationWarning>
         <ThemeProvider>
         {children}
         </ThemeProvider>

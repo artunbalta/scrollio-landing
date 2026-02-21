@@ -1,141 +1,271 @@
 "use client";
 
-interface FeatureCardProps {
-  id?: string;
-  icon: React.ReactNode;
-  title: string;
-  audience: string;
-  description: string;
-  highlights: string[];
-  gradient: string;
-}
+import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 
-function FeatureCard({ id, icon, title, audience, description, highlights, gradient }: FeatureCardProps) {
-  return (
-    <div id={id} className="card-light p-8 space-y-6 group h-full scroll-mt-24 flex flex-col">
-      <div className={`w-14 h-14 rounded-2xl ${gradient} flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg`}>
-        {icon}
-      </div>
-      
-      <div>
-        <p className="text-sm font-medium mb-1" style={{ color: 'var(--accent)' }}>{audience}</p>
-        <h3 className="text-xl font-bold" style={{ color: 'var(--foreground)' }}>{title}</h3>
-      </div>
-      
-      <p style={{ color: 'var(--foreground-muted)' }} className="leading-relaxed">{description}</p>
-      
-      <ul className="space-y-3 flex-1">
-        {highlights.map((highlight, index) => (
-          <li key={index} className="flex items-start gap-3">
-            <svg className="w-5 h-5 shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            <span className="text-sm" style={{ color: 'var(--foreground-muted)' }}>{highlight}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+const LearnerCarousel3D = dynamic(() => import("./LearnerCarousel3D"), { ssr: false });
+
+const CHARACTERS = [
+  {
+    audience: "For Teens & Adults",
+    title: "Curiosity-Driven Discovery",
+    description:
+      "Scrollio Core transforms idle scrolling into meaningful micro-learning. AI curates your feed based on your interests, goals, and curiosity.",
+    highlights: [
+      "TikTok-style vertical feed of short lessons",
+      "AI adapts to your interests and goals",
+      "Science, tech, psychology, creativity & more",
+      "Learn something new in every scroll",
+    ],
+    accentColor: "#6366f1",
+    gradientFrom: "#6366f1",
+    gradientTo: "#818cf8",
+  },
+  {
+    audience: "For Schools",
+    title: "AI Teacher Assistant",
+    description:
+      "Teachers can create unlimited video lessons using their own face. Just provide a topic — AI handles the script and delivery.",
+    highlights: [
+      "Record once, teach infinite topics",
+      "AI lip-syncs your video to any script",
+      "Create lessons in any language",
+      "Perfect for flipped classroom & remote learning",
+    ],
+    accentColor: "#10b981",
+    gradientFrom: "#10b981",
+    gradientTo: "#34d399",
+  },
+  {
+    audience: "For Kids",
+    title: "Imagination Comes Alive",
+    description:
+      "Every child is an artist. Scrollio Kids turns their drawings into living mentors who guide them through magical stories and playful learning.",
+    highlights: [
+      "Draw any character and watch it come to life",
+      "Interactive stories tailored to their interests",
+      "Early learning through imagination and play",
+      "Safe, engaging, and endlessly creative",
+    ],
+    accentColor: "#f97316",
+    gradientFrom: "#f97316",
+    gradientTo: "#fb923c",
+  },
+  {
+    audience: "For Families",
+    title: "Screen Time That Matters",
+    description:
+      "Finally, screen time that parents can feel good about. Structured learning, safe content, and insights into what your kids explore.",
+    highlights: [
+      "Parent dashboard with activity insights",
+      "Age-appropriate, curated content",
+      "Structured sessions, not endless scrolling",
+      "Build learning habits together",
+    ],
+    accentColor: "#a855f7",
+    gradientFrom: "#a855f7",
+    gradientTo: "#c084fc",
+  },
+];
+
+const ROTATION_SENSITIVITY = 0.008;
 
 export default function FeatureGrid() {
-  const features: FeatureCardProps[] = [
-    {
-      id: "for-learners",
-      icon: (
-        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      title: "Curiosity-Driven Discovery",
-      audience: "For Teens & Adults",
-      description: "Scrollio Core transforms idle scrolling into meaningful micro-learning. AI curates your feed based on your interests, goals, and curiosity.",
-      highlights: [
-        "TikTok-style vertical feed of short lessons",
-        "AI adapts to your interests and goals",
-        "Science, tech, psychology, creativity & more",
-        "Learn something new in every scroll"
-      ],
-      gradient: "bg-gradient-to-br from-indigo-500 to-blue-500"
-    },
-    {
-      id: "for-kids",
-      icon: (
-        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      title: "Imagination Comes Alive",
-      audience: "For Kids",
-      description: "Every child is an artist. Scrollio Kids turns their drawings into living mentors who guide them through magical stories and playful learning.",
-      highlights: [
-        "Draw any character and watch it come to life",
-        "Interactive stories tailored to their interests",
-        "Early learning through imagination and play",
-        "Safe, engaging, and endlessly creative"
-      ],
-      gradient: "bg-gradient-to-br from-orange-500 to-amber-500"
-    },
-    {
-      id: "for-families",
-      icon: (
-        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-      ),
-      title: "Screen Time That Matters",
-      audience: "For Families",
-      description: "Finally, screen time that parents can feel good about. Structured learning, safe content, and insights into what your kids explore.",
-      highlights: [
-        "Parent dashboard with activity insights",
-        "Age-appropriate, curated content",
-        "Structured sessions, not endless scrolling",
-        "Build learning habits together"
-      ],
-      gradient: "bg-gradient-to-br from-orange-400 to-purple-500"
-    },
-    {
-      id: "for-schools",
-      icon: (
-        <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
-      ),
-      title: "AI Teacher Assistant",
-      audience: "For Schools",
-      description: "Teachers can create unlimited video lessons using their own face. Just provide a topic — AI handles the script and delivery.",
-      highlights: [
-        "Record once, teach infinite topics",
-        "AI lip-syncs your video to any script",
-        "Create lessons in any language",
-        "Perfect for flipped classroom & remote learning"
-      ],
-      gradient: "bg-gradient-to-br from-emerald-500 to-teal-500"
-    }
-  ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const [animating, setAnimating] = useState(false);
+  const [userRotationY, setUserRotationY] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isDraggingRef = useRef(false);
+  const lastClientXRef = useRef(0);
+
+  useEffect(() => {
+    setUserRotationY(0);
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      if (!isDraggingRef.current) return;
+      const delta = (e.clientX - lastClientXRef.current) * ROTATION_SENSITIVITY;
+      lastClientXRef.current = e.clientX;
+      setUserRotationY((prev) => prev + delta);
+    };
+    const onUp = () => {
+      isDraggingRef.current = false;
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointerleave", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointerleave", onUp);
+    };
+  }, []);
+
+  const go = (nextIndex: number) => {
+    if (animating) return;
+    setAnimating(true);
+    setVisible(false);
+    timerRef.current = setTimeout(() => {
+      setActiveIndex(nextIndex);
+      setVisible(true);
+      setAnimating(false);
+    }, 280);
+  };
+
+  const goNext = () => go((activeIndex + 1) % 4);
+  const goPrev = () => go((activeIndex - 1 + 4) % 4);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  const active = CHARACTERS[activeIndex];
 
   return (
-    <section id="features" className="py-24 px-6 bg-dots">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-lg font-medium mb-4" style={{ color: 'var(--accent)' }}>Powerful Features</p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6" style={{ color: 'var(--foreground)' }}>
+    <section id="features" className="py-20 px-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>
+            Powerful Features
+          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5" style={{ color: "var(--foreground)" }}>
             Designed for{" "}
             <span className="script-gradient">Every Learner</span>
           </h2>
-          <p className="text-lg leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
-            Whether you&apos;re a curious teen, a lifelong learner, a parent seeking meaningful screen time, 
+          <p className="text-lg leading-relaxed" style={{ color: "var(--foreground-muted)" }}>
+            Whether you&apos;re a curious teen, a lifelong learner, a parent seeking meaningful screen time,
             or a teacher looking for engaging tools — Scrollio adapts to you.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {features.map((feature, index) => (
-            <FeatureCard 
-              key={index} 
-              {...feature}
-            />
-          ))}
+        {/* Sol: 3D carousel | Sağ: ilgili bilgi yazısı — yan yana */}
+        <div className="grid md:grid-cols-[1fr,1fr] gap-8 md:gap-10 items-center">
+          {/* Sol — modeller */}
+          <div className="relative order-2 md:order-1" style={{ height: "420px" }}>
+            <div
+              className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing rounded-2xl overflow-hidden"
+              onPointerDown={(e) => {
+                if ((e.target as HTMLElement).closest("button")) return;
+                isDraggingRef.current = true;
+                lastClientXRef.current = e.clientX;
+              }}
+              style={{ touchAction: "none" }}
+            >
+              <LearnerCarousel3D activeIndex={activeIndex} userRotationY={userRotationY} />
+            </div>
+
+            <button
+              type="button"
+              onClick={goPrev}
+              aria-label="Previous"
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-lg"
+              style={{
+                background: "rgba(255,255,255,0.85)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(0,0,0,0.08)",
+                color: "var(--foreground)",
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              onClick={goNext}
+              aria-label="Next"
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-lg"
+              style={{
+                background: "rgba(255,255,255,0.85)",
+                backdropFilter: "blur(8px)",
+                border: "1px solid rgba(0,0,0,0.08)",
+                color: "var(--foreground)",
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+
+            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2 z-10">
+              {CHARACTERS.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => go(i)}
+                  aria-label={`Go to ${CHARACTERS[i].audience}`}
+                  className="transition-all duration-300 rounded-full"
+                  style={{
+                    width: i === activeIndex ? "24px" : "8px",
+                    height: "8px",
+                    background:
+                      i === activeIndex
+                        ? `linear-gradient(90deg, ${active.gradientFrom}, ${active.gradientTo})`
+                        : "rgba(0,0,0,0.2)",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Sağ — ilgili bilgi yazısı */}
+          <div
+            className="order-1 md:order-2 text-center md:text-left transition-all duration-280"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(10px)",
+              transition: "opacity 0.28s ease, transform 0.28s ease",
+            }}
+          >
+            <p
+              className="text-sm font-semibold uppercase tracking-widest mb-2"
+              style={{ color: active.accentColor }}
+            >
+              {active.audience}
+            </p>
+            <h3
+              className="text-2xl md:text-3xl font-bold mb-3"
+              style={{ color: "var(--foreground)" }}
+            >
+              {active.title}
+            </h3>
+            <p className="text-base leading-relaxed mb-5" style={{ color: "var(--foreground-muted)" }}>
+              {active.description}
+            </p>
+            <ul className="flex flex-wrap justify-center md:justify-start gap-2">
+              {active.highlights.map((h, i) => (
+                <li
+                  key={i}
+                  className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-full"
+                  style={{
+                    background: "rgba(255,255,255,0.7)",
+                    border: `1px solid ${active.accentColor}30`,
+                    color: "var(--foreground-muted)",
+                  }}
+                >
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={active.accentColor}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 13l4 4L19 7" />
+                  </svg>
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
