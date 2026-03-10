@@ -4,7 +4,6 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import type { ModelConfig } from "./ModelViewer";
-import { getModelUrl } from "@/lib/modelUrl";
 import WaitlistSection from "./WaitlistSection";
 import FAQ from "./FAQ";
 import FeatureGrid from "./FeatureGrid";
@@ -21,12 +20,12 @@ const ROTATING_WORDS = ["Learning", "Growth", "Discovery", "Adventure"];
    because R3F adjusts horizontal FOV by the canvas aspect ratio.
 ───────────────────────────────────────────────────────────────*/
 const CORE_MODELS: ModelConfig[] = [
-  { url: getModelUrl("/models/scrolliocore1.glb"), position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.7, floatAmplitude: 0.06 },
-  { url: getModelUrl("/models/scrolliocore2.glb"), position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.0, floatAmplitude: 0.07 },
+  { url: "/models/scrolliocore1.glb", position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.7, floatAmplitude: 0.06 },
+  { url: "/models/scrolliocore2.glb", position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.0, floatAmplitude: 0.07 },
 ];
 const KIDS_MODELS: ModelConfig[] = [
-  { url: getModelUrl("/models/scrolliokids1.glb"), position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.1, floatAmplitude: 0.08 },
-  { url: getModelUrl("/models/scrolliokids2.glb"), position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.85, floatAmplitude: 0.06 },
+  { url: "/models/scrolliokids1.glb", position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.1, floatAmplitude: 0.08 },
+  { url: "/models/scrolliokids2.glb", position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.85, floatAmplitude: 0.06 },
 ];
 
 /* ─── Glassmorphism pill ─── */
@@ -49,6 +48,17 @@ export default function SplitScreen() {
   const dragging = useRef(false);
   const vapiRef = useRef<{ stop: () => Promise<void> } | null>(null);
   const [isVapiCallActive, setIsVapiCallActive] = useState(false);
+  const [heroModelsCoreReady, setHeroModelsCoreReady] = useState(false);
+  const [heroModelsKidsReady, setHeroModelsKidsReady] = useState(false);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setHeroModelsCoreReady(true), 80);
+    const t2 = setTimeout(() => setHeroModelsKidsReady(true), 280);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
 
   const startVapiCall = useCallback(async (assistant: "steve" | "albert") => {
     try {
@@ -202,7 +212,11 @@ export default function SplitScreen() {
               style={{ width: expanded === "core" ? "64%" : "100%" }}
             >
               <div className="absolute inset-0">
-                <ModelViewer models={CORE_MODELS} cameraPosition={[0, 0.25, 4.2]} fov={52} />
+                {heroModelsCoreReady ? (
+                  <ModelViewer models={CORE_MODELS} cameraPosition={[0, 0.25, 4.2]} fov={52} />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5" aria-hidden />
+                )}
               </div>
               {expanded === "core" && (
                 <div className="absolute top-6 left-0 right-0 text-center pointer-events-none z-10 px-4">
@@ -314,7 +328,11 @@ export default function SplitScreen() {
               style={{ width: expanded === "kids" ? "62%" : "100%" }}
             >
               <div className="absolute inset-0">
-                <ModelViewer models={KIDS_MODELS} cameraPosition={[0, 0.25, 4.2]} fov={52} />
+                {heroModelsKidsReady ? (
+                  <ModelViewer models={KIDS_MODELS} cameraPosition={[0, 0.25, 4.2]} fov={52} />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5" aria-hidden />
+                )}
               </div>
               {expanded === "kids" && (
                 <div className="absolute top-6 left-0 right-0 text-center pointer-events-none z-10 px-4">
