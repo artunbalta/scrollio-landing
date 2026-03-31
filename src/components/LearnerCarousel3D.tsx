@@ -4,8 +4,10 @@ import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
+import { getModelUrl } from "../lib/utils";
+
 const LEARNER_MODELS = ["model_teen", "model_teacher", "model_kid", "model_family"] as const;
-LEARNER_MODELS.forEach((name) => useGLTF.preload(`/models/${name}.glb`));
+LEARNER_MODELS.forEach((name) => useGLTF.preload(getModelUrl(`${name}.glb`)));
 
 // Diamond positions: front, right, back, left
 const SLOT_POSITIONS: [number, number, number][] = [
@@ -71,7 +73,7 @@ export interface LearnerCarousel3DProps {
 }
 
 export default function LearnerCarousel3D({ activeIndex, userRotationY = 0 }: LearnerCarousel3DProps) {
-  const URLS = LEARNER_MODELS.map((name) => `/models/${name}.glb`);
+  const URLS = LEARNER_MODELS.map((name) => getModelUrl(`${name}.glb`));
 
   return (
     <Canvas

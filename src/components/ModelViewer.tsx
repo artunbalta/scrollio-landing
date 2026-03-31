@@ -4,8 +4,10 @@ import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
-["scrolliocore1", "scrolliocore2", "scrolliokids1", "scrolliokids2"].forEach((name) =>
-  useGLTF.preload(`/models/${name}.glb`)
+import { getModelUrl } from "../lib/utils";
+
+["scrolliocore1.glb", "scrolliocore2.glb", "scrolliokids1.glb", "scrolliokids2.glb"].forEach((name) =>
+  useGLTF.preload(getModelUrl(name))
 );
 
 const ROTATE_SPEED = 0.12; // radians per second — slow 360° spin

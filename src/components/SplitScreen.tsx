@@ -9,6 +9,7 @@ import FAQ from "./FAQ";
 import FeatureGrid from "./FeatureGrid";
 import KidsModeDemo from "./KidsModeDemo";
 import BackgroundOrbs from "./BackgroundOrbs";
+import { getModelUrl } from "../lib/utils";
 
 const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 
@@ -20,12 +21,12 @@ const ROTATING_WORDS = ["Learning", "Growth", "Discovery", "Adventure"];
    because R3F adjusts horizontal FOV by the canvas aspect ratio.
 ───────────────────────────────────────────────────────────────*/
 const CORE_MODELS: ModelConfig[] = [
-  { url: "/models/scrolliocore1.glb", position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.7, floatAmplitude: 0.06 },
-  { url: "/models/scrolliocore2.glb", position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.0, floatAmplitude: 0.07 },
+  { url: getModelUrl("scrolliocore1.glb"), position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.7, floatAmplitude: 0.06 },
+  { url: getModelUrl("scrolliocore2.glb"), position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.0, floatAmplitude: 0.07 },
 ];
 const KIDS_MODELS: ModelConfig[] = [
-  { url: "/models/scrolliokids1.glb", position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.1, floatAmplitude: 0.08 },
-  { url: "/models/scrolliokids2.glb", position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.85, floatAmplitude: 0.06 },
+  { url: getModelUrl("scrolliokids1.glb"), position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.1, floatAmplitude: 0.08 },
+  { url: getModelUrl("scrolliokids2.glb"), position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.85, floatAmplitude: 0.06 },
 ];
 
 /* ─── Glassmorphism pill ─── */
