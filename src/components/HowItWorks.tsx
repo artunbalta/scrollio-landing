@@ -56,7 +56,7 @@ function FeedMockup() {
           >
             {c.tag}
           </span>
-          <p className="text-[12px] leading-snug text-gray-700 font-medium">{c.title}</p>
+          <p className="text-[12px] leading-snug font-medium" style={{ color: "var(--foreground)" }}>{c.title}</p>
         </motion.div>
       ))}
       <div
@@ -155,8 +155,8 @@ function KnowledgePath() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="text-[11px] text-gray-400">{m.label}</span>
-              <span className="text-[11px] text-gray-700 font-semibold">{m.topic}</span>
+              <span className="text-[11px]" style={{ color: "var(--foreground-muted)", opacity: 0.8 }}>{m.label}</span>
+              <span className="text-[11px] font-semibold" style={{ color: "var(--foreground)" }}>{m.topic}</span>
             </div>
             <div className="h-1 rounded-full w-full" style={{ background: "rgba(249,115,22,0.1)" }}>
               {m.done && (
@@ -212,14 +212,8 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section className="relative overflow-hidden py-28 px-4" style={{ background: "#FFEED4" }}>
-      {/* Very subtle dot texture for depth */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{ backgroundImage: "radial-gradient(rgba(249,115,22,0.18) 1px, transparent 1px)", backgroundSize: "28px 28px" }}
-      />
-
-      <div className="relative max-w-5xl mx-auto">
+    <section className="relative overflow-hidden py-28 px-4 bg-transparent">
+      <div className="relative z-[1] max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
@@ -234,13 +228,13 @@ export default function HowItWorks() {
           >
             How it works
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight" style={{ color: "var(--foreground)" }}>
             Scrolling was never<br />
             <span style={{ background: "linear-gradient(135deg, #f97316, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               the problem.
             </span>
           </h2>
-          <p className="mt-4 text-base text-gray-500 max-w-md mx-auto leading-relaxed">
+          <p className="mt-4 text-base max-w-md mx-auto leading-relaxed" style={{ color: "var(--foreground-muted)" }}>
             The problem was what you scrolled through.<br />Scrollio fixes that.
           </p>
         </motion.div>
@@ -292,8 +286,8 @@ export default function HowItWorks() {
 
               {/* Text */}
               <div>
-                <p className="text-[15px] font-bold text-gray-900 leading-snug mb-1.5">{step.headline}</p>
-                <p className="text-[13px] text-gray-500 leading-relaxed">{step.body}</p>
+                <p className="text-[15px] font-bold leading-snug mb-1.5" style={{ color: "var(--foreground)" }}>{step.headline}</p>
+                <p className="text-[13px] leading-relaxed" style={{ color: "var(--foreground-muted)" }}>{step.body}</p>
               </div>
             </motion.div>
           ))}
@@ -307,7 +301,7 @@ export default function HowItWorks() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-center text-[10px] text-gray-400 uppercase tracking-widest mb-5 font-semibold">
+          <p className="text-center text-[10px] uppercase tracking-widest mb-5 font-semibold" style={{ color: "var(--foreground-muted)", opacity: 0.85 }}>
             Explore every domain
           </p>
           <TopicCloud tags={TOPIC_TAGS} speed={55} />
