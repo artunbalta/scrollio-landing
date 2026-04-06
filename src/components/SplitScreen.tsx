@@ -10,6 +10,8 @@ import FeatureGrid from "./FeatureGrid";
 import KidsModeDemo from "./KidsModeDemo";
 import BackgroundOrbs from "./BackgroundOrbs";
 import { getModelUrl } from "../lib/utils";
+import MobileHero from "./MobileHero";
+import { MobileOnly, DesktopOnly } from "./ResponsiveGate";
 
 const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 
@@ -160,6 +162,11 @@ export default function SplitScreen() {
     <div className="min-h-screen relative bg-dots" style={{ fontFamily: "inherit", background: "var(--background)" }}>
       <BackgroundOrbs />
 
+      {/* ── Mobile hero (lever toggle) — desktop uses split screen below ── */}
+      <MobileOnly>
+        <MobileHero />
+      </MobileOnly>
+
       {/* ══════════════ FIXED NAVBAR (same as main) ══════════════ */}
       <nav
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
@@ -193,6 +200,7 @@ export default function SplitScreen() {
         scene within whatever width the panel has, so BOTH characters
         are always visible on each side.
       */}
+      <DesktopOnly>
       <div
         ref={containerRef}
         className="relative w-screen h-screen overflow-hidden"
@@ -448,6 +456,7 @@ export default function SplitScreen() {
           </div>
         )}
       </div>
+      </DesktopOnly>
 
       {/* ══════════════ SCROLLABLE CONTENT (gradient here: FAQ, waitlist, etc.) ══════════════ */}
       <div id="about" style={{ background: "transparent" }}>

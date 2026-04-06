@@ -75,9 +75,24 @@ export default function FeatureGrid() {
   const [visible, setVisible] = useState(true);
   const [animating, setAnimating] = useState(false);
   const [userRotationY, setUserRotationY] = useState(0);
+  const [carouselInView, setCarouselInView] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isDraggingRef = useRef(false);
   const lastClientXRef = useRef(0);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e?.isIntersecting) setCarouselInView(true);
+      },
+      { rootMargin: "120px", threshold: 0.1 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
     setUserRotationY(0);
@@ -126,7 +141,7 @@ export default function FeatureGrid() {
   const active = CHARACTERS[activeIndex];
 
   return (
-    <section id="features" className="py-20 px-6">
+    <section id="features" ref={sectionRef} className="py-20 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10">
@@ -146,7 +161,7 @@ export default function FeatureGrid() {
         {/* Sol: 3D carousel | Sağ: ilgili bilgi yazısı — yan yana */}
         <div className="grid md:grid-cols-[1fr,1fr] gap-8 md:gap-10 items-center">
           {/* Sol — modeller */}
-          <div className="relative order-2 md:order-1" style={{ height: "420px" }}>
+          <div className="relative order-2 md:order-1" style={{ height: "588px" }}>
             <div
               className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing rounded-2xl overflow-hidden"
               onPointerDown={(e) => {
@@ -156,7 +171,11 @@ export default function FeatureGrid() {
               }}
               style={{ touchAction: "none" }}
             >
-              <LearnerCarousel3D activeIndex={activeIndex} userRotationY={userRotationY} />
+              {carouselInView ? (
+                <LearnerCarousel3D activeIndex={activeIndex} userRotationY={userRotationY} />
+              ) : (
+                <div className="absolute inset-0 bg-black/5 rounded-2xl" aria-hidden />
+              )}
             </div>
 
             <button

@@ -9,14 +9,17 @@ import { getModelUrl } from "../lib/utils";
 const LEARNER_MODELS = ["model_teen", "model_teacher", "model_kid", "model_family"] as const;
 LEARNER_MODELS.forEach((name) => useGLTF.preload(getModelUrl(`${name}.glb`)));
 
+/** Global scale for carousel (characters + layout) */
+const S = 1.4;
+
 // Diamond positions: front, right, back, left
 const SLOT_POSITIONS: [number, number, number][] = [
-  [0,    0,  1.6],  // 0: front (active)
-  [2.2,  0, -0.8],  // 1: right
-  [0,    0, -2.4],  // 2: back
-  [-2.2, 0, -0.8],  // 3: left
+  [0,       0,  1.6 * S],   // 0: front (active)
+  [2.2 * S, 0, -0.8 * S],   // 1: right
+  [0,       0, -2.4 * S],   // 2: back
+  [-2.2 * S, 0, -0.8 * S],  // 3: left
 ];
-const SLOT_SCALES  = [1.55, 0.95, 0.6, 0.95];  // front, right, back, left — biraz daha küçük
+const SLOT_SCALES = [1.55 * S, 0.95 * S, 0.6 * S, 0.95 * S]; // front, right, back, left
 const SLOT_OPACITY = [1.0,  0.7,  0.25, 0.7 ];
 
 function CharacterModel({
@@ -77,7 +80,7 @@ export default function LearnerCarousel3D({ activeIndex, userRotationY = 0 }: Le
 
   return (
     <Canvas
-      camera={{ position: [0, 0.5, 6.8], fov: 46 }}
+      camera={{ position: [0, 0.5 * S, 6.8 * S], fov: 46 }}
       style={{ width: "100%", height: "100%" }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -101,11 +104,11 @@ export default function LearnerCarousel3D({ activeIndex, userRotationY = 0 }: Le
       </Suspense>
 
       <ContactShadows
-        position={[0, -1.1, 0]}
+        position={[0, -1.1 * S, 0]}
         opacity={0.22}
-        scale={14}
+        scale={14 * S}
         blur={3}
-        far={2.5}
+        far={2.5 * S}
       />
     </Canvas>
   );
