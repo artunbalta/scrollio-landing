@@ -10,15 +10,15 @@ import BackgroundOrbs from "./BackgroundOrbs";
 
 const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 
-/** Slightly smaller characters on narrow mobile hero (vs desktop split). */
-const MOBILE_MODEL_SCALE = 0.68;
+const CORE_MODEL_SCALE = 0.68;
+const KIDS_MODEL_SCALE = 0.58;
 const CORE_MODELS: ModelConfig[] = [
-  { url: getModelUrl("scrolliocore1.glb"), position: [-0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 0.7, floatAmplitude: 0.06 },
-  { url: getModelUrl("scrolliocore2.glb"), position: [0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 1.0, floatAmplitude: 0.07 },
+  { url: getModelUrl("scrolliocore1.glb"), position: [-0.48, -0.05, 0], scale: CORE_MODEL_SCALE, floatSpeed: 0.7, floatAmplitude: 0.06 },
+  { url: getModelUrl("scrolliocore2.glb"), position: [0.48, -0.05, 0], scale: CORE_MODEL_SCALE, floatSpeed: 1.0, floatAmplitude: 0.07 },
 ];
 const KIDS_MODELS: ModelConfig[] = [
-  { url: getModelUrl("scrolliokids1.glb"), position: [-0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 1.1, floatAmplitude: 0.08 },
-  { url: getModelUrl("scrolliokids2.glb"), position: [0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 0.85, floatAmplitude: 0.06 },
+  { url: getModelUrl("scrolliokids1.glb"), position: [-0.75, -0.05, 0], scale: KIDS_MODEL_SCALE, floatSpeed: 1.1, floatAmplitude: 0.08 },
+  { url: getModelUrl("scrolliokids2.glb"), position: [0.75, -0.05, 0], scale: KIDS_MODEL_SCALE, floatSpeed: 0.85, floatAmplitude: 0.06 },
 ];
 
 export default function MobileHero() {

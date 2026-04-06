@@ -8,6 +8,8 @@ import WaitlistSection from "./WaitlistSection";
 import FAQ from "./FAQ";
 import FeatureGrid from "./FeatureGrid";
 import KidsModeDemo from "./KidsModeDemo";
+import HowItWorks from "./HowItWorks";
+import WhyScrollio from "./WhyScrollio";
 import BackgroundOrbs from "./BackgroundOrbs";
 import { getModelUrl } from "../lib/utils";
 import MobileHero from "./MobileHero";
@@ -461,62 +463,11 @@ export default function SplitScreen() {
       {/* ══════════════ SCROLLABLE CONTENT (gradient here: FAQ, waitlist, etc.) ══════════════ */}
       <div id="about" style={{ background: "transparent" }}>
 
-        {/* ── How it works ── */}
-        <section className="py-28 px-6">
-          <div className="max-w-5xl mx-auto text-center">
-            <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: "var(--accent)" }}>
-              How it works
-            </p>
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4" style={{ color: "var(--foreground)" }}>
-              Learning that fits your scroll
-            </h2>
-            <p className="text-lg mb-16 max-w-xl mx-auto" style={{ color: "var(--foreground-muted)" }}>
-              No schedules. No homework. Just open the app and start.
-            </p>
+        {/* ── How it works (redesigned AI-native section) ── */}
+        <HowItWorks />
 
-            <div className="grid md:grid-cols-3 gap-10">
-              {[
-                { num: "01", icon: "📱", title: "Open your feed", desc: "Just like your favourite social app — but every swipe teaches you something real." },
-                { num: "02", icon: "🧠", title: "Learn by doing", desc: "AI adapts to your curiosity and pace. Pure flow, no interruptions." },
-                { num: "03", icon: "✨", title: "Build knowledge", desc: "Topics connect over time. What you learn today becomes tomorrow's foundation." },
-              ].map((s) => (
-                <div key={s.num} className="flex flex-col items-center">
-                  <span className="text-5xl mb-5">{s.icon}</span>
-                  <span className="text-xs font-bold tracking-widest mb-2" style={{ color: "var(--accent)" }}>{s.num}</span>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: "var(--foreground)" }}>{s.title}</h3>
-                  <p className="text-sm max-w-[220px]" style={{ color: "var(--foreground-muted)" }}>{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Benefits grid ── */}
-        <section className="py-28 px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-extrabold mb-4" style={{ color: "var(--foreground)" }}>
-                Why Scrollio?
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { icon: "🎯", title: "Hyper-personalised", desc: "AI tailors every session to your interests, pace, and learning style." },
-                { icon: "⚡", title: "Micro-learning", desc: "Short, dense bites that respect your time and maximise retention." },
-                { icon: "🌍", title: "All subjects", desc: "Science, history, art, tech, philosophy — one app, infinite topics." },
-                { icon: "🔒", title: "Safe for kids", desc: "Age-gated content, COPPA-compliant, no ads, no dark patterns." },
-                { icon: "📶", title: "Offline ready", desc: "Download lessons, learn on the go — no Wi-Fi required." },
-                { icon: "📊", title: "Progress tracking", desc: "See what you (or your child) have learned and what's next." },
-              ].map((b) => (
-                <div key={b.title} className="card-light rounded-2xl p-6">
-                  <span className="text-3xl mb-4 block">{b.icon}</span>
-                  <h4 className="font-bold mb-2" style={{ color: "var(--foreground)" }}>{b.title}</h4>
-                  <p className="text-sm" style={{ color: "var(--foreground-muted)" }}>{b.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ── Why Scrollio (redesigned bento-style section) ── */}
+        <WhyScrollio />
 
         {/* ── Designed for Every Learner (just above FAQ) ── */}
         <FeatureGrid />
