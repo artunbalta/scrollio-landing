@@ -160,7 +160,10 @@ export default function SplitScreen() {
   const kidsCard  = { bg: "rgba(249,115,22,0.08)",  border: "rgba(249,115,22,0.2)"  };
 
   return (
-    <div className="min-h-screen relative bg-dots" style={{ fontFamily: "inherit", background: "var(--background)" }}>
+    <div
+      className="min-h-screen relative bg-dots"
+      style={{ fontFamily: "inherit" }}
+    >
       <BackgroundOrbs />
 
       {/* ── Mobile hero (lever toggle) — desktop uses split screen below ── */}
