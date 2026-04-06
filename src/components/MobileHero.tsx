@@ -10,13 +10,15 @@ import BackgroundOrbs from "./BackgroundOrbs";
 
 const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 
+/** Slightly smaller characters on narrow mobile hero (vs desktop split). */
+const MOBILE_MODEL_SCALE = 0.68;
 const CORE_MODELS: ModelConfig[] = [
-  { url: getModelUrl("scrolliocore1.glb"), position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.7, floatAmplitude: 0.06 },
-  { url: getModelUrl("scrolliocore2.glb"), position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.0, floatAmplitude: 0.07 },
+  { url: getModelUrl("scrolliocore1.glb"), position: [-0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 0.7, floatAmplitude: 0.06 },
+  { url: getModelUrl("scrolliocore2.glb"), position: [0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 1.0, floatAmplitude: 0.07 },
 ];
 const KIDS_MODELS: ModelConfig[] = [
-  { url: getModelUrl("scrolliokids1.glb"), position: [-0.75, -0.05, 0], scale: 0.82, floatSpeed: 1.1, floatAmplitude: 0.08 },
-  { url: getModelUrl("scrolliokids2.glb"), position: [0.75, -0.05, 0], scale: 0.82, floatSpeed: 0.85, floatAmplitude: 0.06 },
+  { url: getModelUrl("scrolliokids1.glb"), position: [-0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 1.1, floatAmplitude: 0.08 },
+  { url: getModelUrl("scrolliokids2.glb"), position: [0.75, -0.05, 0], scale: MOBILE_MODEL_SCALE, floatSpeed: 0.85, floatAmplitude: 0.06 },
 ];
 
 export default function MobileHero() {
@@ -87,7 +89,7 @@ export default function MobileHero() {
         aria-hidden={isKids}
       >
         {modelsReady && (
-          <ModelViewer models={CORE_MODELS} cameraPosition={[0, 0.25, 4.2]} fov={52} />
+          <ModelViewer models={CORE_MODELS} cameraPosition={[0, 0.25, 4.55]} fov={52} />
         )}
 
         {/* Core overlay */}
@@ -146,15 +148,17 @@ export default function MobileHero() {
         aria-hidden={!isKids}
       >
         {showKidsDemo ? (
-          /* Kids drawing demo */
-          <div className="absolute inset-0 overflow-auto pt-20 pb-32 px-4">
-            <KidsModeDemo embedded className="h-full" />
+          /* Kids drawing demo — min height so embedded flex canvas never collapses */
+          <div className="absolute inset-0 z-[5] overflow-y-auto overscroll-contain pt-[4.5rem] pb-40 px-3">
+            <div className="w-full max-w-lg mx-auto min-h-[400px] h-[calc(100dvh-10.5rem)] max-h-[calc(100dvh-6rem)] flex flex-col">
+              <KidsModeDemo embedded className="h-full min-h-0 flex-1" />
+            </div>
           </div>
         ) : (
           /* Kids 3D scene */
           <>
             {modelsReady && (
-              <ModelViewer models={KIDS_MODELS} cameraPosition={[0, 0.25, 4.2]} fov={52} />
+              <ModelViewer models={KIDS_MODELS} cameraPosition={[0, 0.25, 4.55]} fov={52} />
             )}
             <div className="absolute inset-0 flex flex-col items-center justify-between pointer-events-none z-10">
               <div className="flex flex-col items-center text-center pt-24 px-6">
