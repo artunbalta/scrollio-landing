@@ -10,20 +10,18 @@ const TOPIC_TAGS = [
   { label: "History", color: "#f59e0b" },
   { label: "Philosophy", color: "#8b5cf6" },
   { label: "Design", color: "#ec4899" },
-  { label: "Artificial Intelligence", color: "#06b6d4" },
+  { label: "Artificial Intelligence", color: "#ea580c" },
   { label: "Health", color: "#22c55e" },
   { label: "Space", color: "#6366f1" },
   { label: "Crypto", color: "#f97316" },
   { label: "Biology", color: "#84cc16" },
   { label: "Neuroscience", color: "#e879f9" },
-  { label: "Climate", color: "#34d399" },
-  { label: "Politics", color: "#f87171" },
 ];
 
 const TOPIC_TAGS_2 = [
   { label: "Art", color: "#f43f5e" },
   { label: "Music", color: "#a78bfa" },
-  { label: "Quantum Physics", color: "#38bdf8" },
+  { label: "Quantum Physics", color: "#0ea5e9" },
   { label: "Economics", color: "#fb923c" },
   { label: "Literature", color: "#c084fc" },
   { label: "Sociology", color: "#4ade80" },
@@ -35,54 +33,38 @@ const TOPIC_TAGS_2 = [
   { label: "Linguistics", color: "#fb7185" },
 ];
 
-const EASE_SPRING = [0.22, 1, 0.36, 1] as const;
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: EASE_SPRING, delay: i * 0.12 },
-  }),
-};
-
 /* ── Step 1: Stacked mini content cards ── */
 function FeedMockup() {
   const cards = [
-    { tag: "AI", title: "How neural networks mimic the brain", color: "#06b6d4" },
+    { tag: "AI", title: "How neural networks mimic the brain", color: "#ea580c" },
     { tag: "Psychology", title: "Why your memory is a reconstruction", color: "#a855f7" },
     { tag: "Finance", title: "The compounding effect: why it's magic", color: "#10b981" },
   ];
   return (
-    <div className="relative w-full flex flex-col gap-2 px-2">
+    <div className="w-full flex flex-col gap-2.5">
       {cards.map((c, i) => (
         <motion.div
           key={c.title}
-          className="rounded-xl border px-3 py-2.5 flex items-start gap-2.5"
-          style={{
-            background: "rgba(255,255,255,0.05)",
-            borderColor: "rgba(255,255,255,0.1)",
-            animationDelay: `${i * 0.4}s`,
-          }}
+          className="rounded-xl border px-3.5 py-3 flex items-start gap-3"
+          style={{ background: "rgba(249,115,22,0.05)", borderColor: "rgba(249,115,22,0.15)" }}
           animate={{ y: [0, -4, 0] }}
           transition={{ duration: 3.5 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
         >
           <span
-            className="mt-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0"
-            style={{ background: `${c.color}20`, color: c.color, border: `1px solid ${c.color}30` }}
+            className="mt-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0"
+            style={{ background: `${c.color}18`, color: c.color, border: `1px solid ${c.color}30` }}
           >
             {c.tag}
           </span>
-          <p className="text-[11px] leading-tight text-white/70">{c.title}</p>
+          <p className="text-[12px] leading-snug text-gray-700 font-medium">{c.title}</p>
         </motion.div>
       ))}
-      {/* AI suggestion ghost */}
       <div
-        className="rounded-xl border px-3 py-2.5 flex items-center gap-2 mt-0.5"
-        style={{ background: "rgba(249,115,22,0.06)", borderColor: "rgba(249,115,22,0.15)", borderStyle: "dashed" }}
+        className="rounded-xl border px-3.5 py-2.5 flex items-center gap-2.5 mt-0.5"
+        style={{ background: "rgba(249,115,22,0.04)", borderColor: "rgba(249,115,22,0.2)", borderStyle: "dashed" }}
       >
-        <span className="text-[9px] text-orange-400/60">✦ Next for you</span>
-        <div className="h-1.5 flex-1 rounded-full bg-white/10">
+        <span className="text-[10px] text-orange-400 font-semibold">✦ Next for you</span>
+        <div className="h-1.5 flex-1 rounded-full" style={{ background: "rgba(249,115,22,0.12)" }}>
           <motion.div
             className="h-full rounded-full"
             style={{ background: "linear-gradient(90deg,#f97316,#a855f7)" }}
@@ -95,33 +77,26 @@ function FeedMockup() {
   );
 }
 
-/* ── Step 2: AI nodes ── */
+/* ── Step 2: AI node graph ── */
 function AINodeGraph() {
   const nodes = [
-    { x: "12%", y: "38%", color: "#06b6d4", size: 10, delay: 0 },
-    { x: "50%", y: "20%", color: "#a855f7", size: 14, delay: 0.4 },
-    { x: "82%", y: "42%", color: "#f97316", size: 10, delay: 0.8 },
-    { x: "30%", y: "68%", color: "#10b981", size: 8, delay: 1.1 },
-    { x: "68%", y: "72%", color: "#f59e0b", size: 8, delay: 1.5 },
+    { cx: 18, cy: 38, color: "#ea580c", r: 6, delay: 0 },
+    { cx: 50, cy: 18, color: "#a855f7", r: 8, delay: 0.4 },
+    { cx: 82, cy: 40, color: "#f97316", r: 6, delay: 0.8 },
+    { cx: 32, cy: 68, color: "#10b981", r: 5, delay: 1.1 },
+    { cx: 68, cy: 70, color: "#f59e0b", r: 5, delay: 1.5 },
   ];
   const edges = [
-    { x1: "12%", y1: "38%", x2: "50%", y2: "20%" },
-    { x1: "50%", y1: "20%", x2: "82%", y2: "42%" },
-    { x1: "50%", y1: "20%", x2: "30%", y2: "68%" },
-    { x1: "82%", y1: "42%", x2: "68%", y2: "72%" },
-    { x1: "30%", y1: "68%", x2: "68%", y2: "72%" },
+    [18, 38, 50, 18], [50, 18, 82, 40],
+    [50, 18, 32, 68], [82, 40, 68, 70],
+    [32, 68, 68, 70],
   ];
   return (
-    <div className="relative w-full h-28">
+    <div className="relative w-full" style={{ height: 140 }}>
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {edges.map((e, i) => (
-          <line
-            key={i}
-            x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
-            stroke="rgba(168,85,247,0.22)"
-            strokeWidth="0.8"
-            strokeDasharray="2 1"
-          />
+        {edges.map(([x1, y1, x2, y2], i) => (
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="rgba(249,115,22,0.25)" strokeWidth="0.9" strokeDasharray="2.5 1.5" />
         ))}
       </svg>
       {nodes.map((n, i) => (
@@ -129,19 +104,19 @@ function AINodeGraph() {
           key={i}
           className="absolute rounded-full"
           style={{
-            left: n.x, top: n.y,
-            width: n.size, height: n.size,
+            left: `${n.cx}%`, top: `${n.cy}%`,
+            width: n.r * 2, height: n.r * 2,
             background: n.color,
             transform: "translate(-50%,-50%)",
-            boxShadow: `0 0 ${n.size * 2}px ${n.color}60`,
+            boxShadow: `0 0 ${n.r * 3}px ${n.color}50`,
           }}
-          animate={{ scale: [1, 1.35, 1], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: n.delay }}
+          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: n.delay }}
         />
       ))}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[9px] font-semibold"
-        style={{ background: "rgba(168,85,247,0.15)", color: "#a855f7", border: "1px solid rgba(168,85,247,0.3)" }}
+        className="absolute bottom-2 right-2 px-3 py-1 rounded-full text-[10px] font-semibold"
+        style={{ background: "rgba(249,115,22,0.1)", color: "#ea580c", border: "1px solid rgba(249,115,22,0.2)" }}
       >
         curiosity graph
       </div>
@@ -152,38 +127,38 @@ function AINodeGraph() {
 /* ── Step 3: Knowledge path ── */
 function KnowledgePath() {
   const milestones = [
-    { label: "Day 1", topic: "AI basics", done: true },
-    { label: "Day 4", topic: "Neural nets", done: true },
-    { label: "Day 9", topic: "LLMs", done: true },
-    { label: "Day 18", topic: "Future", done: false },
+    { label: "Day 1",   topic: "AI basics",   done: true },
+    { label: "Day 4",   topic: "Neural nets",  done: true },
+    { label: "Day 9",   topic: "LLMs",         done: true },
+    { label: "Day 18",  topic: "Future",        done: false },
   ];
   return (
-    <div className="relative w-full px-2 flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-3">
       {milestones.map((m, i) => (
         <motion.div
           key={m.label}
-          className="flex items-center gap-3"
-          initial={{ opacity: 0, x: -12 }}
+          className="flex items-center gap-3.5"
+          initial={{ opacity: 0, x: -10 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: i * 0.18, duration: 0.45 }}
+          transition={{ delay: i * 0.15, duration: 0.4 }}
         >
           <div
-            className="w-5 h-5 rounded-full shrink-0 flex items-center justify-center text-[8px] font-bold"
+            className="w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[10px] font-bold"
             style={{
-              background: m.done ? "linear-gradient(135deg,#f97316,#a855f7)" : "rgba(255,255,255,0.08)",
-              border: m.done ? "none" : "1px solid rgba(255,255,255,0.15)",
-              color: "white",
+              background: m.done ? "linear-gradient(135deg,#f97316,#a855f7)" : "rgba(249,115,22,0.1)",
+              border: m.done ? "none" : "1.5px solid rgba(249,115,22,0.25)",
+              color: m.done ? "white" : "#f97316",
             }}
           >
             {m.done ? "✓" : ""}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[10px] text-white/40">{m.label}</span>
-              <span className="text-[10px] text-white/70 font-medium truncate">{m.topic}</span>
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <span className="text-[11px] text-gray-400">{m.label}</span>
+              <span className="text-[11px] text-gray-700 font-semibold">{m.topic}</span>
             </div>
-            <div className="mt-1 h-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.06)" }}>
+            <div className="h-1 rounded-full w-full" style={{ background: "rgba(249,115,22,0.1)" }}>
               {m.done && (
                 <motion.div
                   className="h-full rounded-full"
@@ -191,7 +166,7 @@ function KnowledgePath() {
                   initial={{ width: 0 }}
                   whileInView={{ width: "100%" }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: i * 0.18 + 0.3 }}
+                  transition={{ duration: 0.8, delay: i * 0.15 + 0.3 }}
                 />
               )}
             </div>
@@ -210,6 +185,8 @@ const STEPS = [
     body: "Open the feed, swipe up. Every card is a lesson — built for one minute, designed to stick.",
     visual: <FeedMockup />,
     accent: "#f97316",
+    accentBg: "rgba(249,115,22,0.07)",
+    accentBorder: "rgba(249,115,22,0.18)",
   },
   {
     num: "02",
@@ -218,6 +195,8 @@ const STEPS = [
     body: "Scrollio maps your curiosity in real time and reshapes what comes next — silently, seamlessly.",
     visual: <AINodeGraph />,
     accent: "#a855f7",
+    accentBg: "rgba(168,85,247,0.06)",
+    accentBorder: "rgba(168,85,247,0.18)",
   },
   {
     num: "03",
@@ -225,92 +204,96 @@ const STEPS = [
     headline: "What you learn today shapes tomorrow.",
     body: "Topics connect across sessions. Your feed evolves. You don't just learn — you grow.",
     visual: <KnowledgePath />,
-    accent: "#06b6d4",
+    accent: "#ea580c",
+    accentBg: "rgba(234,88,12,0.06)",
+    accentBorder: "rgba(234,88,12,0.18)",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section className="relative overflow-hidden py-24 px-4" style={{ background: "linear-gradient(170deg, #09090f 0%, #0f0b1a 55%, #0a1218 100%)" }}>
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-20"
-          style={{ background: "radial-gradient(ellipse at center, #a855f7 0%, transparent 70%)" }} />
-        <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] rounded-full opacity-10"
-          style={{ background: "radial-gradient(ellipse at center, #f97316 0%, transparent 70%)" }} />
-      </div>
+    <section className="relative overflow-hidden py-28 px-4" style={{ background: "#FFEED4" }}>
+      {/* Very subtle dot texture for depth */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-20"
+        style={{ backgroundImage: "radial-gradient(rgba(249,115,22,0.18) 1px, transparent 1px)", backgroundSize: "28px 28px" }}
+      />
 
       <div className="relative max-w-5xl mx-auto">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
+          transition={{ duration: 0.5 }}
         >
           <span
             className="inline-block text-[10px] font-bold uppercase tracking-[0.22em] mb-4 px-4 py-1.5 rounded-full"
-            style={{ background: "rgba(249,115,22,0.12)", color: "#f97316", border: "1px solid rgba(249,115,22,0.2)" }}
+            style={{ background: "rgba(249,115,22,0.12)", color: "#ea580c", border: "1px solid rgba(249,115,22,0.25)" }}
           >
             How it works
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
             Scrolling was never<br />
             <span style={{ background: "linear-gradient(135deg, #f97316, #a855f7)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               the problem.
             </span>
           </h2>
-          <p className="mt-4 text-base text-white/40 max-w-md mx-auto leading-relaxed">
+          <p className="mt-4 text-base text-gray-500 max-w-md mx-auto leading-relaxed">
             The problem was what you scrolled through.<br />Scrollio fixes that.
           </p>
         </motion.div>
 
-        {/* Steps grid */}
-        <div className="relative grid md:grid-cols-3 gap-5">
-          {/* Connecting line (desktop) */}
-          <div className="hidden md:block absolute top-[3.5rem] left-[calc(1/6*100%)] right-[calc(1/6*100%)] h-px pointer-events-none"
-            style={{ background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.3) 20%, rgba(249,115,22,0.3) 80%, transparent)" }} />
+        {/* Steps */}
+        <div className="relative grid md:grid-cols-3 gap-6">
+          {/* Connecting line (desktop only) */}
+          <div
+            className="hidden md:block absolute top-[3.25rem] left-[calc(1/6*100%)] right-[calc(1/6*100%)] h-px pointer-events-none"
+            style={{ background: "linear-gradient(90deg, transparent, rgba(249,115,22,0.35) 20%, rgba(168,85,247,0.35) 80%, transparent)" }}
+          />
 
           {STEPS.map((step, i) => (
             <motion.div
               key={step.num}
-              custom={i}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative rounded-2xl p-5 flex flex-col gap-4"
+              transition={{ duration: 0.5, delay: i * 0.12 }}
+              className="rounded-2xl p-6 flex flex-col gap-5"
               style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                backdropFilter: "blur(16px)",
+                background: "rgba(255,255,255,0.62)",
+                border: `1px solid ${step.accentBorder}`,
+                backdropFilter: "blur(12px)",
+                boxShadow: "0 2px 24px rgba(249,115,22,0.06)",
               }}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+              whileHover={{ y: -4, boxShadow: "0 8px 32px rgba(249,115,22,0.12)", transition: { duration: 0.2 } }}
             >
-              {/* Step number + label */}
-              <div className="flex items-center gap-2.5">
+              {/* Step badge + label */}
+              <div className="flex items-center gap-3">
                 <span
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0"
-                  style={{ background: `${step.accent}18`, color: step.accent, border: `1px solid ${step.accent}30` }}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-black shrink-0"
+                  style={{ background: step.accentBg, color: step.accent, border: `1.5px solid ${step.accentBorder}` }}
                 >
                   {step.num}
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: step.accent }}>
+                <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: step.accent }}>
                   {step.label}
                 </span>
               </div>
 
               {/* Animated visual */}
-              <div className="rounded-xl overflow-hidden py-3 px-1 min-h-[120px] flex items-center"
-                style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.06)" }}>
+              <div
+                className="rounded-xl overflow-hidden p-4 min-h-[148px] flex items-center"
+                style={{ background: step.accentBg, border: `1px solid ${step.accentBorder}` }}
+              >
                 {step.visual}
               </div>
 
               {/* Text */}
               <div>
-                <p className="text-sm font-semibold text-white leading-snug mb-1">{step.headline}</p>
-                <p className="text-xs text-white/45 leading-relaxed">{step.body}</p>
+                <p className="text-[15px] font-bold text-gray-900 leading-snug mb-1.5">{step.headline}</p>
+                <p className="text-[13px] text-gray-500 leading-relaxed">{step.body}</p>
               </div>
             </motion.div>
           ))}
@@ -318,13 +301,13 @@ export default function HowItWorks() {
 
         {/* Topic tag streams */}
         <motion.div
-          className="mt-14 space-y-2"
+          className="mt-16 space-y-2.5"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-center text-[10px] text-white/25 uppercase tracking-widest mb-5">
+          <p className="text-center text-[10px] text-gray-400 uppercase tracking-widest mb-5 font-semibold">
             Explore every domain
           </p>
           <TopicCloud tags={TOPIC_TAGS} speed={55} />

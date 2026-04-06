@@ -9,7 +9,6 @@ import FAQ from "./FAQ";
 import FeatureGrid from "./FeatureGrid";
 import KidsModeDemo from "./KidsModeDemo";
 import HowItWorks from "./HowItWorks";
-import WhyScrollio from "./WhyScrollio";
 import BackgroundOrbs from "./BackgroundOrbs";
 import { getModelUrl } from "../lib/utils";
 import MobileHero from "./MobileHero";
@@ -465,9 +464,6 @@ export default function SplitScreen() {
 
         {/* ── How it works (redesigned AI-native section) ── */}
         <HowItWorks />
-
-        {/* ── Why Scrollio (redesigned bento-style section) ── */}
-        <WhyScrollio />
 
         {/* ── Designed for Every Learner (just above FAQ) ── */}
         <FeatureGrid />
