@@ -11,14 +11,14 @@ import BackgroundOrbs from "./BackgroundOrbs";
 const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 
 const CORE_MODEL_SCALE = 0.68;
-const KIDS_MODEL_SCALE = 0.58;
+const KIDS_MODEL_SCALE = 0.52;
 const CORE_MODELS: ModelConfig[] = [
   { url: getModelUrl("scrolliocore1.glb"), position: [-0.48, -0.05, 0], scale: CORE_MODEL_SCALE, floatSpeed: 0.7, floatAmplitude: 0.06 },
   { url: getModelUrl("scrolliocore2.glb"), position: [0.48, -0.05, 0], scale: CORE_MODEL_SCALE, floatSpeed: 1.0, floatAmplitude: 0.07 },
 ];
 const KIDS_MODELS: ModelConfig[] = [
-  { url: getModelUrl("scrolliokids1.glb"), position: [-0.45, -0.05, 0], scale: KIDS_MODEL_SCALE, floatSpeed: 1.1, floatAmplitude: 0.08 },
-  { url: getModelUrl("scrolliokids2.glb"), position: [0.45, -0.05, 0], scale: KIDS_MODEL_SCALE, floatSpeed: 0.85, floatAmplitude: 0.06 },
+  { url: getModelUrl("scrolliokids1.glb"), position: [-0.58, -0.05, 0], scale: KIDS_MODEL_SCALE, floatSpeed: 1.1, floatAmplitude: 0.08 },
+  { url: getModelUrl("scrolliokids2.glb"), position: [0.58, -0.05, 0], scale: KIDS_MODEL_SCALE, floatSpeed: 0.85, floatAmplitude: 0.06 },
 ];
 
 export default function MobileHero() {
@@ -78,7 +78,7 @@ export default function MobileHero() {
   return (
     <div
       className="relative w-full h-screen overflow-hidden bg-dots"
-      style={{ background: "var(--background)" }}
+      style={{ backgroundColor: "var(--background)" }}
     >
       <BackgroundOrbs />
 
