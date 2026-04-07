@@ -12,8 +12,13 @@ function getMobileSnapshot(): boolean {
 
 function subscribeMobile(onStoreChange: () => void): () => void {
   const mq = window.matchMedia(MOBILE_QUERY);
-  mq.addEventListener("change", onStoreChange);
-  return () => mq.removeEventListener("change", onStoreChange);
+  if (typeof mq.addEventListener === "function") {
+    mq.addEventListener("change", onStoreChange);
+    return () => mq.removeEventListener("change", onStoreChange);
+  }
+  // Safari < 14 / legacy: addListener
+  mq.addListener(onStoreChange);
+  return () => mq.removeListener(onStoreChange);
 }
 
 /**

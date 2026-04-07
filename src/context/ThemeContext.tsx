@@ -34,10 +34,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme(prev => prev === "light" ? "dark" : "light");
   };
 
-  if (!mounted) {
-    return null;
-  }
-
+  // Always render the provider so children (useTheme, BackgroundOrbs, etc.) never mount
+  // outside the context — returning null here caused blank SSR and production client errors.
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}

@@ -41,6 +41,9 @@ export function InfiniteSlider({
     let controls: ReturnType<typeof animate> | undefined;
     const size = direction === 'horizontal' ? width : height;
     const contentSize = size + gap;
+    if (!Number.isFinite(contentSize) || contentSize <= 0) {
+      return;
+    }
     const from = reverse ? -contentSize / 2 : 0;
     const to = reverse ? 0 : -contentSize / 2;
 
