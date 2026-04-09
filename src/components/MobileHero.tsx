@@ -10,6 +10,8 @@ import BackgroundOrbs from "./BackgroundOrbs";
 
 const ModelViewer = dynamic(() => import("./ModelViewer"), { ssr: false });
 
+const ROTATING_WORDS = ["Learning", "Growth", "Discovery", "Adventure"];
+
 const CORE_MODEL_SCALE = 0.68;
 const KIDS_MODEL_SCALE = 0.52;
 const CORE_MODELS: ModelConfig[] = [
@@ -28,10 +30,23 @@ export default function MobileHero() {
   const [modelsReady, setModelsReady] = useState(false);
   const [isVapiCallActive, setIsVapiCallActive] = useState(false);
   const vapiRef = useRef<{ stop: () => Promise<void> } | null>(null);
+  const [rotatingWordIndex, setRotatingWordIndex] = useState(0);
+  const [wordAnimating, setWordAnimating] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setModelsReady(true), 120);
     return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordAnimating(true);
+      setTimeout(() => {
+        setRotatingWordIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
+        setWordAnimating(false);
+      }, 300);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   // When user toggles back to Core, hide the kids demo
@@ -82,6 +97,27 @@ export default function MobileHero() {
     >
       <BackgroundOrbs />
 
+      {/* ── Main headline (matches desktop split hero; hidden while Kids drawing demo is open) ── */}
+      {!showKidsDemo && (
+        <div
+          className="absolute top-0 left-0 right-0 z-[25] pointer-events-none flex flex-col items-center px-4"
+          style={{ paddingTop: "5.25rem" }}
+        >
+          <h1 className="text-[1.65rem] leading-tight sm:text-3xl font-bold tracking-tight text-center max-w-[20rem] sm:max-w-none">
+            <span style={{ color: "var(--foreground)" }}>Turn Scrolling</span>
+            <br />
+            <span style={{ color: "var(--foreground)" }}>Into </span>
+            <span
+              className={`script-gradient text-[1.65rem] sm:text-3xl inline-block transition-all duration-300 ${
+                wordAnimating ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
+              }`}
+            >
+              {ROTATING_WORDS[rotatingWordIndex]}
+            </span>
+          </h1>
+        </div>
+      )}
+
       {/* ── Core panel ── */}
       <div
         className="absolute inset-0 transition-opacity duration-400"
@@ -94,7 +130,7 @@ export default function MobileHero() {
 
         {/* Core overlay */}
         <div className="absolute inset-0 flex flex-col items-center justify-between pointer-events-none z-10">
-          <div className="flex flex-col items-center text-center pt-24 px-6">
+          <div className="flex flex-col items-center text-center pt-[11.5rem] px-6 sm:pt-[12rem]">
             <span
               className="text-[10px] font-bold uppercase tracking-[0.22em] mb-2 px-3 py-1 rounded-full"
               style={{ background: "rgba(168,85,247,0.1)", color: "var(--accent-secondary)", border: "1px solid rgba(168,85,247,0.2)" }}
@@ -161,7 +197,7 @@ export default function MobileHero() {
               <ModelViewer models={KIDS_MODELS} cameraPosition={[0, 0.25, 4.55]} fov={52} />
             )}
             <div className="absolute inset-0 flex flex-col items-center justify-between pointer-events-none z-10">
-              <div className="flex flex-col items-center text-center pt-24 px-6">
+              <div className="flex flex-col items-center text-center pt-[11.5rem] px-6 sm:pt-[12rem]">
                 <span
                   className="text-[10px] font-bold uppercase tracking-[0.22em] mb-2 px-3 py-1 rounded-full"
                   style={{ background: "rgba(249,115,22,0.1)", color: "var(--accent)", border: "1px solid rgba(249,115,22,0.2)" }}
