@@ -39,7 +39,7 @@ function PhoneShell({
       </div>
       {label ? (
         <span
-          className="max-w-full truncate px-2 text-center text-[10px] font-bold uppercase tracking-wider md:text-[11px]"
+          className="max-w-full truncate px-2 text-center text-[10px] font-semibold tracking-wide md:text-[11px]"
           style={{ color: "#9a3412" }}
         >
           {label}

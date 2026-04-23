@@ -308,20 +308,23 @@ export default function SplitScreen() {
                     }}
                   >
                     {/* Dynamic Island */}
-                    <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-10 w-[90px] h-[26px] rounded-full bg-black" />
-                    {/* Screen area — emulator screenshot */}
-                    <div className="flex-1 mt-7 mx-1.5 mb-8 rounded-[1.5rem] bg-[#f2f2f7] min-h-0 overflow-hidden flex items-center justify-center">
-                      <Image
+                    <div className="absolute top-2.5 left-1/2 z-10 h-[26px] w-[90px] -translate-x-1/2 rounded-full bg-black" />
+                    {/* Screen — alanı genişlet + hafif zoom; siyah boşluklar kırpılır */}
+                    <div className="absolute left-[2px] right-[2px] top-[24px] bottom-[18px] overflow-hidden rounded-[1.25rem] bg-[#faf8f5]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
                         src="/publice-emulator.jpg"
                         alt="Core emulator"
-                        width={400}
-                        height={800}
-                        className="w-full h-full object-contain object-top"
-                        unoptimized
+                        className="pointer-events-none absolute inset-0 block h-full w-full object-cover object-top select-none"
+                        style={{
+                          transform: "scale(1.02) translateY(-6px)",
+                          transformOrigin: "center top",
+                        }}
+                        draggable={false}
                       />
                     </div>
                     {/* Home indicator */}
-                    <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 w-28 h-1 rounded-full bg-black/40" />
+                    <div className="absolute bottom-2.5 left-1/2 z-10 w-28 h-1 -translate-x-1/2 rounded-full bg-black/40" />
                   </div>
                 </div>
               </div>
