@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import April23Modal from "@/components/April23Modal";
 const sora = Sora({
   subsets: ["latin"],
   variable: "--font-sora",
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className={`${sora.variable} font-sans antialiased`} suppressHydrationWarning>
         <ThemeProvider>
         {children}
+        <April23Modal />
         </ThemeProvider>
       </body>
     </html>
