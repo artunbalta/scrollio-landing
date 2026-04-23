@@ -18,6 +18,8 @@ const EMULATOR_EKLER_IMAGES = [
   "/23nisan/ekler/IMG_1363.jpeg",
 ] as const;
 
+const EMULATOR_LABELS = ["Ateş, 12", "Bulut, 11", "Defne, 14", "Azra, 9"];
+
 export default function April23Page() {
   return (
     <main
@@ -111,6 +113,7 @@ export default function April23Page() {
         aria-label="23 Nisan emülatörleri"
       >
         <April23EmulatorGrid
+          labels={EMULATOR_LABELS}
           screens={EMULATOR_EKLER_IMAGES.map((src, i) => (
             <div key={src} className="absolute inset-0">
               <Image
