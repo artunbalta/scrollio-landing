@@ -158,16 +158,28 @@ export const PrismaHero = () => {
           {[1, 2, 3].map((n, i) => (
             <div key={n} className="relative h-dvh w-full overflow-hidden">
               <div className="absolute inset-x-0 -top-px bottom-[-1px]">
-                <Image
-                  src={`/animation/${n}.png`}
-                  alt=""
-                  fill
-                  priority={i === 0}
-                  loading={i === 0 ? undefined : "eager"}
-                  className="object-cover"
-                  sizes="100vw"
-                  unoptimized
-                />
+                {n === 1 ? (
+                  <video
+                    src="/animation/landingvideo1.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    className="h-full w-full object-cover object-top"
+                  />
+                ) : (
+                  <Image
+                    src={`/animation/${n}.png`}
+                    alt=""
+                    fill
+                    priority={i === 0}
+                    loading={i === 0 ? undefined : "eager"}
+                    className="object-cover object-top"
+                    sizes="100vw"
+                    unoptimized
+                  />
+                )}
               </div>
             </div>
           ))}
