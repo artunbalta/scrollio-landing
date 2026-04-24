@@ -1,0 +1,297 @@
+"use client";
+
+import { motion, useInView, useScroll, useSpring, useTransform } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { useCallback, useRef } from "react";
+
+/* ---------------- WordsPullUp ---------------- */
+interface WordsPullUpProps {
+  text: string;
+  className?: string;
+  showAsterisk?: boolean;
+  style?: React.CSSProperties;
+}
+
+export const WordsPullUp = ({
+  text,
+  className = "",
+  showAsterisk = false,
+  style,
+}: WordsPullUpProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const words = text.split(" ");
+
+  return (
+    <div ref={ref} className={`inline-flex flex-wrap ${className}`} style={style}>
+      {words.map((word, i) => {
+        const isLast = i === words.length - 1;
+        return (
+          <motion.span
+            key={i}
+            initial={{ y: 20, opacity: 0 }}
+            animate={isInView ? { y: 0, opacity: 1 } : {}}
+            transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-block relative"
+            style={{ marginRight: isLast ? 0 : "0.25em" }}
+          >
+            {word}
+            {showAsterisk && isLast && (
+              <span className="absolute top-[0.65em] -right-[0.3em] text-[0.31em]">*</span>
+            )}
+          </motion.span>
+        );
+      })}
+    </div>
+  );
+};
+
+/* ---------------- WordsPullUpMultiStyle ---------------- */
+interface Segment {
+  text: string;
+  className?: string;
+}
+
+interface WordsPullUpMultiStyleProps {
+  segments: Segment[];
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+export const WordsPullUpMultiStyle = ({
+  segments,
+  className = "",
+  style,
+}: WordsPullUpMultiStyleProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+
+  const words: { word: string; className?: string }[] = [];
+  segments.forEach((seg) => {
+    seg.text.split(" ").forEach((w) => {
+      if (w) words.push({ word: w, className: seg.className });
+    });
+  });
+
+  return (
+    <div ref={ref} className={`inline-flex flex-wrap justify-center ${className}`} style={style}>
+      {words.map((w, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: 20, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+          className={`inline-block ${w.className ?? ""}`}
+          style={{ marginRight: "0.25em" }}
+        >
+          {w.word}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
+
+/* ---------------- Hero ---------------- */
+const navItems = ["Core", "Kids", "How it Works", "FAQ", "Waitlist"];
+
+const SCROLLIO_CREAM = "#E1E0CC";
+
+export const PrismaHero = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  const rawStripY = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const smoothProgress = useSpring(rawStripY, {
+    stiffness: 26,
+    damping: 11,
+    mass: 1.45,
+    restDelta: 0.002,
+  });
+  const stripY = useTransform(smoothProgress, (v) => `${v}dvh`);
+
+  const chromeOpacityRaw = useTransform(scrollYProgress, [0.12, 0.44], [1, 0]);
+  const chromeOpacity = useSpring(chromeOpacityRaw, {
+    stiffness: 38,
+    damping: 22,
+    mass: 0.65,
+  });
+
+  const scrollToSecondFrame = useCallback(() => {
+    const sec = sectionRef.current;
+    if (!sec) return;
+    const sectionTop = window.scrollY + sec.getBoundingClientRect().top;
+    const scrollSpan = Math.max(0, sec.offsetHeight - window.innerHeight);
+    window.scrollTo({
+      top: sectionTop + scrollSpan * 0.5,
+      behavior: "smooth",
+    });
+  }, []);
+
+  const frame2CopyOpacity = useTransform(scrollYProgress, [0.24, 0.36, 0.56, 0.68], [0, 1, 1, 0]);
+  const frame3CopyOpacity = useTransform(scrollYProgress, [0.56, 0.7, 0.98, 1], [0, 1, 1, 1]);
+
+  return (
+    <section ref={sectionRef} className="relative h-[300vh] w-full">
+      <div className="sticky top-0 h-dvh w-full overflow-hidden">
+        <motion.div
+          style={{ y: stripY }}
+          className="absolute inset-x-0 top-0 h-[300dvh] w-full will-change-transform"
+          aria-hidden
+        >
+          {[1, 2, 3].map((n, i) => (
+            <div key={n} className="relative h-dvh w-full overflow-hidden">
+              <div className="absolute inset-x-0 -top-px bottom-[-1px]">
+                <Image
+                  src={`/animation/${n}.png`}
+                  alt=""
+                  fill
+                  priority={i === 0}
+                  loading={i === 0 ? undefined : "eager"}
+                  className="object-cover"
+                  sizes="100vw"
+                  unoptimized
+                />
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        <div
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-white/[0.06] via-white/[0.03] to-black/30 [box-shadow:inset_0_0_80px_rgba(255,255,255,0.03)]"
+          aria-hidden
+        />
+
+        <motion.div
+          style={{ opacity: frame2CopyOpacity }}
+          className="pointer-events-none absolute inset-0 z-[22] flex flex-col items-stretch px-4 pt-24 sm:px-6 md:pt-28"
+          aria-hidden
+        >
+          <div className="mx-auto w-full max-w-lg font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
+            <p
+              className="m-0 text-2xl font-medium tracking-tight md:text-4xl"
+              style={{ color: SCROLLIO_CREAM }}
+            >
+              Scrollio Kids
+            </p>
+            <div className="mt-5 space-y-2 text-left text-sm font-normal leading-snug text-white/90 md:text-base">
+              <p className="m-0">Drawing is the first interface.</p>
+              <p className="m-0">We keep the play obvious on purpose.</p>
+              <p className="m-0">Kids stay in charge of what the screen does next.</p>
+              <p className="m-0">Parents see progress without stealing the fun.</p>
+              <p className="m-0">Tiny wins stack into real confidence.</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          style={{ opacity: frame3CopyOpacity }}
+          className="pointer-events-none absolute inset-0 z-[22] flex flex-col items-stretch px-4 pt-24 sm:px-6 md:pt-28"
+          aria-hidden
+        >
+          <div className="mx-auto w-full max-w-lg font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
+            <p
+              className="m-0 text-2xl font-medium tracking-tight md:text-4xl"
+              style={{ color: SCROLLIO_CREAM }}
+            >
+              Scrollio Core
+            </p>
+            <div className="mt-5 space-y-2 text-left text-sm font-normal leading-snug text-white/90 md:text-base">
+              <p className="m-0">The feed already owns your attention.</p>
+              <p className="m-0">We borrow that rhythm for learning on purpose.</p>
+              <p className="m-0">One short clip can land harder than a long lecture.</p>
+              <p className="m-0">Guilt is not part of the interface here.</p>
+              <p className="m-0">Curiosity is the only habit we try to make loud.</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          style={{ opacity: chromeOpacity }}
+          className="absolute right-10 top-14 z-30 flex w-[min(96vw,36rem)] flex-col items-center gap-4 md:right-14 md:top-20 lg:right-20 lg:top-24"
+        >
+          <motion.div
+            initial={{ y: 16 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-[min(96vw,29.25rem)] max-w-full shrink-0 overflow-hidden aspect-[340/110.1]"
+          >
+            <Image
+              src="/landinglogo.png"
+              alt=""
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 768px) 92vw, 720px"
+              priority
+              unoptimized
+            />
+          </motion.div>
+          <motion.h1
+            initial={{ y: 16 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="m-0 w-full text-center text-[1.3rem] font-bold leading-snug tracking-tight whitespace-nowrap sm:text-[1.463rem] md:text-[1.625rem] lg:text-[1.95rem]"
+          >
+            <span style={{ color: SCROLLIO_CREAM }}>Turn Scrolling Into </span>
+            <span className="script-gradient inline text-[1.3rem] sm:text-[1.463rem] md:text-[1.625rem] lg:text-[1.95rem]">
+              Learning
+            </span>
+          </motion.h1>
+        </motion.div>
+
+        {/* Navbar (centered) */}
+        <nav className="absolute left-1/2 top-0 z-[25] -translate-x-1/2">
+          <div className="flex items-center gap-3 rounded-b-2xl border border-white/40 bg-gradient-to-b from-orange-100/45 via-amber-50/35 to-orange-200/40 px-4 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.06)] ring-1 ring-white/20 sm:gap-6 md:gap-12 md:rounded-b-3xl md:px-8 lg:gap-14">
+            {navItems.map((item) => (
+              <a
+                key={item}
+                href="/#waitlist"
+                className="text-[10px] text-stone-800/90 transition-colors hover:text-stone-950 sm:text-xs md:text-sm"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+        </nav>
+
+        <motion.div
+          style={{ opacity: chromeOpacity }}
+          className="absolute bottom-24 left-4 z-30 flex max-w-lg flex-col items-start gap-5 sm:left-6 md:bottom-28 md:left-8 md:max-w-xl md:gap-6"
+        >
+          <motion.p
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="m-0 text-left text-xs sm:text-sm md:text-base"
+            style={{ lineHeight: 1.35, color: "rgba(225, 224, 204, 0.9)" }}
+          >
+            Scrollio is an AI-powered learning playground that turns everyday
+            scrolling into meaningful education — from TikTok-style knowledge
+            feeds to magical experiences where children&apos;s drawings become
+            living mentors.
+          </motion.p>
+          <motion.button
+            type="button"
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.8, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="group inline-flex cursor-pointer items-center gap-2 rounded-full border-0 py-1 pl-5 pr-1 text-left text-sm font-medium text-black transition-all hover:gap-3 sm:text-base"
+            style={{ backgroundColor: SCROLLIO_CREAM }}
+            onClick={scrollToSecondFrame}
+            aria-label="Scroll to next frame — Start your trial"
+          >
+            Start your trial
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110 sm:h-10 sm:w-10">
+              <ArrowRight className="h-4 w-4" style={{ color: SCROLLIO_CREAM }} />
+            </span>
+          </motion.button>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default PrismaHero;
