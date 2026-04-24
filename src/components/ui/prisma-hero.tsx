@@ -228,7 +228,11 @@ export const PrismaHero = () => {
             <div key={n} className="relative h-screen w-full flex-none overflow-hidden">
               <div
                 className={`absolute inset-x-0 ${
-                  n === 1 ? "top-0 bottom-0" : n === 3 ? "top-0 bottom-0" : "-top-[6vh] bottom-0"
+                  n === 1
+                    ? "top-0 bottom-0"
+                    : n === 2
+                      ? "top-0 bottom-0 md:-top-[6vh]"
+                      : "top-0 bottom-0"
                 }`}
               >
                 {n === 1 ? (
@@ -259,7 +263,9 @@ export const PrismaHero = () => {
                     fill
                     priority={i === 0}
                     loading={i === 0 ? undefined : "eager"}
-                    className={`object-cover ${n === 3 ? "object-top" : "object-bottom"}`}
+                    className={`object-cover ${
+                      n === 2 ? "object-top md:object-bottom" : n === 3 ? "object-top" : "object-bottom"
+                    }`}
                     sizes="100vw"
                     unoptimized
                   />
@@ -422,9 +428,9 @@ export const PrismaHero = () => {
         {/* Navbar (centered) */}
         <a
           href="/23nisan"
-          className="absolute left-3 top-3 z-[26] rounded-full border border-white/45 bg-black/30 px-3 py-1 text-[10px] font-medium text-white/90 backdrop-blur transition hover:bg-black/45 sm:left-4 sm:top-4 sm:text-xs"
+          className="absolute left-3 top-3 z-[26] inline-flex items-center rounded-full border border-red-200/70 bg-gradient-to-r from-red-600 via-red-500 to-rose-500 px-3 py-1.5 text-[10px] font-semibold text-white shadow-[0_8px_20px_rgba(220,38,38,0.45)] transition duration-200 hover:scale-105 hover:from-red-500 hover:to-rose-400 active:scale-95 animate-[pulse_2.2s_ease-in-out_infinite] sm:left-4 sm:top-4 sm:text-xs"
         >
-          23 Nisan Ozel Site
+          23 Nisan Ozel Siteye Gitmek Icin Tikla
         </a>
 
         <nav className="absolute left-1/2 top-0 z-[25] -translate-x-1/2">
