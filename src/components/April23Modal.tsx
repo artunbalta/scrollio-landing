@@ -1,14 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 const STORAGE_KEY = "apr23_seen";
 
 export default function April23Modal() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  const dismissToLanding = () => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, "1");
+    } catch {}
+    setOpen(false);
+    router.push("/");
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -93,6 +103,14 @@ export default function April23Modal() {
           border: "2px solid rgba(255,255,255,0.9)",
         }}
       >
+        <button
+          type="button"
+          onClick={dismissToLanding}
+          className="absolute left-3 top-3 z-20 flex h-10 w-10 items-center justify-center rounded-full text-lg font-light leading-none text-[#7c2d12] transition hover:bg-black/5 active:scale-95"
+          aria-label="Kapat ve ana sayfaya dön"
+        >
+          ×
+        </button>
         {/* Ribbon */}
         <div className="flex items-center justify-center gap-2 mb-5">
           <span

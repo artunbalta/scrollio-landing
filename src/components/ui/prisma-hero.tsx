@@ -131,8 +131,21 @@ export const PrismaHero = () => {
     });
   }, []);
 
-  const frame2CopyOpacity = useTransform(scrollYProgress, [0.24, 0.36, 0.56, 0.68], [0, 1, 1, 0]);
-  const frame3CopyOpacity = useTransform(scrollYProgress, [0.56, 0.7, 0.98, 1], [0, 1, 1, 1]);
+  const copySpring = { stiffness: 38, damping: 22, mass: 0.65, restDelta: 0.002 };
+
+  const frame2CopyOpacityRaw = useTransform(
+    scrollYProgress,
+    [0.24, 0.36, 0.56, 0.68],
+    [0, 1, 1, 0],
+  );
+  const frame2CopyOpacity = useSpring(frame2CopyOpacityRaw, copySpring);
+
+  const frame3CopyOpacityRaw = useTransform(
+    scrollYProgress,
+    [0.56, 0.7, 0.98, 1],
+    [0, 1, 1, 1],
+  );
+  const frame3CopyOpacity = useSpring(frame3CopyOpacityRaw, copySpring);
 
   return (
     <section ref={sectionRef} className="relative h-[300vh] w-full">
@@ -167,10 +180,10 @@ export const PrismaHero = () => {
 
         <motion.div
           style={{ opacity: frame2CopyOpacity }}
-          className="pointer-events-none absolute inset-0 z-[22] flex flex-col items-stretch px-4 pt-24 sm:px-6 md:pt-28"
+          className="pointer-events-none absolute inset-0 z-[22] flex flex-col items-start px-4 pt-24 sm:px-6 md:pt-28"
           aria-hidden
         >
-          <div className="mx-auto w-full max-w-lg font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
+          <div className="w-full max-w-lg font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
             <p
               className="m-0 text-2xl font-medium tracking-tight md:text-4xl"
               style={{ color: SCROLLIO_CREAM }}
@@ -189,17 +202,17 @@ export const PrismaHero = () => {
 
         <motion.div
           style={{ opacity: frame3CopyOpacity }}
-          className="pointer-events-none absolute inset-0 z-[22] flex flex-col items-stretch px-4 pt-24 sm:px-6 md:pt-28"
+          className="pointer-events-none absolute inset-0 z-[22] flex flex-col items-end px-4 pt-24 sm:px-6 md:pt-28"
           aria-hidden
         >
-          <div className="mx-auto w-full max-w-lg font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
+          <div className="w-full max-w-lg text-right font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
             <p
               className="m-0 text-2xl font-medium tracking-tight md:text-4xl"
               style={{ color: SCROLLIO_CREAM }}
             >
               Scrollio Core
             </p>
-            <div className="mt-5 space-y-2 text-left text-sm font-normal leading-snug text-white/90 md:text-base">
+            <div className="mt-5 space-y-2 text-right text-sm font-normal leading-snug text-white/90 md:text-base">
               <p className="m-0">The feed already owns your attention.</p>
               <p className="m-0">We borrow that rhythm for learning on purpose.</p>
               <p className="m-0">One short clip can land harder than a long lecture.</p>
