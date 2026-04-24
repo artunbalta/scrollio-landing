@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
@@ -29,6 +29,14 @@ function Model({
 }) {
   const { scene } = useGLTF(url);
   const group = useRef<THREE.Group>(null);
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone(true);
+    clone.traverse((obj) => {
+      // Prevent intermittent disappear/reappear when large animated models are near frustum edges.
+      obj.frustumCulled = false;
+    });
+    return clone;
+  }, [scene]);
 
   useFrame(({ clock }) => {
     if (!group.current) return;
@@ -37,7 +45,7 @@ function Model({
 
   return (
     <group ref={group} position={position} rotation={rotation} scale={scale}>
-      <primitive object={scene.clone()} />
+      <primitive object={clonedScene} />
     </group>
   );
 }

@@ -7,6 +7,7 @@ export interface KidsModeDemoProps {
   /** When true, used inline (e.g. split page); no top-right close button */
   embedded?: boolean;
   className?: string;
+  noInternalScroll?: boolean;
 }
 
 const COLORS = [
@@ -24,7 +25,13 @@ const ERASER_COLOR = "#ffffff";
 
 type Step = "draw" | "generating-mentor" | "mentor-ready" | "generating-video" | "video-ready";
 
-export default function KidsModeDemo({ onClose, embedded, className = "" }: KidsModeDemoProps) {
+export default function KidsModeDemo({
+  onClose,
+  embedded,
+  className = "",
+  noInternalScroll = false,
+}: KidsModeDemoProps) {
+  const compactEmbedded = Boolean(embedded && noInternalScroll);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
@@ -253,8 +260,10 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
         </button>
       )}
 
-      <div className={`text-center flex-shrink-0 ${embedded ? "mb-3" : "mb-6"}`}>
-        <h2 className={`font-bold gradient-text ${embedded ? "text-lg mb-1" : "text-2xl mb-2"}`}>Scrollio Kids Demo</h2>
+      <div className={`text-center flex-shrink-0 ${compactEmbedded ? "mb-2" : embedded ? "mb-3" : "mb-6"}`}>
+        <h2 className={`font-semibold tracking-tight text-gray-900 ${compactEmbedded ? "text-base mb-1" : embedded ? "text-lg mb-1" : "text-2xl mb-2"}`}>
+          Scrollio Kids Studio
+        </h2>
         <p className="text-sm text-gray-500">
           {step === "draw" && "Draw your mentor!"}
           {step === "generating-mentor" && "AI is working its magic..."}
@@ -272,9 +281,9 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
 
       {step === "draw" && (
         <>
-          <div className={embedded ? "flex flex-col gap-2" : "space-y-3"}>
+          <div className={embedded ? `flex flex-col ${compactEmbedded ? "gap-1.5" : "gap-2"}` : "space-y-3"}>
             <div className="flex-shrink-0 flex items-center justify-between">
-              <label className="text-sm font-medium text-gray-900">✏️ Draw your mentor</label>
+              <label className="text-sm font-medium text-gray-900">Draw your mentor</label>
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleUndo}
@@ -328,8 +337,8 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
               <span className="text-xs text-gray-700 w-6">{brushSize}</span>
             </div>
             {embedded ? (
-              <div className="w-full min-h-[220px] min-w-0 flex items-center justify-center shrink-0 py-1">
-                <div className="w-full aspect-[4/3] max-h-[min(320px,50dvh)] mx-auto">
+              <div className={`w-full min-w-0 flex items-center justify-center shrink-0 ${compactEmbedded ? "py-0 min-h-[170px]" : "py-1 min-h-[220px]"}`}>
+                <div className={`w-full aspect-[4/3] mx-auto ${compactEmbedded ? "max-h-[min(220px,32dvh)]" : "max-h-[min(320px,50dvh)]"}`}>
                   <canvas
                     ref={canvasRef}
                     width={400}
@@ -361,10 +370,10 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
                 onTouchEnd={stopDrawing}
               />
             )}
-            <p className="flex-shrink-0 text-xs text-gray-500 text-center">Use your finger or mouse to draw your dream mentor</p>
+            <p className={`flex-shrink-0 text-xs text-gray-500 text-center ${compactEmbedded ? "hidden" : ""}`}>Use your finger or mouse to draw your dream mentor</p>
           </div>
-          <div className={`space-y-2 rounded-xl bg-orange-50 border border-orange-100 flex-shrink-0 ${embedded ? "mt-2 p-3" : "mt-4 p-4"}`}>
-            <p className="text-sm text-gray-900 font-medium">📧 We&apos;ll send your mentor via email!</p>
+          <div className={`space-y-2 rounded-xl border border-slate-200 bg-slate-50 flex-shrink-0 ${compactEmbedded ? "mt-1.5 p-2.5" : embedded ? "mt-2 p-3" : "mt-4 p-4"}`}>
+            <p className={`${compactEmbedded ? "text-xs" : "text-sm"} text-gray-900 font-medium`}>Send your mentor by email</p>
             <div className="space-y-2">
               <input
                 type="text"
@@ -382,14 +391,14 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
                 required
               />
             </div>
-            <p className="text-xs text-gray-500">* We&apos;ll send the generated mentor to your email</p>
+            <p className={`text-xs text-gray-500 ${compactEmbedded ? "hidden" : ""}`}>* We&apos;ll send the generated mentor to your email</p>
           </div>
           <button
             onClick={handleGenerateMentor}
             disabled={!email.trim()}
-            className={`w-full py-3 px-6 rounded-full bg-gradient-to-r from-orange-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg flex-shrink-0 ${embedded ? "mt-2" : "mt-4"}`}
+            className={`w-full ${compactEmbedded ? "py-2.5" : "py-3"} px-6 rounded-full bg-orange-200 text-stone-900 font-semibold hover:bg-orange-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm flex-shrink-0 ${compactEmbedded ? "mt-1.5" : embedded ? "mt-2" : "mt-4"}`}
           >
-            Create Mentor ✨
+            Create Mentor
           </button>
         </>
       )}
@@ -414,14 +423,14 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
           )}
           {mentorData.characterImageUrl && (
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900">🎨 Here&apos;s Your Mentor!</label>
+              <label className="text-sm font-medium text-gray-900">Your Mentor</label>
               <div className="rounded-xl overflow-hidden border border-gray-200 bg-gradient-to-br from-orange-50 to-purple-50">
                 <img src={mentorData.characterImageUrl} alt="Your mentor" className="w-full h-auto" />
               </div>
             </div>
           )}
           <div className="space-y-3 p-4 rounded-xl bg-gray-50 border border-gray-200">
-            <label className="text-sm font-medium text-gray-900">💭 What would you like to learn from your mentor?</label>
+            <label className="text-sm font-medium text-gray-900">What would you like to learn from your mentor?</label>
             <input
               type="text"
               value={learningPrompt}
@@ -433,9 +442,9 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
               <button
                 onClick={handleGenerateVideo}
                 disabled={!learningPrompt.trim()}
-                className="flex-1 py-3 px-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                className="flex-1 py-3 px-4 rounded-full bg-gray-900 text-white font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
-                Create Video 🎬
+                Create Video
               </button>
               {onClose && (
                 <button
@@ -473,7 +482,7 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
         <div className="space-y-6">
           {videoUrl && (
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900">🎬 Your Mentor&apos;s Video</label>
+              <label className="text-sm font-medium text-gray-900">Your Mentor&apos;s Video</label>
               <div className="rounded-xl overflow-hidden border border-gray-200">
                 <video src={videoUrl} controls autoPlay loop className="w-full h-auto" />
               </div>
@@ -507,14 +516,17 @@ export default function KidsModeDemo({ onClose, embedded, className = "" }: Kids
         </div>
       )}
 
-      <p className="text-xs text-center text-gray-400 mt-4">For demo purposes • Powered by fal.ai</p>
     </>
   );
 
   if (embedded) {
     return (
-      <div className={`relative w-full min-h-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-xl p-4 ${className}`}>
-        <div className="flex flex-col flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain">
+      <div className={`relative w-full min-h-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-xl ${compactEmbedded ? "p-3" : "p-4"} ${className}`}>
+        <div
+          className={`flex flex-col flex-1 min-h-0 overflow-x-hidden ${
+            noInternalScroll ? "overflow-y-hidden" : "overflow-y-auto overscroll-contain"
+          }`}
+        >
           {content}
         </div>
       </div>
