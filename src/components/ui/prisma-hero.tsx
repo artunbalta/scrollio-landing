@@ -420,6 +420,13 @@ export const PrismaHero = () => {
         </motion.div>
 
         {/* Navbar (centered) */}
+        <a
+          href="/23nisan"
+          className="absolute left-3 top-3 z-[26] rounded-full border border-white/45 bg-black/30 px-3 py-1 text-[10px] font-medium text-white/90 backdrop-blur transition hover:bg-black/45 sm:left-4 sm:top-4 sm:text-xs"
+        >
+          23 Nisan Ozel Site
+        </a>
+
         <nav className="absolute left-1/2 top-0 z-[25] -translate-x-1/2">
           <div className="flex items-center gap-3 rounded-b-2xl border border-white/40 bg-gradient-to-b from-orange-100/45 via-amber-50/35 to-orange-200/40 px-4 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.06)] ring-1 ring-white/20 sm:gap-6 md:gap-12 md:rounded-b-3xl md:px-8 lg:gap-14">
             {navItems.map((item) => (
