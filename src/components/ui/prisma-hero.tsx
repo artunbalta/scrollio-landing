@@ -232,15 +232,26 @@ export const PrismaHero = () => {
                 }`}
               >
                 {n === 1 ? (
-                  <video
-                    src={`/animation/landingvideo1.mp4?v=${HERO_VIDEO_VERSION}`}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    className="h-full w-full object-cover object-top"
-                  />
+                  <>
+                    <video
+                      src={`/animation/landingvideo1.mp4?v=${HERO_VIDEO_VERSION}`}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      className="hidden h-full w-full object-cover object-top md:block"
+                    />
+                    <Image
+                      src="/animation/1.png"
+                      alt=""
+                      fill
+                      priority
+                      className="object-cover object-top md:hidden"
+                      sizes="100vw"
+                      unoptimized
+                    />
+                  </>
                 ) : (
                   <Image
                     src={`/animation/${n}.png`}
@@ -377,7 +388,7 @@ export const PrismaHero = () => {
 
         <motion.div
           style={{ opacity: chromeOpacity }}
-          className="pointer-events-none absolute right-10 top-14 z-30 flex w-[min(96vw,36rem)] flex-col items-center gap-4 md:right-14 md:top-20 lg:right-20 lg:top-24"
+          className="pointer-events-none absolute left-1/2 top-14 z-30 flex w-[min(96vw,36rem)] -translate-x-1/2 flex-col items-center gap-4 md:left-auto md:translate-x-0 md:right-14 md:top-20 lg:right-20 lg:top-24"
         >
           <motion.div
             initial={{ y: 16 }}
