@@ -2,9 +2,9 @@ import { PrismaHero } from "@/components/ui/prisma-hero";
 import Image from "next/image";
 
 export const metadata = {
-  title: "Scrollio · Trial",
+  title: "Scrollio – Turn Scrolling Into Learning",
   description:
-    "Try Scrollio — turn everyday scrolling into meaningful learning with AI-powered experiences for curious minds and kids.",
+    "Scrollio is an AI-powered learning playground that turns everyday scrolling into meaningful education — from TikTok-style knowledge feeds to magical experiences where children's drawings become living mentors.",
 };
 
 export default function Home() {
