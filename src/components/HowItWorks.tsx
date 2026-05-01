@@ -33,140 +33,181 @@ const TOPIC_TAGS_2 = [
   { label: "Linguistics", color: "#fb7185" },
 ];
 
-/* ── Step 1: Stacked mini content cards ── */
-function FeedMockup() {
-  const cards = [
-    { tag: "AI", title: "How neural networks mimic the brain", color: "#ea580c" },
-    { tag: "Psychology", title: "Why your memory is a reconstruction", color: "#a855f7" },
-    { tag: "Finance", title: "The compounding effect: why it's magic", color: "#10b981" },
+/* ── Step 1: Phone with scrolling video feed ── */
+function VideoFeedMockup() {
+  const videos = [
+    { tag: "Neuroscience", title: "Why dopamine isn't about pleasure", mentor: "Dr. Sarah K.", color: "#a855f7", bg: "from-purple-900 to-indigo-900" },
+    { tag: "Finance", title: "How compound interest really works", mentor: "Warren B.", color: "#10b981", bg: "from-emerald-900 to-teal-900" },
+    { tag: "Physics", title: "What light actually is", mentor: "Richard F.", color: "#3b82f6", bg: "from-blue-900 to-cyan-900" },
   ];
+
   return (
-    <div className="w-full flex flex-col gap-2.5">
-      {cards.map((c, i) => (
-        <motion.div
-          key={c.title}
-          className="rounded-xl border px-3.5 py-3 flex items-start gap-3"
-          style={{ background: "rgba(249,115,22,0.05)", borderColor: "rgba(249,115,22,0.15)" }}
-          animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 3.5 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-        >
-          <span
-            className="mt-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0"
-            style={{ background: `${c.color}18`, color: c.color, border: `1px solid ${c.color}30` }}
-          >
-            {c.tag}
-          </span>
-          <p className="text-[12px] leading-snug font-medium" style={{ color: "var(--foreground)" }}>{c.title}</p>
-        </motion.div>
-      ))}
+    <div className="flex items-center justify-center w-full">
       <div
-        className="rounded-xl border px-3.5 py-2.5 flex items-center gap-2.5 mt-0.5"
-        style={{ background: "rgba(249,115,22,0.04)", borderColor: "rgba(249,115,22,0.2)", borderStyle: "dashed" }}
+        className="relative rounded-[1.6rem] overflow-hidden shadow-2xl"
+        style={{ width: 110, height: 190, background: "#111" }}
       >
-        <span className="text-[10px] text-orange-400 font-semibold">✦ Next for you</span>
-        <div className="h-1.5 flex-1 rounded-full" style={{ background: "rgba(249,115,22,0.12)" }}>
-          <motion.div
-            className="h-full rounded-full"
-            style={{ background: "linear-gradient(90deg,#f97316,#a855f7)" }}
-            animate={{ width: ["15%", "65%", "15%"] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
+        {/* Dynamic Island */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10 w-12 h-3.5 rounded-full bg-black" />
+
+        {/* Scrolling videos */}
+        <motion.div
+          className="absolute inset-0 flex flex-col"
+          animate={{ y: [0, -190, -380, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", times: [0, 0.33, 0.66, 1] }}
+        >
+          {[...videos, videos[0]].map((v, i) => (
+            <div
+              key={i}
+              className={`relative shrink-0 flex flex-col justify-end p-2.5 bg-gradient-to-b ${v.bg}`}
+              style={{ width: 110, height: 190 }}
+            >
+              {/* Mentor avatar placeholder */}
+              <div
+                className="absolute top-6 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold"
+                style={{ background: `${v.color}30`, border: `1.5px solid ${v.color}60`, color: v.color }}
+              >
+                {v.mentor[0]}
+              </div>
+              {/* Info */}
+              <div className="space-y-1">
+                <span
+                  className="px-1.5 py-0.5 rounded text-[8px] font-bold"
+                  style={{ background: `${v.color}30`, color: v.color }}
+                >
+                  {v.tag}
+                </span>
+                <p className="text-[8px] font-semibold text-white leading-tight">{v.title}</p>
+                <p className="text-[7px] text-white/60">{v.mentor}</p>
+              </div>
+              {/* Side actions */}
+              <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+                {["♥", "💬", "↗"].map((icon, j) => (
+                  <div key={j} className="text-[10px] text-white/70">{icon}</div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Home indicator */}
+        <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-white/30 z-10" />
       </div>
     </div>
   );
 }
 
-/* ── Step 2: AI node graph ── */
-function AINodeGraph() {
-  const nodes = [
-    { cx: 18, cy: 38, color: "#ea580c", r: 6, delay: 0 },
-    { cx: 50, cy: 18, color: "#a855f7", r: 8, delay: 0.4 },
-    { cx: 82, cy: 40, color: "#f97316", r: 6, delay: 0.8 },
-    { cx: 32, cy: 68, color: "#10b981", r: 5, delay: 1.1 },
-    { cx: 68, cy: 70, color: "#f59e0b", r: 5, delay: 1.5 },
+/* ── Step 2: Watch signal → AI curation ── */
+function AISignalVisual() {
+  const signals = [
+    { label: "Watched 100%", icon: "▶", color: "#22c55e", x: "15%", y: "20%" },
+    { label: "Replayed 2×", icon: "↺", color: "#f97316", x: "65%", y: "15%" },
+    { label: "Shared", icon: "↗", color: "#a855f7", x: "82%", y: "55%" },
+    { label: "Skipped", icon: "⏭", color: "#64748b", x: "20%", y: "70%" },
+    { label: "Saved", icon: "★", color: "#f59e0b", x: "55%", y: "72%" },
   ];
-  const edges = [
-    [18, 38, 50, 18], [50, 18, 82, 40],
-    [50, 18, 32, 68], [82, 40, 68, 70],
-    [32, 68, 68, 70],
-  ];
+
   return (
     <div className="relative w-full" style={{ height: 140 }}>
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {edges.map(([x1, y1, x2, y2], i) => (
-          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
-            stroke="rgba(249,115,22,0.25)" strokeWidth="0.9" strokeDasharray="2.5 1.5" />
-        ))}
-      </svg>
-      {nodes.map((n, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            left: `${n.cx}%`, top: `${n.cy}%`,
-            width: n.r * 2, height: n.r * 2,
-            background: n.color,
-            transform: "translate(-50%,-50%)",
-            boxShadow: `0 0 ${n.r * 3}px ${n.color}50`,
-          }}
-          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: n.delay }}
-        />
-      ))}
-      <div
-        className="absolute bottom-2 right-2 px-3 py-1 rounded-full text-[10px] font-semibold"
-        style={{ background: "rgba(249,115,22,0.1)", color: "#ea580c", border: "1px solid rgba(249,115,22,0.2)" }}
+      {/* Central AI brain */}
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-sm z-10"
+        style={{ background: "linear-gradient(135deg,#f97316,#a855f7)", boxShadow: "0 0 24px rgba(249,115,22,0.4)" }}
+        animate={{ scale: [1, 1.12, 1] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
       >
-        curiosity graph
-      </div>
-    </div>
-  );
-}
+        <span className="text-white font-bold text-[10px]">AI</span>
+      </motion.div>
 
-/* ── Step 3: Knowledge path ── */
-function KnowledgePath() {
-  const milestones = [
-    { label: "Day 1",   topic: "AI basics",   done: true },
-    { label: "Day 4",   topic: "Neural nets",  done: true },
-    { label: "Day 9",   topic: "LLMs",         done: true },
-    { label: "Day 18",  topic: "Future",        done: false },
-  ];
-  return (
-    <div className="w-full flex flex-col gap-3">
-      {milestones.map((m, i) => (
+      {/* Signal nodes */}
+      {signals.map((s, i) => (
         <motion.div
-          key={m.label}
-          className="flex items-center gap-3.5"
-          initial={{ opacity: 0, x: -10 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          key={s.label}
+          className="absolute"
+          style={{ left: s.x, top: s.y, transform: "translate(-50%,-50%)" }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.15, duration: 0.4 }}
         >
+          <motion.div
+            className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold whitespace-nowrap"
+            style={{ background: `${s.color}20`, color: s.color, border: `1px solid ${s.color}40` }}
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 2.5 + i * 0.4, repeat: Infinity, ease: "easeInOut", delay: i * 0.3 }}
+          >
+            <span>{s.icon}</span> {s.label}
+          </motion.div>
+        </motion.div>
+      ))}
+
+      {/* Animated connecting lines to center */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+        {signals.map((s, i) => (
+          <motion.line
+            key={i}
+            x1={parseFloat(s.x)} y1={parseFloat(s.y)}
+            x2={50} y2={50}
+            stroke={s.color}
+            strokeWidth="0.6"
+            strokeOpacity={0.35}
+            strokeDasharray="2 1.5"
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15, duration: 0.6 }}
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+/* ── Step 3: Knowledge compounds over time ── */
+function KnowledgePath() {
+  const days = [
+    { label: "Day 1", topic: "Intro to Neuroscience", pct: 100 },
+    { label: "Day 3", topic: "Memory & Learning", pct: 100 },
+    { label: "Day 7", topic: "Neuroplasticity", pct: 100 },
+    { label: "Day 14", topic: "Sleep & the Brain", pct: 60 },
+    { label: "Day 21", topic: "Focus & Flow", pct: 0 },
+  ];
+
+  return (
+    <div className="w-full flex flex-col gap-2.5">
+      {days.map((d, i) => (
+        <motion.div
+          key={d.label}
+          className="flex items-center gap-3"
+          initial={{ opacity: 0, x: -12 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.1, duration: 0.4 }}
+        >
           <div
-            className="w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[10px] font-bold"
+            className="w-5 h-5 rounded-full shrink-0 flex items-center justify-center text-[9px] font-bold"
             style={{
-              background: m.done ? "linear-gradient(135deg,#f97316,#a855f7)" : "rgba(249,115,22,0.1)",
-              border: m.done ? "none" : "1.5px solid rgba(249,115,22,0.25)",
-              color: m.done ? "white" : "#f97316",
+              background: d.pct === 100 ? "linear-gradient(135deg,#f97316,#a855f7)" : d.pct > 0 ? "rgba(249,115,22,0.2)" : "rgba(249,115,22,0.07)",
+              border: d.pct === 100 ? "none" : "1.5px solid rgba(249,115,22,0.25)",
+              color: d.pct === 100 ? "white" : "#f97316",
             }}
           >
-            {m.done ? "✓" : ""}
+            {d.pct === 100 ? "✓" : ""}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="text-[11px]" style={{ color: "var(--foreground-muted)", opacity: 0.8 }}>{m.label}</span>
-              <span className="text-[11px] font-semibold" style={{ color: "var(--foreground)" }}>{m.topic}</span>
+            <div className="flex justify-between mb-0.5">
+              <span className="text-[10px] text-stone-400">{d.label}</span>
+              <span className="text-[10px] font-semibold" style={{ color: "var(--foreground)" }}>{d.topic}</span>
             </div>
-            <div className="h-1 rounded-full w-full" style={{ background: "rgba(249,115,22,0.1)" }}>
-              {m.done && (
+            <div className="h-1 rounded-full w-full bg-orange-100/60">
+              {d.pct > 0 && (
                 <motion.div
                   className="h-full rounded-full"
                   style={{ background: "linear-gradient(90deg,#f97316,#a855f7)" }}
                   initial={{ width: 0 }}
-                  whileInView={{ width: "100%" }}
+                  whileInView={{ width: `${d.pct}%` }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: i * 0.15 + 0.3 }}
+                  transition={{ duration: 0.7, delay: i * 0.1 + 0.3 }}
                 />
               )}
             </div>
@@ -180,10 +221,10 @@ function KnowledgePath() {
 const STEPS = [
   {
     num: "01",
-    label: "Scroll naturally",
-    headline: "Your curiosity is the curriculum.",
-    body: "Open the feed, swipe up. Every card is a lesson — built for one minute, designed to stick.",
-    visual: <FeedMockup />,
+    label: "Scroll & Watch",
+    headline: "Every video is a lesson.",
+    body: "Swipe through short, high-density videos from the world's sharpest minds. Each one is built for one minute, designed to stick — no fluff, no filler.",
+    visual: <VideoFeedMockup />,
     accent: "#f97316",
     accentBg: "rgba(249,115,22,0.07)",
     accentBorder: "rgba(249,115,22,0.18)",
@@ -191,9 +232,9 @@ const STEPS = [
   {
     num: "02",
     label: "AI reads the signal",
-    headline: "Every swipe is a data point.",
-    body: "Scrollio maps your curiosity in real time and reshapes what comes next — silently, seamlessly.",
-    visual: <AINodeGraph />,
+    headline: "Your watch time shapes your feed.",
+    body: "Did you replay it? Watch all the way through? Share it? Scrollio reads every signal and silently remixes your feed around what genuinely sparks your curiosity.",
+    visual: <AISignalVisual />,
     accent: "#a855f7",
     accentBg: "rgba(168,85,247,0.06)",
     accentBorder: "rgba(168,85,247,0.18)",
@@ -201,8 +242,8 @@ const STEPS = [
   {
     num: "03",
     label: "Knowledge compounds",
-    headline: "What you learn today shapes tomorrow.",
-    body: "Topics connect across sessions. Your feed evolves. You don't just learn — you grow.",
+    headline: "Topics connect. Understanding deepens.",
+    body: "Scrollio tracks what you've watched and builds a learning arc across sessions. Yesterday's video on memory makes today's on sleep click differently.",
     visual: <KnowledgePath />,
     accent: "#ea580c",
     accentBg: "rgba(234,88,12,0.06)",
@@ -241,7 +282,6 @@ export default function HowItWorks() {
 
         {/* Steps */}
         <div className="relative grid md:grid-cols-3 gap-6">
-          {/* Connecting line (desktop only) */}
           <div
             className="hidden md:block absolute top-[3.25rem] left-[calc(1/6*100%)] right-[calc(1/6*100%)] h-px pointer-events-none"
             style={{ background: "linear-gradient(90deg, transparent, rgba(249,115,22,0.35) 20%, rgba(168,85,247,0.35) 80%, transparent)" }}
@@ -263,7 +303,6 @@ export default function HowItWorks() {
               }}
               whileHover={{ y: -4, boxShadow: "0 8px 32px rgba(249,115,22,0.12)", transition: { duration: 0.2 } }}
             >
-              {/* Step badge + label */}
               <div className="flex items-center gap-3">
                 <span
                   className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-black shrink-0"
@@ -276,7 +315,6 @@ export default function HowItWorks() {
                 </span>
               </div>
 
-              {/* Animated visual */}
               <div
                 className="rounded-xl overflow-hidden p-4 min-h-[148px] flex items-center"
                 style={{ background: step.accentBg, border: `1px solid ${step.accentBorder}` }}
@@ -284,7 +322,6 @@ export default function HowItWorks() {
                 {step.visual}
               </div>
 
-              {/* Text */}
               <div>
                 <p className="text-[15px] font-bold leading-snug mb-1.5" style={{ color: "var(--foreground)" }}>{step.headline}</p>
                 <p className="text-[13px] leading-relaxed" style={{ color: "var(--foreground-muted)" }}>{step.body}</p>
