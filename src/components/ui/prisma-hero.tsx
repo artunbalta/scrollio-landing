@@ -277,10 +277,10 @@ export const PrismaHero = () => {
 
         <motion.div
           style={{ opacity: frame2CopyOpacity }}
-          className="absolute inset-0 z-[22] flex items-start px-4 pt-24 sm:px-6 md:pt-28"
+          className="pointer-events-none absolute inset-0 z-[22] flex items-start px-4 pt-24 sm:px-6 md:pt-28"
         >
           <div className="mx-auto flex w-full max-w-6xl items-start justify-center gap-6 lg:gap-8">
-            <div className="pointer-events-none min-w-0 max-w-xl flex-1 font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
+            <div className="min-w-0 max-w-xl flex-1 font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
               <p
                 className="m-0 text-2xl font-medium tracking-tight md:text-4xl"
                 style={{ color: SCROLLIO_CREAM }}
@@ -310,8 +310,8 @@ export const PrismaHero = () => {
                 </div>
               </div>
             </div>
-            <div className="pointer-events-auto relative z-[24] hidden min-w-0 shrink-0 lg:block lg:w-[min(42vw,30rem)]">
-              <KidsModeDemo embedded noInternalScroll className="h-[min(82dvh,50rem)]" />
+            <div className="pointer-events-auto relative z-[24] hidden min-w-0 shrink-0 overflow-y-auto lg:block lg:w-[min(42vw,30rem)]" style={{ maxHeight: "calc(100vh - 7rem)" }}>
+              <KidsModeDemo embedded className="min-h-full" />
             </div>
           </div>
         </motion.div>
