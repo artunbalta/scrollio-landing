@@ -280,7 +280,7 @@ export const PrismaHero = () => {
           className="absolute inset-0 z-[22] flex items-start px-4 pt-24 sm:px-6 md:pt-28"
         >
           <div className="mx-auto flex w-full max-w-6xl items-start justify-center gap-6 lg:gap-8">
-            <div className="pointer-events-none w-full max-w-xl font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
+            <div className="pointer-events-none min-w-0 max-w-xl flex-1 font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
               <p
                 className="m-0 text-2xl font-medium tracking-tight md:text-4xl"
                 style={{ color: SCROLLIO_CREAM }}
@@ -295,8 +295,8 @@ export const PrismaHero = () => {
                 <p className="m-0">Tiny wins stack into real confidence.</p>
               </div>
               <div className="pointer-events-auto mt-10 w-full max-w-[33.6rem] space-y-4">
-                <div className="overflow-hidden rounded-2xl border border-white/25 bg-black/25 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
-                  <div className="aspect-video w-full">
+                <div className="min-w-0 overflow-hidden rounded-2xl border border-white/25 bg-black/25 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+                  <div className="aspect-video w-full max-w-full overflow-hidden">
                     <iframe
                       className="h-full w-full"
                       src="https://www.youtube.com/embed/1GbCXX2pOMU?autoplay=1&mute=1&playsinline=1&rel=0"
@@ -310,7 +310,7 @@ export const PrismaHero = () => {
                 </div>
               </div>
             </div>
-            <div className="pointer-events-auto hidden w-[min(42vw,30rem)] lg:block">
+            <div className="pointer-events-auto relative z-[24] hidden min-w-0 shrink-0 lg:block lg:w-[min(42vw,30rem)]">
               <KidsModeDemo embedded noInternalScroll className="h-[min(82dvh,50rem)]" />
             </div>
           </div>
@@ -375,8 +375,8 @@ export const PrismaHero = () => {
               <p className="m-0">Guilt is not part of the interface here.</p>
               <p className="m-0">Curiosity is the only habit we try to make loud.</p>
             </div>
-            <div className="pointer-events-auto mt-10 ml-auto w-full max-w-[33.6rem] overflow-hidden rounded-2xl border border-white/25 bg-black/25 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
-              <div className="aspect-video w-full">
+            <div className="pointer-events-auto mt-10 ml-auto w-full min-w-0 max-w-[33.6rem] overflow-hidden rounded-2xl border border-white/25 bg-black/25 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+              <div className="aspect-video w-full max-w-full overflow-hidden">
                 <iframe
                   className="h-full w-full"
                   src="https://www.youtube.com/embed/AA7aC2O5qkY?autoplay=1&mute=1&playsinline=1&rel=0"

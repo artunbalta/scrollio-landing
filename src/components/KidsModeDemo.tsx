@@ -337,13 +337,13 @@ export default function KidsModeDemo({
               <span className="text-xs text-gray-700 w-6">{brushSize}</span>
             </div>
             {embedded ? (
-              <div className={`w-full min-w-0 flex items-center justify-center shrink-0 ${compactEmbedded ? "py-0 min-h-[170px]" : "py-1 min-h-[220px]"}`}>
-                <div className={`w-full aspect-[4/3] mx-auto ${compactEmbedded ? "max-h-[min(220px,32dvh)]" : "max-h-[min(320px,50dvh)]"}`}>
+              <div className={`relative z-10 w-full min-w-0 flex items-center justify-center shrink-0 ${compactEmbedded ? "py-0 min-h-[170px]" : "py-1 min-h-[220px]"}`}>
+                <div className={`relative z-10 w-full aspect-[4/3] mx-auto ${compactEmbedded ? "max-h-[min(220px,32dvh)]" : "max-h-[min(320px,50dvh)]"}`}>
                   <canvas
                     ref={canvasRef}
                     width={400}
                     height={300}
-                    className="w-full h-full rounded-xl border border-gray-200 cursor-crosshair touch-none bg-white shadow-inner block"
+                    className="relative z-10 h-full w-full rounded-xl border border-gray-200 cursor-crosshair touch-none bg-white shadow-inner block"
                     onMouseDown={startDrawing}
                     onMouseMove={draw}
                     onMouseUp={stopDrawing}
@@ -521,7 +521,7 @@ export default function KidsModeDemo({
 
   if (embedded) {
     return (
-      <div className={`relative w-full min-h-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-xl ${compactEmbedded ? "p-3" : "p-4"} ${className}`}>
+      <div className={`relative z-10 isolate w-full min-h-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-xl ${compactEmbedded ? "p-3" : "p-4"} ${className}`}>
         <div
           className={`flex flex-col flex-1 min-h-0 overflow-x-hidden ${
             noInternalScroll ? "overflow-y-hidden" : "overflow-y-auto overscroll-contain"
