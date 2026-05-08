@@ -216,6 +216,13 @@ export const PrismaHero = () => {
   );
   const frame3CopyOpacity = useSpring(frame3CopyOpacityRaw, copySpring);
 
+  const frame2Interactive = useTransform(scrollYProgress, (v) =>
+    v >= 0.30 && v <= 0.62 ? "auto" : "none",
+  );
+  const frame3Interactive = useTransform(scrollYProgress, (v) =>
+    v >= 0.62 ? "auto" : "none",
+  );
+
   return (
     <section ref={sectionRef} className="relative h-[300vh] w-full">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -276,10 +283,11 @@ export const PrismaHero = () => {
         </motion.div>
 
         <motion.div
-          style={{ opacity: frame2CopyOpacity }}
-          className="pointer-events-none absolute inset-0 z-[22] flex items-start px-4 pt-24 sm:px-6 md:pt-28"
+          style={{ opacity: frame2CopyOpacity, pointerEvents: frame2Interactive }}
+          className="absolute inset-0 z-[22] flex items-start px-4 pt-24 sm:px-6 md:pt-28"
         >
           <div className="mx-auto flex w-full max-w-6xl items-start justify-center gap-6 lg:gap-8">
+            {/* Left: text + video */}
             <div className="min-w-0 max-w-xl flex-1 font-sans font-normal [text-shadow:0_2px_28px_rgba(0,0,0,0.75)]">
               <p
                 className="m-0 text-2xl font-medium tracking-tight md:text-4xl"
@@ -294,7 +302,7 @@ export const PrismaHero = () => {
                 <p className="m-0">Parents see progress without stealing the fun.</p>
                 <p className="m-0">Tiny wins stack into real confidence.</p>
               </div>
-              <div className="pointer-events-auto mt-10 w-full max-w-[33.6rem] space-y-4">
+              <div className="mt-10 w-full max-w-[33.6rem] space-y-4">
                 <div className="min-w-0 overflow-hidden rounded-2xl border border-white/25 bg-black/25 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
                   <div className="aspect-video w-full max-w-full overflow-hidden">
                     <iframe
@@ -310,19 +318,23 @@ export const PrismaHero = () => {
                 </div>
               </div>
             </div>
-            <div className="pointer-events-auto relative z-[24] hidden min-w-0 shrink-0 overflow-y-auto lg:block lg:w-[min(42vw,30rem)]" style={{ maxHeight: "calc(100vh - 7rem)" }}>
-              <KidsModeDemo embedded className="min-h-full" />
+            {/* Right: fully interactive KidsModeDemo with internal scroll */}
+            <div
+              className="relative z-[24] hidden min-w-0 shrink-0 lg:block lg:w-[min(42vw,30rem)]"
+              style={{ height: "calc(100vh - 8rem)" }}
+            >
+              <KidsModeDemo embedded className="h-full" />
             </div>
           </div>
         </motion.div>
 
         <motion.div
-          style={{ opacity: frame3CopyOpacity }}
-          className="pointer-events-none absolute inset-0 z-[22] flex items-start px-4 pt-24 sm:px-6 md:pt-28"
+          style={{ opacity: frame3CopyOpacity, pointerEvents: frame3Interactive }}
+          className="absolute inset-0 z-[22] flex items-start px-4 pt-24 sm:px-6 md:pt-28"
           aria-hidden
         >
           <div className="mx-auto flex w-full max-w-6xl items-start justify-between gap-8">
-            <div className="pointer-events-auto hidden w-[min(38vw,34rem)] lg:flex lg:flex-col lg:items-center">
+            <div className="hidden w-[min(38vw,34rem)] lg:flex lg:flex-col lg:items-center">
               <div className="h-[42vh] min-h-[300px] w-full">
                 <ModelViewer models={CORE_MODELS} cameraPosition={[0, 0.25, 4.2]} fov={52} />
               </div>
@@ -375,7 +387,7 @@ export const PrismaHero = () => {
               <p className="m-0">Guilt is not part of the interface here.</p>
               <p className="m-0">Curiosity is the only habit we try to make loud.</p>
             </div>
-            <div className="pointer-events-auto mt-10 ml-auto w-full min-w-0 max-w-[33.6rem] overflow-hidden rounded-2xl border border-white/25 bg-black/25 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+            <div className="mt-10 ml-auto w-full min-w-0 max-w-[33.6rem] overflow-hidden rounded-2xl border border-white/25 bg-black/25 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
               <div className="aspect-video w-full max-w-full overflow-hidden">
                 <iframe
                   className="h-full w-full"

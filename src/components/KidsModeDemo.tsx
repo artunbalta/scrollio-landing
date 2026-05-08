@@ -521,12 +521,8 @@ export default function KidsModeDemo({
 
   if (embedded) {
     return (
-      <div className={`relative z-10 isolate w-full min-h-0 flex flex-col bg-white rounded-2xl border border-gray-200 shadow-xl ${compactEmbedded ? "p-3" : "p-4"} ${className}`}>
-        <div
-          className={`flex flex-col flex-1 min-h-0 overflow-x-hidden ${
-            noInternalScroll ? "overflow-y-hidden" : "overflow-y-auto overscroll-contain"
-          }`}
-        >
+      <div className={`relative z-10 isolate flex w-full flex-col overflow-hidden bg-white rounded-2xl border border-gray-200 shadow-xl ${compactEmbedded ? "p-3" : "p-4"} ${className}`}>
+        <div className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto overscroll-contain">
           {content}
         </div>
       </div>
